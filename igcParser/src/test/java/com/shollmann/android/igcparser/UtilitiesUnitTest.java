@@ -46,4 +46,11 @@ public class UtilitiesUnitTest {
         Assert.assertEquals(-52.105716666666666, latLon.getLat());
         Assert.assertEquals(000.1033000, latLon.getLon());
     }
+
+    @Test
+    public void parse_isCorrect_South_West() throws Exception {
+        LatLon latLon = Utilities.generateCoordinates("3428508S", "05925277W");
+        Assert.assertEquals(-34.47513333333333, latLon.getLat());
+        Assert.assertEquals(-59.421283333333335, latLon.getLon());
+    }
 }

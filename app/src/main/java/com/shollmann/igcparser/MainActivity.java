@@ -67,11 +67,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.googleMap.getUiSettings().setMapToolbarEnabled(true);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
         this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), 13));
+
     }
 
     private void displayTrack() {
         PolylineOptions polyline = new PolylineOptions();
-         latLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
+        latLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         polyline.addAll(latLngPoints);
         googleMap.addPolyline(polyline);
     }

@@ -34,15 +34,19 @@ import java.util.List;
 public class Utilities {
     public static LatLon generateCoordinates(String lat, String lon) {
         double latDegrees = Double.valueOf(lat.substring(0, 2));
-        double latMinutes = Double.valueOf(lat.substring(2, lat.length() - 1)) / 60;
-        double latDecimalFormat = latDegrees + latMinutes;
+        String latMinutes = lat.substring(2, 4);
+        String latSeconds = lat.substring(4, lat.length() - 1);
+        double latRealMinutes = Double.valueOf(latMinutes + "." + latSeconds) / 60;
+        double latDecimalFormat = latDegrees + latRealMinutes;
         if (hasSuffix(lat, 'S')) {
             latDecimalFormat = -1 * latDecimalFormat;
         }
 
         double lonDegrees = Double.valueOf(lon.substring(0, 3));
-        double lonMinutes = Double.valueOf(lon.substring(3, lon.length() - 1)) / 60;
-        double lonDecimalFormat = lonDegrees + lonMinutes;
+        String lonMinutes = lat.substring(3, 5);
+        String lonSeconds = lat.substring(5, lat.length() - 1);
+        double lonRealMinutes = Double.valueOf(lonMinutes + "." + lonSeconds) / 60;
+        double lonDecimalFormat = lonDegrees + lonRealMinutes;
         if (hasSuffix(lon, 'W')) {
             lonDecimalFormat = -1 * lonDecimalFormat;
         }
