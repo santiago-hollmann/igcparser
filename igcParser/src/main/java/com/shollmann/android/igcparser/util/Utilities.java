@@ -24,7 +24,12 @@
 
 package com.shollmann.android.igcparser.util;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.LatLon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utilities {
     public static LatLon generateCoordinates(String lat, String lon) {
@@ -46,5 +51,13 @@ public class Utilities {
 
     private static boolean hasSuffix(String lat, char c) {
         return lat.charAt(lat.length() - 1) == c;
+    }
+
+    public static List<LatLng> getLatLngPoints(List<BRecord> listBRecord) {
+        ArrayList<LatLng> listLatLng = new ArrayList<>();
+        for (BRecord bRecord : listBRecord) {
+            listLatLng.add(new LatLng(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon()));
+        }
+        return listLatLng;
     }
 }

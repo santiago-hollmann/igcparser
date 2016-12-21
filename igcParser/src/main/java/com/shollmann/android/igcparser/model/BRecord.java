@@ -24,6 +24,8 @@
 
 package com.shollmann.android.igcparser.model;
 
+import com.shollmann.android.igcparser.util.Utilities;
+
 public class BRecord {
     private static final int TIME_START_INDEX = 1;
     private static final int TIME_END_INDEX = 7;
@@ -33,6 +35,7 @@ public class BRecord {
     private static final int ALTITUDE_PRESS_END_INDEX = 30;
     private static final int ALTITUDE_GPS_END_INDEX = 35;
 
+    private LatLon latLon;
     private long time;
     private String lat;
     private String lon;
@@ -44,6 +47,7 @@ public class BRecord {
         time = Long.valueOf(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
         lat = rawRecord.substring(TIME_END_INDEX, LAT_END_INDEX);
         lon = rawRecord.substring(LAT_END_INDEX, LON_END_INDEX);
+        latLon = Utilities.generateCoordinates(lat, lon);
         altitudePress = Integer.valueOf(rawRecord.substring(FIX_VALIDITY_START_INDEX, ALTITUDE_PRESS_END_INDEX));
         altitudeGps = Integer.valueOf(rawRecord.substring(ALTITUDE_PRESS_END_INDEX, ALTITUDE_GPS_END_INDEX));
     }
@@ -86,5 +90,13 @@ public class BRecord {
 
     public void setAltitudeGps(int altitudeGps) {
         this.altitudeGps = altitudeGps;
+    }
+
+    public LatLon getLatLon() {
+        return latLon;
+    }
+
+    public void setLatLon(LatLon latLon) {
+        this.latLon = latLon;
     }
 }

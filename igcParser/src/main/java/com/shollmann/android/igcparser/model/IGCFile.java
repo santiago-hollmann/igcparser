@@ -46,4 +46,6 @@ public class IGCFile {
     public String toString() {
         return "IGCFile --- Track Points: " + listTrackPoints.size();
     }
+
+
 }

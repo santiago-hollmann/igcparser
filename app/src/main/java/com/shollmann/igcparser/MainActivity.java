@@ -28,17 +28,69 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.shollmann.android.igcparser.Parser;
+import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.util.Utilities;
+
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private IGCFile igcFile;
+    private MapView mapView;
+    private GoogleMap googleMap;
+    private List<LatLng> latLngPoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Parser.parse(getBaseContext(), Uri.parse("http://google.com"));
-        LatLng
+        igcFile = Parser.parse(getBaseContext(), Uri.parse("http://google.com"));
+        mapView = (MapView) findViewById(R.id.main_map);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        displayTrack();
+        this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
+        this.googleMap.getUiSettings().setMapToolbarEnabled(true);
+        this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), 13));
+    }
+
+    private void displayTrack() {
+        PolylineOptions polyline = new PolylineOptions();
+         latLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
+        polyline.addAll(latLngPoints);
+        googleMap.addPolyline(polyline);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
     }
 }
