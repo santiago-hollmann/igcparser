@@ -43,8 +43,8 @@ public class Utilities {
         }
 
         double lonDegrees = Double.valueOf(lon.substring(0, 3));
-        String lonMinutes = lat.substring(3, 5);
-        String lonSeconds = lat.substring(5, lat.length() - 1);
+        String lonMinutes = lon.substring(3, 5);
+        String lonSeconds = lon.substring(5, lon.length() - 1);
         double lonRealMinutes = Double.valueOf(lonMinutes + "." + lonSeconds) / 60;
         double lonDecimalFormat = lonDegrees + lonRealMinutes;
         if (hasSuffix(lon, 'W')) {
