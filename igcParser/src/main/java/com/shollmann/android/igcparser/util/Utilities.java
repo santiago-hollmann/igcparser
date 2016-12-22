@@ -28,7 +28,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.LatLon;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Utilities {
@@ -63,5 +66,24 @@ public class Utilities {
             listLatLng.add(new LatLng(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon()));
         }
         return listLatLng;
+    }
+
+    public static String generateTime(String igcTime) {
+        final String hoursString = igcTime.substring(0, 2);
+        final String minutesString = igcTime.substring(2, 4);
+        final String secondsString = igcTime.substring(4, 6);
+        return hoursString + ":" + minutesString + ":" + secondsString;
+    }
+
+    public static String getFlightTime(String departureTime, String landingTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        try {
+            Date departureDate = sdf.parse(departureTime);
+            Date landingDate = sdf.parse(landingTime);
+//            return Hours.between(landingDate, departureDate)
+        } catch (ParseException e) {
+            Logger.log(e.getMessage());
+        }
+        return "EE:EE:EE";
     }
 }

@@ -53,4 +53,16 @@ public class UtilitiesUnitTest {
         Assert.assertEquals(-34.47513333333333, latLon.getLat());
         Assert.assertEquals(-59.421283333333335, latLon.getLon());
     }
+
+    @Test
+    public void generateTime_isCorrect() throws Exception {
+        String time = Utilities.generateTime("134530");
+        Assert.assertEquals("13:45:30", time);
+    }
+
+    @Test
+    public void generateTime_isCorrect_1() throws Exception {
+        String time = Utilities.generateTime("020504");
+        Assert.assertEquals("02:05:04", time);
+    }
 }

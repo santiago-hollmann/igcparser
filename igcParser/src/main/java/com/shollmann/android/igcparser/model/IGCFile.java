@@ -24,6 +24,8 @@
 
 package com.shollmann.android.igcparser.model;
 
+import com.shollmann.android.igcparser.util.Utilities;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,8 @@ public class IGCFile {
     private double distance;
     private int maxAltitude;
     private int minAltitude;
+    private String departureTime;
+    private String landingTime;
 
     public IGCFile() {
         listTrackPoints = new ArrayList<>();
@@ -76,5 +80,21 @@ public class IGCFile {
 
     public int getMinAltitude() {
         return this.minAltitude;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public void setLandingTime(String landingTime) {
+        this.landingTime = landingTime;
+    }
+
+    public String getLandingTime() {
+        return landingTime;
+    }
+
+    public String getFlightTime() {
+       return Utilities.getFlightTime(departureTime, landingTime);
     }
 }

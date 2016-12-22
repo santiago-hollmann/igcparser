@@ -36,7 +36,7 @@ public class BRecord {
     private static final int ALTITUDE_GPS_END_INDEX = 35;
 
     private LatLon latLon;
-    private long time;
+    private String time;
     private String lat;
     private String lon;
     private int altitudePress;
@@ -44,7 +44,7 @@ public class BRecord {
 
 
     public BRecord(String rawRecord) {
-        time = Long.valueOf(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
+        time = Utilities.generateTime(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
         lat = rawRecord.substring(TIME_END_INDEX, LAT_END_INDEX);
         lon = rawRecord.substring(LAT_END_INDEX, LON_END_INDEX);
         latLon = Utilities.generateCoordinates(lat, lon);
@@ -52,11 +52,11 @@ public class BRecord {
         altitudeGps = Integer.valueOf(rawRecord.substring(ALTITUDE_PRESS_END_INDEX, ALTITUDE_GPS_END_INDEX));
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

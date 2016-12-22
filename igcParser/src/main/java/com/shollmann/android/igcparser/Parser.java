@@ -26,11 +26,12 @@ package com.shollmann.android.igcparser;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.util.Constants;
+import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
 import java.io.BufferedReader;
@@ -38,6 +39,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Parser {
+    private static int maxAltitude = -10000;
+    private static int minAltitude = 10000;
+    private static BRecord firstBRecord;
+    private static String departureTime;
+    private static String landingTime;
 
     public static IGCFile parse(Context context, Uri filePath) {
         IGCFile igcFile = new IGCFile();
@@ -47,22 +53,22 @@ public class Parser {
                     new InputStreamReader(context.getAssets().open("sample1.igc"), "UTF-8"));
 
             String line;
-            int maxAltitude = -10000;
-            int minAltitude = 10000;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("B")) {
                     BRecord bRecord = new BRecord(line);
+                    setFirstBRecord(bRecord);
+                    setMaxAltitude(bRecord);
+                    setMinAltitude(bRecord);
+                    setDepartureTime(bRecord);
+                    setLandingTime(bRecord);
+
                     igcFile.appendTrackPoint(bRecord);
-                    if (bRecord.getAltitude() > maxAltitude) {
-                        maxAltitude = bRecord.getAltitude();
-                    }
-                    if (bRecord.getAltitude() < minAltitude) {
-                        minAltitude = bRecord.getAltitude();
-                    }
                 }
             }
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
+            igcFile.setDepartureTime(departureTime);
+            igcFile.setLandingTime(landingTime);
 
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
@@ -77,7 +83,37 @@ public class Parser {
                 }
             }
         }
-        Log.e("Parser", igcFile.toString());
+        Logger.log(igcFile.toString());
         return igcFile;
+    }
+
+    private static void setLandingTime(BRecord bRecord) {
+        if (bRecord.getAltitude() <= firstBRecord.getAltitude()) {
+            landingTime = bRecord.getTime();
+        }
+    }
+
+    private static void setFirstBRecord(BRecord bRecord) {
+        if (firstBRecord == null) {
+            firstBRecord = bRecord;
+        }
+    }
+
+    private static void setMinAltitude(BRecord bRecord) {
+        if (bRecord.getAltitude() < minAltitude) {
+            minAltitude = bRecord.getAltitude();
+        }
+    }
+
+    private static void setMaxAltitude(BRecord bRecord) {
+        if (bRecord.getAltitude() > maxAltitude) {
+            maxAltitude = bRecord.getAltitude();
+        }
+    }
+
+    public static void setDepartureTime(BRecord bRecord) {
+        if (bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT) {
+            departureTime = bRecord.getTime();
+        }
     }
 }
