@@ -65,4 +65,10 @@ public class UtilitiesUnitTest {
         String time = Utilities.generateTime("020504");
         Assert.assertEquals("02:05:04", time);
     }
+
+    @Test
+    public void getFlightTime_isCorrect() throws Exception {
+        String time = Utilities.getFlightTime("13:15:30", "14:30:30");
+        Assert.assertEquals("1:15", time);
+    }
 }

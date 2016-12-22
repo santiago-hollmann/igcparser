@@ -80,10 +80,19 @@ public class Utilities {
         try {
             Date departureDate = sdf.parse(departureTime);
             Date landingDate = sdf.parse(landingTime);
-//            return Hours.between(landingDate, departureDate)
+
+            long diff = landingDate.getTime() - departureDate.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000);
+
+            return diffHours + ":" + diffMinutes;
         } catch (ParseException e) {
             Logger.log(e.getMessage());
         }
         return "EE:EE:EE";
+    }
+
+    public static String getTimeHHMM(String timeHHMMSS){
+        return timeHHMMSS.substring(0, timeHHMMSS.length() - 3);
     }
 }

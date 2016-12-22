@@ -34,7 +34,7 @@ public class IGCFile {
     private double distance;
     private int maxAltitude;
     private int minAltitude;
-    private String departureTime;
+    private String takeOffTime;
     private String landingTime;
 
     public IGCFile() {
@@ -54,7 +54,9 @@ public class IGCFile {
         return "IGCFile --- Track Points: "
                 + listTrackPoints.size() + " :: distance (in m): " + distance
                 + " :: maxAltitude: " + maxAltitude
-                + " :: minAltitude: " + minAltitude;
+                + " :: minAltitude: " + minAltitude
+                + " :: landingTime: " + landingTime
+                + " :: takeOffTime: " + takeOffTime;
     }
 
 
@@ -82,8 +84,12 @@ public class IGCFile {
         return this.minAltitude;
     }
 
-    public void setDepartureTime(String departureTime) {
-        this.departureTime = departureTime;
+    public void setTakeOffTime(String departureTime) {
+        this.takeOffTime = departureTime;
+    }
+
+    public String getTakeOffTime() {
+        return takeOffTime;
     }
 
     public void setLandingTime(String landingTime) {
@@ -95,6 +101,6 @@ public class IGCFile {
     }
 
     public String getFlightTime() {
-       return Utilities.getFlightTime(departureTime, landingTime);
+        return Utilities.getFlightTime(takeOffTime, landingTime);
     }
 }

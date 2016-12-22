@@ -25,5 +25,6 @@
 package com.shollmann.android.igcparser.util;
 
 public class Constants {
-    public static int MARKER_TAKE_OFF_HEIGHT = 10;
+    public static final String EMPTY_STRING = "";
+    public static final int MARKER_TAKE_OFF_HEIGHT = 10;
 }

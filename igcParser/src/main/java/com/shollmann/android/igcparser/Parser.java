@@ -26,6 +26,7 @@ package com.shollmann.android.igcparser;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
@@ -42,8 +43,8 @@ public class Parser {
     private static int maxAltitude = -10000;
     private static int minAltitude = 10000;
     private static BRecord firstBRecord;
-    private static String departureTime;
-    private static String landingTime;
+    private static String takeOffTime = Constants.EMPTY_STRING;
+    private static String landingTime = Constants.EMPTY_STRING;
 
     public static IGCFile parse(Context context, Uri filePath) {
         IGCFile igcFile = new IGCFile();
@@ -59,7 +60,7 @@ public class Parser {
                     setFirstBRecord(bRecord);
                     setMaxAltitude(bRecord);
                     setMinAltitude(bRecord);
-                    setDepartureTime(bRecord);
+                    setTakeOffTime(bRecord);
                     setLandingTime(bRecord);
 
                     igcFile.appendTrackPoint(bRecord);
@@ -67,7 +68,7 @@ public class Parser {
             }
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
-            igcFile.setDepartureTime(departureTime);
+            igcFile.setTakeOffTime(takeOffTime);
             igcFile.setLandingTime(landingTime);
 
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
@@ -111,9 +112,9 @@ public class Parser {
         }
     }
 
-    public static void setDepartureTime(BRecord bRecord) {
-        if (bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT) {
-            departureTime = bRecord.getTime();
+    public static void setTakeOffTime(BRecord bRecord) {
+        if (TextUtils.isEmpty(takeOffTime) && bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT) {
+            takeOffTime = bRecord.getTime();
         }
     }
 }

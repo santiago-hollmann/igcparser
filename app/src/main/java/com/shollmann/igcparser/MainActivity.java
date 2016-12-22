@@ -45,6 +45,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    public static final int MAP_DEFAULT_ZOOM = 12;
+    public static final int METERS_IN_ONE_KILOMETER = 1000;
+    public static final float MAP_TRACK_POLYLINE_WIDTH = 2.0f;
     private IGCFile igcFile;
     private MapView mapView;
     private GoogleMap googleMap;
@@ -52,21 +55,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView txtDistance;
     private TextView txtMaxAltitude;
     private TextView txtMinAltitude;
+    private TextView txtTakeOffTime;
+    private TextView txtLandingTime;
+    private TextView txtFlightTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mapView = (MapView) findViewById(R.id.main_map);
-        txtDistance = (TextView) findViewById(R.id.main_txt_distance);
-        txtMaxAltitude = (TextView) findViewById(R.id.main_txt_max_altitude);
-        txtMinAltitude = (TextView) findViewById(R.id.main_txt_start_altitude);
+        findViews();
 
         igcFile = Parser.parse(getBaseContext(), Uri.parse("http://google.com"));
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+    }
+
+    private void findViews() {
+        setContentView(R.layout.activity_main);
+        mapView = (MapView) findViewById(R.id.main_map);
+        txtDistance = (TextView) findViewById(R.id.main_txt_distance);
+        txtMaxAltitude = (TextView) findViewById(R.id.main_txt_max_altitude);
+        txtMinAltitude = (TextView) findViewById(R.id.main_txt_start_altitude);
+        txtTakeOffTime = (TextView) findViewById(R.id.main_txt_takeoff);
+        txtLandingTime = (TextView) findViewById(R.id.main_txt_landing);
+        txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
     }
 
     @Override
@@ -78,18 +91,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         displayTrack();
         displayFlightInformation();
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), 13));
-
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), MAP_DEFAULT_ZOOM));
     }
 
     private void displayFlightInformation() {
-        txtDistance.setText("Distance: " + String.valueOf((int) igcFile.getDistance() / 1000) + "km");
-        txtMaxAltitude.setText("Max Altitude: " + igcFile.getMaxAltitude() + "m");
-        txtMinAltitude.setText("Min Altitude: " + igcFile.getMinAltitude() + "m");
+        txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf((int) (igcFile.getDistance() / METERS_IN_ONE_KILOMETER))));
+        txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), igcFile.getMaxAltitude()));
+        txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), igcFile.getMinAltitude()));
+        txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
+        txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime())));
+        txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
     }
 
     private void displayTrack() {
-        PolylineOptions polyline = new PolylineOptions().width(1.5f).color(Color.BLUE);
+        PolylineOptions polyline = new PolylineOptions().width(MAP_TRACK_POLYLINE_WIDTH).color(Color.BLUE);
         latLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         polyline.addAll(latLngPoints);
         googleMap.addPolyline(polyline);

@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">IGCParser</string>
+    <string name="app_name">IGC File Viewer</string>
+    <string name="information_distance">Distance: %1$skm</string>
+    <string name="information_takeoff">Take Off: %1$s UTC</string>
+    <string name="information_landing">Landing: %1$s UTC</string>
+    <string name="information_duration">Duration: %1$s</string>
+    <string name="information_min_altitude">Min Altitude: %1$dm</string>
+    <string name="information_max_altitude">Max Altitude: %1$dm</string>
 </resources>
