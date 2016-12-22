@@ -29,6 +29,9 @@ import java.util.List;
 
 public class IGCFile {
     List<BRecord> listTrackPoints;
+    private double distance;
+    private int maxAltitude;
+    private int minAltitude;
 
     public IGCFile() {
         listTrackPoints = new ArrayList<>();
@@ -44,8 +47,34 @@ public class IGCFile {
 
     @Override
     public String toString() {
-        return "IGCFile --- Track Points: " + listTrackPoints.size();
+        return "IGCFile --- Track Points: "
+                + listTrackPoints.size() + " :: distance (in m): " + distance
+                + " :: maxAltitude: " + maxAltitude
+                + " :: minAltitude: " + minAltitude;
     }
 
 
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public void setMaxAltitude(int maxAltitude) {
+        this.maxAltitude = maxAltitude;
+    }
+
+    public int getMaxAltitude() {
+        return maxAltitude;
+    }
+
+    public void setMinAltitude(int minAltitude) {
+        this.minAltitude = minAltitude;
+    }
+
+    public int getMinAltitude() {
+        return this.minAltitude;
+    }
 }

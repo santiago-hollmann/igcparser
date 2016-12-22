@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,13 +49,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MapView mapView;
     private GoogleMap googleMap;
     private List<LatLng> latLngPoints;
+    private TextView txtDistance;
+    private TextView txtMaxAltitude;
+    private TextView txtMinAltitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        igcFile = Parser.parse(getBaseContext(), Uri.parse("http://google.com"));
         mapView = (MapView) findViewById(R.id.main_map);
+        txtDistance = (TextView) findViewById(R.id.main_txt_distance);
+        txtMaxAltitude = (TextView) findViewById(R.id.main_txt_max_altitude);
+        txtMinAltitude = (TextView) findViewById(R.id.main_txt_start_altitude);
+
+        igcFile = Parser.parse(getBaseContext(), Uri.parse("http://google.com"));
+
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -63,12 +72,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        displayTrack();
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setMapToolbarEnabled(true);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+        displayTrack();
+        displayFlightInformation();
         this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), 13));
 
+    }
+
+    private void displayFlightInformation() {
+        txtDistance.setText("Distance: " + String.valueOf((int) igcFile.getDistance() / 1000) + "km");
+        txtMaxAltitude.setText("Max Altitude: " + igcFile.getMaxAltitude() + "m");
+        txtMinAltitude.setText("Min Altitude: " + igcFile.getMinAltitude() + "m");
     }
 
     private void displayTrack() {

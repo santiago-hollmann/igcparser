@@ -11,11 +11,55 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.shollmann.igcparser.MainActivity">
 
+    <LinearLayout
+        android:id="@+id/main_information_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Flight Information"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/main_txt_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance (in meters): "
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/main_txt_max_altitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Max Height: "
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/main_txt_start_altitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Height: "
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/main_txt_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Duration (in hours): "
+            android:textSize="14sp" />
+    </LinearLayout>
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/main_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/main_information_layout"
         map:cameraZoom="13"
         map:liteMode="false"
         map:mapType="normal" />
+
 </RelativeLayout>

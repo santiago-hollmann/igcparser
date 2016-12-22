@@ -28,8 +28,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.util.Utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,11 +47,25 @@ public class Parser {
                     new InputStreamReader(context.getAssets().open("sample1.igc"), "UTF-8"));
 
             String line;
+            int maxAltitude = -10000;
+            int minAltitude = 10000;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("B")) {
-                    igcFile.appendTrackPoint(new BRecord(line));
+                    BRecord bRecord = new BRecord(line);
+                    igcFile.appendTrackPoint(bRecord);
+                    if (bRecord.getAltitude() > maxAltitude) {
+                        maxAltitude = bRecord.getAltitude();
+                    }
+                    if (bRecord.getAltitude() < minAltitude) {
+                        minAltitude = bRecord.getAltitude();
+                    }
                 }
             }
+            igcFile.setMaxAltitude(maxAltitude);
+            igcFile.setMinAltitude(minAltitude);
+
+            double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
+            igcFile.setDistance(distance);
         } catch (IOException e) {
             //log the exception
         } finally {

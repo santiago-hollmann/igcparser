@@ -99,4 +99,8 @@ public class BRecord {
     public void setLatLon(LatLon latLon) {
         this.latLon = latLon;
     }
+
+    public int getAltitude() {
+        return getAltitudeGps();
+    }
 }
