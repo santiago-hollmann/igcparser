@@ -51,7 +51,7 @@ public class Parser {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open("sample1.igc"), "UTF-8"));
+                    new InputStreamReader(context.getAssets().open("sample2.igc"), "UTF-8"));
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -89,7 +89,7 @@ public class Parser {
     }
 
     private static void setLandingTime(BRecord bRecord) {
-        if (bRecord.getAltitude() <= firstBRecord.getAltitude()) {
+        if ((bRecord.getAltitude() - Constants.MARKER_LANDING_HEIGHT) <= firstBRecord.getAltitude()) {
             landingTime = bRecord.getTime();
         }
     }

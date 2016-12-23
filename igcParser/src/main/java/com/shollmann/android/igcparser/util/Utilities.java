@@ -85,14 +85,14 @@ public class Utilities {
             long diffMinutes = diff / (60 * 1000) % 60;
             long diffHours = diff / (60 * 60 * 1000);
 
-            return diffHours + ":" + diffMinutes;
+            return String.format(Constants.FLIGHT_DURATION_FORMAT, diffHours, diffMinutes);
         } catch (ParseException e) {
             Logger.log(e.getMessage());
         }
-        return "EE:EE:EE";
+        return Constants.FLIGHT_DURATION_ERROR;
     }
 
-    public static String getTimeHHMM(String timeHHMMSS){
+    public static String getTimeHHMM(String timeHHMMSS) {
         return timeHHMMSS.substring(0, timeHHMMSS.length() - 3);
     }
 }
