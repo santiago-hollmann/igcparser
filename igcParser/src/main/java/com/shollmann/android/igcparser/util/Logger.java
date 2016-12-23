@@ -34,4 +34,10 @@ public class Logger {
             Log.d("IGCParser :: ", s);
         }
     }
+
+    public static void logError(String s) {
+        if (IS_ENABLED) {
+            Log.e("IGCParser :: ", s);
+        }
+    }
 }

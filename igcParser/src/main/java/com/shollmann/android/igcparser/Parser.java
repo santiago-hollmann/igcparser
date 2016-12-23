@@ -25,6 +25,7 @@
 package com.shollmann.android.igcparser;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.maps.android.SphericalUtil;
@@ -40,14 +41,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Parser {
-    private static int maxAltitude = -10000;
-    private static int minAltitude = 10000;
-    private static BRecord firstBRecord;
-    private static String takeOffTime = Constants.EMPTY_STRING;
-    private static String landingTime = Constants.EMPTY_STRING;
-
     public static IGCFile parse(Uri filePath) {
         IGCFile igcFile = new IGCFile();
+        int maxAltitude = -10000;
+        int minAltitude = 10000;
+        BRecord firstBRecord = null;
+        String takeOffTime = Constants.EMPTY_STRING;
+        String landingTime = Constants.EMPTY_STRING;
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
@@ -57,11 +57,12 @@ public class Parser {
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("B")) {
                     BRecord bRecord = new BRecord(line);
-                    setFirstBRecord(bRecord);
-                    setMaxAltitude(bRecord);
-                    setMinAltitude(bRecord);
-                    setTakeOffTime(bRecord);
-                    setLandingTime(bRecord);
+
+                    firstBRecord = setFirstBRecord(bRecord, firstBRecord);
+                    maxAltitude = setMaxAltitude(bRecord, maxAltitude);
+                    minAltitude = setMinAltitude(bRecord, minAltitude);
+                    takeOffTime = setTakeOffTime(firstBRecord, takeOffTime, bRecord);
+                    landingTime = setLandingTime(bRecord, landingTime, firstBRecord);
 
                     igcFile.appendTrackPoint(bRecord);
                 }
@@ -74,13 +75,13 @@ public class Parser {
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
         } catch (IOException e) {
-            //log the exception
+            Logger.logError(e.getMessage());
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    //log the exception
+                    Logger.logError(e.getMessage());
                 }
             }
         }
@@ -88,33 +89,40 @@ public class Parser {
         return igcFile;
     }
 
-    private static void setLandingTime(BRecord bRecord) {
-        if ((bRecord.getAltitude() - Constants.MARKER_LANDING_HEIGHT) <= firstBRecord.getAltitude()) {
-            landingTime = bRecord.getTime();
-        }
-    }
-
-    private static void setFirstBRecord(BRecord bRecord) {
-        if (firstBRecord == null) {
-            firstBRecord = bRecord;
-        }
-    }
-
-    private static void setMinAltitude(BRecord bRecord) {
-        if (bRecord.getAltitude() < minAltitude) {
-            minAltitude = bRecord.getAltitude();
-        }
-    }
-
-    private static void setMaxAltitude(BRecord bRecord) {
-        if (bRecord.getAltitude() > maxAltitude) {
-            maxAltitude = bRecord.getAltitude();
-        }
-    }
-
-    public static void setTakeOffTime(BRecord bRecord) {
+    @Nullable
+    private static String setTakeOffTime(BRecord firstBRecord, String takeOffTime, BRecord bRecord) {
         if (TextUtils.isEmpty(takeOffTime) && bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT) {
             takeOffTime = bRecord.getTime();
         }
+        return takeOffTime;
     }
+
+    private static String setLandingTime(BRecord bRecord, String landingTime, BRecord firstBRecord) {
+        if ((bRecord.getAltitude() - Constants.MARKER_LANDING_HEIGHT) <= firstBRecord.getAltitude()) {
+            landingTime = bRecord.getTime();
+        }
+        return landingTime;
+    }
+
+    private static BRecord setFirstBRecord(BRecord bRecord, BRecord firstBRecord) {
+        if (firstBRecord == null) {
+            firstBRecord = bRecord;
+        }
+        return firstBRecord;
+    }
+
+    private static int setMinAltitude(BRecord bRecord, int minAltitude) {
+        if (bRecord.getAltitude() < minAltitude) {
+            minAltitude = bRecord.getAltitude();
+        }
+        return minAltitude;
+    }
+
+    private static int setMaxAltitude(BRecord bRecord, int maxAltitude) {
+        if (bRecord.getAltitude() > maxAltitude) {
+            maxAltitude = bRecord.getAltitude();
+        }
+        return maxAltitude;
+    }
+
 }

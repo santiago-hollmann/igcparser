@@ -26,6 +26,7 @@ package com.shollmann.igcparser.ui;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -61,14 +62,13 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtTakeOffTime;
     private TextView txtLandingTime;
     private TextView txtFlightTime;
+    private String fileToLoadPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViews();
-        String fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
-
-        igcFile = Parser.parse(Uri.parse(fileToLoadPath));
+        fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -93,9 +93,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         this.googleMap.getUiSettings().setMapToolbarEnabled(true);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
 
-        displayTrack();
-        displayFlightInformation();
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), MAP_DEFAULT_ZOOM));
+        new ParseIGCFileAsynkTask().execute();
     }
 
     private void displayFlightInformation() {
@@ -131,4 +129,23 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         super.onPause();
         mapView.onPause();
     }
+
+    private class ParseIGCFileAsynkTask extends AsyncTask<Void, Void, Void> {
+        protected Void doInBackground(Void... something) {
+            igcFile = Parser.parse(Uri.parse(fileToLoadPath));
+            return null;
+        }
+
+        protected void onProgressUpdate(Void... something) {
+        }
+
+        protected void onPostExecute(Void result) {
+            displayTrack();
+            displayFlightInformation();
+            if (latLngPoints != null && !latLngPoints.isEmpty()) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), MAP_DEFAULT_ZOOM));
+            }
+        }
+    }
+
 }

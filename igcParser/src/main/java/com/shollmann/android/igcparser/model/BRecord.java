@@ -24,6 +24,7 @@
 
 package com.shollmann.android.igcparser.model;
 
+import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
 public class BRecord {
@@ -44,12 +45,16 @@ public class BRecord {
 
 
     public BRecord(String rawRecord) {
-        time = Utilities.generateTime(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
-        lat = rawRecord.substring(TIME_END_INDEX, LAT_END_INDEX);
-        lon = rawRecord.substring(LAT_END_INDEX, LON_END_INDEX);
-        latLon = Utilities.generateCoordinates(lat, lon);
-        altitudePress = Integer.valueOf(rawRecord.substring(FIX_VALIDITY_START_INDEX, ALTITUDE_PRESS_END_INDEX));
-        altitudeGps = Integer.valueOf(rawRecord.substring(ALTITUDE_PRESS_END_INDEX, ALTITUDE_GPS_END_INDEX));
+        try {
+            time = Utilities.generateTime(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
+            lat = rawRecord.substring(TIME_END_INDEX, LAT_END_INDEX);
+            lon = rawRecord.substring(LAT_END_INDEX, LON_END_INDEX);
+            latLon = Utilities.generateCoordinates(lat, lon);
+            altitudePress = Integer.valueOf(rawRecord.substring(FIX_VALIDITY_START_INDEX, ALTITUDE_PRESS_END_INDEX));
+            altitudeGps = Integer.valueOf(rawRecord.substring(ALTITUDE_PRESS_END_INDEX, ALTITUDE_GPS_END_INDEX));
+        } catch (Exception e) {
+            Logger.logError(e.getMessage());
+        }
     }
 
     public String getTime() {
