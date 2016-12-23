@@ -24,7 +24,6 @@
 
 package com.shollmann.android.igcparser;
 
-import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -36,6 +35,7 @@ import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -46,12 +46,12 @@ public class Parser {
     private static String takeOffTime = Constants.EMPTY_STRING;
     private static String landingTime = Constants.EMPTY_STRING;
 
-    public static IGCFile parse(Context context, Uri filePath) {
+    public static IGCFile parse(Uri filePath) {
         IGCFile igcFile = new IGCFile();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open("sample2.igc"), "UTF-8"));
+                    new InputStreamReader(new FileInputStream(filePath.toString()), "UTF-8"));
 
             String line;
             while ((line = reader.readLine()) != null) {

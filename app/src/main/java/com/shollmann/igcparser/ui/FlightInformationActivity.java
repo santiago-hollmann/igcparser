@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser;
+package com.shollmann.igcparser.ui;
 
 import android.graphics.Color;
 import android.net.Uri;
@@ -39,15 +39,18 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.shollmann.android.igcparser.Parser;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.utils.Constants;
 
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     public static final int MAP_DEFAULT_ZOOM = 12;
     public static final int METERS_IN_ONE_KILOMETER = 1000;
     public static final float MAP_TRACK_POLYLINE_WIDTH = 2.0f;
+
     private IGCFile igcFile;
     private MapView mapView;
     private GoogleMap googleMap;
@@ -63,8 +66,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViews();
+        String fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
 
-        igcFile = Parser.parse(getBaseContext(), Uri.parse("http://google.com"));
+        igcFile = Parser.parse(Uri.parse(fileToLoadPath));
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void findViews() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_flight_information);
         mapView = (MapView) findViewById(R.id.main_map);
         txtDistance = (TextView) findViewById(R.id.main_txt_distance);
         txtMaxAltitude = (TextView) findViewById(R.id.main_txt_max_altitude);
