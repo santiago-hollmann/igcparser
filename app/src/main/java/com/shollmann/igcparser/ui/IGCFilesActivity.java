@@ -24,9 +24,9 @@
 
 package com.shollmann.igcparser.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -46,7 +46,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class IGCFilesActivity extends Activity {
+public class IGCFilesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FilesAdapter adapter;
