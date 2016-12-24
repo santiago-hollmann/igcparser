@@ -22,22 +22,23 @@
  * SOFTWARE.
  */
 
-package com.shollmann.android.igcparser.util;
+package com.shollmann.igcparser.events;
 
-import android.util.Log;
+import java.io.File;
 
-public class Logger {
-    private static final boolean IS_ENABLED = true;
+public class FileClickEvent {
+    private File file;
 
-    public static void log(String s) {
-        if (IS_ENABLED) {
-            Log.d("IGCParser :: ", s);
-        }
+    public FileClickEvent(File file) {
+        this.file = file;
     }
 
-    public static void logError(String s) {
-        if (IS_ENABLED) {
-            Log.e("IGCParser :: ", s);
-        }
+    public File getFile() {
+        return file;
     }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
 }
