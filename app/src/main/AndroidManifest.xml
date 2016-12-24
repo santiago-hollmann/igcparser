@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shollmann.igcparser">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -10,18 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".ui.IGCFilesActivity"
-            android:theme="@style/AppTheme">
+        <activity android:name=".ui.IGCFilesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.FlightInformationActivity"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.FlightInformationActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

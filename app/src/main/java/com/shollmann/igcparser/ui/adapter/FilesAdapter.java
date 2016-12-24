@@ -39,6 +39,7 @@ import java.io.File;
 import java.util.List;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.ViewHolder> {
+
     private List<File> dataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,6 +52,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.ViewHolder> 
     }
 
     public FilesAdapter(List<File> dataset) {
+        this.dataset = dataset;
+    }
+
+    public void setDataset(List<File> dataset) {
         this.dataset = dataset;
     }
 

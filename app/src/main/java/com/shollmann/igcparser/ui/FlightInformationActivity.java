@@ -29,6 +29,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,17 +44,13 @@ import com.shollmann.android.igcparser.Parser;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
-import com.shollmann.igcparser.utils.Constants;
+import com.shollmann.igcparser.util.Constants;
 
 import java.util.List;
 
 
 public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback {
-
-    public static final int MAP_DEFAULT_ZOOM = 12;
-    public static final int METERS_IN_ONE_KILOMETER = 1000;
-    public static final float MAP_TRACK_POLYLINE_WIDTH = 2.0f;
-
+    private String fileToLoadPath;
     private IGCFile igcFile;
     private MapView mapView;
     private GoogleMap googleMap;
@@ -62,7 +61,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtTakeOffTime;
     private TextView txtLandingTime;
     private TextView txtFlightTime;
-    private String fileToLoadPath;
+    private LinearLayout layoutInformation;
+    private ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtTakeOffTime = (TextView) findViewById(R.id.main_txt_takeoff);
         txtLandingTime = (TextView) findViewById(R.id.main_txt_landing);
         txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
+        layoutInformation = (LinearLayout) findViewById(R.id.main_layout_information);
+        loading = (ProgressBar) findViewById(R.id.main_loading);
     }
 
     @Override
@@ -97,7 +99,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     }
 
     private void displayFlightInformation() {
-        txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf((int) (igcFile.getDistance() / METERS_IN_ONE_KILOMETER))));
+        txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER))));
         txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), igcFile.getMaxAltitude()));
         txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), igcFile.getMinAltitude()));
         txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
@@ -106,7 +108,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     }
 
     private void displayTrack() {
-        PolylineOptions polyline = new PolylineOptions().width(MAP_TRACK_POLYLINE_WIDTH).color(Color.BLUE);
+        PolylineOptions polyline = new PolylineOptions().width(Constants.Map.MAP_TRACK_POLYLINE_WIDTH).color(Color.BLUE);
         latLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         polyline.addAll(latLngPoints);
         googleMap.addPolyline(polyline);
@@ -143,8 +145,11 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
             displayTrack();
             displayFlightInformation();
             if (latLngPoints != null && !latLngPoints.isEmpty()) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), MAP_DEFAULT_ZOOM));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), Constants.Map.MAP_DEFAULT_ZOOM));
             }
+            loading.setVisibility(View.GONE);
+            mapView.setVisibility(View.VISIBLE);
+            layoutInformation.setVisibility(View.VISIBLE);
         }
     }
 

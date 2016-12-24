@@ -25,15 +25,19 @@
 package com.shollmann.igcparser.ui;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
 
+import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
-import com.shollmann.igcparser.utils.Constants;
+import com.shollmann.igcparser.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,21 +55,29 @@ public class IGCFilesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FilesAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private List<File> listFiles = new ArrayList<>();
+    private ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_igc_files);
-        recyclerView = (RecyclerView) findViewById(R.id.files_recyclerview);
-        recyclerView.setHasFixedSize(true);
 
+        findViews();
+
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        final List<File> listFiles = getListFiles(new File("/storage/sdcard0/XCSoarData/logs"));
         adapter = new FilesAdapter(listFiles);
         recyclerView.setAdapter(adapter);
 
+        new findIGCFilesAsynkTask().execute(Constants.XCSOAR_lOG_PATH);
+
+    }
+
+    private void findViews() {
+        recyclerView = (RecyclerView) findViewById(R.id.files_recyclerview);
+        loading = (ProgressBar) findViewById(R.id.files_loading);
     }
 
     private List<File> getListFiles(File parentDir) {
@@ -76,7 +88,7 @@ public class IGCFilesActivity extends AppCompatActivity {
             File file = files.remove();
             if (file != null && file.isDirectory()) {
                 files.addAll(Arrays.asList(file.listFiles()));
-            } else if (file != null && (file.getName().endsWith(".igc") || file.getName().endsWith(".IGC"))) {
+            } else if (file != null && (file.getName().toLowerCase().endsWith(".igc"))) {
                 inFiles.add(file);
             }
         }
@@ -100,5 +112,27 @@ public class IGCFilesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FlightInformationActivity.class);
         intent.putExtra(Constants.FILE_TO_LOAD_PATH, event.getFile().getAbsoluteFile().toString());
         startActivity(intent);
+    }
+
+    private class findIGCFilesAsynkTask extends AsyncTask<String, Void, Boolean> {
+        protected Boolean doInBackground(String... path) {
+            listFiles = getListFiles(new File(path[0]));
+            return path[0].equalsIgnoreCase(Environment.getExternalStorageDirectory().getAbsolutePath());
+        }
+
+        protected void onProgressUpdate(Void... something) {
+        }
+
+        protected void onPostExecute(Boolean isEntireFolder) {
+            if (!listFiles.isEmpty()) {
+                loading.setVisibility(RecyclerView.GONE);
+                adapter.setDataset(listFiles);
+                adapter.notifyDataSetChanged();
+            }
+            if (!isEntireFolder) {
+                Logger.log("No igc files found on XCSoar folder. Searching in the entire SD Card");
+                new findIGCFilesAsynkTask().execute(Environment.getExternalStorageDirectory().getAbsolutePath());
+            }
+        }
     }
 }
