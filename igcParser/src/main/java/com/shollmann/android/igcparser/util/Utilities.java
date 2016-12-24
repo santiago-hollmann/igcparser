@@ -69,10 +69,15 @@ public class Utilities {
     }
 
     public static String generateTime(String igcTime) {
-        final String hoursString = igcTime.substring(0, 2);
-        final String minutesString = igcTime.substring(2, 4);
-        final String secondsString = igcTime.substring(4, 6);
-        return hoursString + ":" + minutesString + ":" + secondsString;
+        try {
+            final String hoursString = igcTime.substring(0, 2);
+            final String minutesString = igcTime.substring(2, 4);
+            final String secondsString = igcTime.substring(4, 6);
+            return hoursString + ":" + minutesString + ":" + secondsString;
+        } catch (IndexOutOfBoundsException e) {
+            Logger.logError(e.getMessage());
+        }
+        return Constants.EMPTY_STRING;
     }
 
     public static String getFlightTime(String departureTime, String landingTime) {
@@ -85,14 +90,19 @@ public class Utilities {
             long diffMinutes = diff / (60 * 1000) % 60;
             long diffHours = diff / (60 * 60 * 1000);
 
-            return diffHours + ":" + diffMinutes;
+            return String.format(Constants.FLIGHT_DURATION_FORMAT, diffHours, diffMinutes);
         } catch (ParseException e) {
-            Logger.log(e.getMessage());
+            Logger.logError(e.getMessage());
         }
-        return "EE:EE:EE";
+        return Constants.FLIGHT_DURATION_ERROR;
     }
 
-    public static String getTimeHHMM(String timeHHMMSS){
-        return timeHHMMSS.substring(0, timeHHMMSS.length() - 3);
+    public static String getTimeHHMM(String timeHHMMSS) {
+        try {
+            return timeHHMMSS.substring(0, timeHHMMSS.length() - 3);
+        } catch (IndexOutOfBoundsException e) {
+            Logger.logError(e.getMessage());
+        }
+        return Constants.EMPTY_STRING;
     }
 }

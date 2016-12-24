@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IGC File Viewer</string>
+    <string name="app_name">IGC Viewer</string>
     <string name="information_distance">Distance: %1$skm</string>
     <string name="information_takeoff">Take Off: %1$s UTC</string>
     <string name="information_landing">Landing: %1$s UTC</string>

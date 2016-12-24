@@ -26,5 +26,9 @@ package com.shollmann.android.igcparser.util;
 
 public class Constants {
     public static final String EMPTY_STRING = "";
+    public static final String FLIGHT_DURATION_FORMAT = "%1$dh %2$dm";
+    public static final String FLIGHT_DURATION_ERROR = "EE:EE";
+
     public static final int MARKER_TAKE_OFF_HEIGHT = 10;
+    public static final int MARKER_LANDING_HEIGHT = 30;
 }

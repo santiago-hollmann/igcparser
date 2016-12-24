@@ -22,22 +22,15 @@
  * SOFTWARE.
  */
 
-package com.shollmann.android.igcparser.util;
+package com.shollmann.igcparser.util;
 
-import android.util.Log;
+public class Constants {
+    public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
+    public static String XCSOAR_lOG_PATH = "/sdcard/XCSoarData/logs";
 
-public class Logger {
-    private static final boolean IS_ENABLED = true;
-
-    public static void log(String s) {
-        if (IS_ENABLED) {
-            Log.d("IGCParser :: ", s);
-        }
-    }
-
-    public static void logError(String s) {
-        if (IS_ENABLED) {
-            Log.e("IGCParser :: ", s);
-        }
+    public class Map {
+        public static final int MAP_DEFAULT_ZOOM = 12;
+        public static final int METERS_IN_ONE_KILOMETER = 1000;
+        public static final float MAP_TRACK_POLYLINE_WIDTH = 3.0f;
     }
 }
