@@ -32,5 +32,6 @@ public class Constants {
         public static final int MAP_DEFAULT_ZOOM = 12;
         public static final int METERS_IN_ONE_KILOMETER = 1000;
         public static final float MAP_TRACK_POLYLINE_WIDTH = 3.0f;
+        public static final double FIX_INITIAL_LATITUDE = 0.0195;
     }
 }

@@ -49,7 +49,7 @@ import com.shollmann.igcparser.util.Constants;
 import java.util.List;
 
 
-public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     private String fileToLoadPath;
     private IGCFile igcFile;
     private MapView mapView;
@@ -61,6 +61,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtTakeOffTime;
     private TextView txtLandingTime;
     private TextView txtFlightTime;
+    private View btnCloseInformation;
+    private View btnShowInformation;
     private CardView layoutInformation;
     private ProgressBar loading;
 
@@ -69,10 +71,19 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         findViews();
         fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
+        setClickListeners();
+        initMap(savedInstanceState);
 
+    }
+
+    private void initMap(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
 
+    private void setClickListeners() {
+        btnCloseInformation.setOnClickListener(this);
+        btnShowInformation.setOnClickListener(this);
     }
 
     private void findViews() {
@@ -86,14 +97,16 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
         layoutInformation = (CardView) findViewById(R.id.main_cardview_information);
         loading = (ProgressBar) findViewById(R.id.main_loading);
+        btnCloseInformation = findViewById(R.id.main_cardview_close);
+        btnShowInformation = findViewById(R.id.main_information_btn);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setMapToolbarEnabled(true);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+        this.googleMap.getUiSettings().setAllGesturesEnabled(true);
 
         new ParseIGCFileAsynkTask().execute();
     }
@@ -132,6 +145,20 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         mapView.onPause();
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.main_cardview_close:
+                layoutInformation.setVisibility(View.GONE);
+                btnShowInformation.setVisibility(View.VISIBLE);
+                break;
+            case R.id.main_information_btn:
+                btnShowInformation.setVisibility(View.GONE);
+                layoutInformation.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
     private class ParseIGCFileAsynkTask extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... something) {
             igcFile = Parser.parse(Uri.parse(fileToLoadPath));
@@ -145,7 +172,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
             displayTrack();
             displayFlightInformation();
             if (latLngPoints != null && !latLngPoints.isEmpty()) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), Constants.Map.MAP_DEFAULT_ZOOM));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, latLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
             }
             loading.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);

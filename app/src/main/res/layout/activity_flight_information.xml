@@ -8,7 +8,8 @@
     <RelativeLayout
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
 
         <com.google.android.gms.maps.MapView
@@ -27,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:src="@drawable/ico_information" />
+            android:src="@drawable/ico_information"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/main_loading"
