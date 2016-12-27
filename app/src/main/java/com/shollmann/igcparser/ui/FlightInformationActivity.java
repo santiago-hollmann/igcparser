@@ -29,8 +29,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -61,7 +61,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtTakeOffTime;
     private TextView txtLandingTime;
     private TextView txtFlightTime;
-    private LinearLayout layoutInformation;
+    private CardView layoutInformation;
     private ProgressBar loading;
 
     @Override
@@ -84,7 +84,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtTakeOffTime = (TextView) findViewById(R.id.main_txt_takeoff);
         txtLandingTime = (TextView) findViewById(R.id.main_txt_landing);
         txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
-        layoutInformation = (LinearLayout) findViewById(R.id.main_layout_information);
+        layoutInformation = (CardView) findViewById(R.id.main_cardview_information);
         loading = (ProgressBar) findViewById(R.id.main_loading);
     }
 

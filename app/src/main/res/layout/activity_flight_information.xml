@@ -8,87 +8,33 @@
     <RelativeLayout
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/main_layout_information"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/main_txt_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Duration: "
-                android:textSize="@dimen/textsize_information" />
-
-            <TextView
-                android:id="@+id/main_txt_distance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Distance (in meters): "
-                android:textSize="@dimen/textsize_information" />
-
-            <TextView
-                android:id="@+id/main_txt_max_altitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Max Height: "
-                android:textSize="@dimen/textsize_information" />
-
-            <TextView
-                android:id="@+id/main_txt_start_altitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Start Height: "
-                android:textSize="@dimen/textsize_information" />
-
-            <TextView
-                android:id="@+id/main_txt_gained_altitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Gained Height: "
-                android:textSize="@dimen/textsize_information"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/main_txt_takeoff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Take off (UTC): "
-                android:textSize="@dimen/textsize_information" />
-
-            <TextView
-                android:id="@+id/main_txt_landing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Landing (UTC): "
-                android:textSize="@dimen/textsize_information" />
-
-        </LinearLayout>
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/main_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/main_layout_information"
             android:visibility="gone"
             map:cameraZoom="13"
             map:liteMode="false"
             map:mapType="normal" />
+
+        <include layout="@layout/layout_text_flight_information" />
+
+        <ImageView
+            android:id="@+id/main_information_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ico_information" />
 
         <ProgressBar
             android:id="@+id/main_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 </ScrollView>
