@@ -100,8 +100,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
 
     private void displayFlightInformation() {
         txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER))));
-        txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), igcFile.getMaxAltitude()));
-        txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), igcFile.getMinAltitude()));
+        txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale)));
+        txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale)));
         txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
         txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime())));
         txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
