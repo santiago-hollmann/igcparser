@@ -1,6 +1,6 @@
 # IGC Parser
 
-<img src="https://k61.kn3.net/A/9/9/7/1/D/CBF.png" height="35%" width="35%"">
+<img src="http://i.imgur.com/FJcSf4q.png" height="35%" width="35%"">
 
 This is an open source project that includes so far:
 - An Android library to parse IGC files.
