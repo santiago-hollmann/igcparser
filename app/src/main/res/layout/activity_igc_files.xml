@@ -32,11 +32,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ProgressBar
-        android:id="@+id/files_loading"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/files_layout_loading"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <ProgressBar
+            android:id="@+id/files_loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_medium_horizontal_margin" />
+
+        <TextView
+            android:id="@+id/files_loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/searching_for_igc_files_on_xcsoar_s_logs_folder"
+            android:textSize="@dimen/textsize_information" />
+    </LinearLayout>
 
 </RelativeLayout>

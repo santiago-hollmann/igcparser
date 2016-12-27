@@ -31,7 +31,10 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.igcparser.R;
@@ -52,11 +55,13 @@ import java.util.Queue;
 
 public class IGCFilesActivity extends AppCompatActivity {
 
+    private LinearLayout layoutLoading;
     private RecyclerView recyclerView;
+    private TextView txtLoading;
+    private ProgressBar progress;
     private FilesAdapter adapter;
     private LinearLayoutManager layoutManager;
     private List<File> listFiles = new ArrayList<>();
-    private ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,20 +69,25 @@ public class IGCFilesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_igc_files);
 
         findViews();
+        setupFilesList();
 
+        new findIGCFilesAsynkTask().execute(Constants.XCSOAR_LOG_PATH);
+
+    }
+
+    private void setupFilesList() {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new FilesAdapter(listFiles);
         recyclerView.setAdapter(adapter);
-
-        new findIGCFilesAsynkTask().execute(Constants.XCSOAR_lOG_PATH);
-
     }
 
     private void findViews() {
         recyclerView = (RecyclerView) findViewById(R.id.files_recyclerview);
-        loading = (ProgressBar) findViewById(R.id.files_loading);
+        layoutLoading = (LinearLayout) findViewById(R.id.files_layout_loading);
+        txtLoading = (TextView) findViewById(R.id.files_loading_text);
+        progress = (ProgressBar) findViewById(R.id.files_loading_progress);
     }
 
     private List<File> getListFiles(File parentDir) {
@@ -125,13 +135,18 @@ public class IGCFilesActivity extends AppCompatActivity {
 
         protected void onPostExecute(Boolean isEntireFolder) {
             if (!listFiles.isEmpty()) {
-                loading.setVisibility(RecyclerView.GONE);
+                layoutLoading.setVisibility(RecyclerView.GONE);
                 adapter.setDataset(listFiles);
                 adapter.notifyDataSetChanged();
-            }
-            if (!isEntireFolder) {
-                Logger.log("No igc files found on XCSoar folder. Searching in the entire SD Card");
-                new findIGCFilesAsynkTask().execute(Environment.getExternalStorageDirectory().getAbsolutePath());
+            } else {
+                if (!isEntireFolder) {
+                    Logger.log("No IGC files found on XCSoar folder. Searching on other folders");
+                    txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
+                    new findIGCFilesAsynkTask().execute(Environment.getExternalStorageDirectory().getAbsolutePath());
+                } else {
+                    progress.setVisibility(View.GONE);
+                    txtLoading.setText(getString(R.string.no_files_found_with_explanation));
+                }
             }
         }
     }
