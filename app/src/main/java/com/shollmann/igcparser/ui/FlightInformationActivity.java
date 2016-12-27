@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtFlightTime;
     private View btnCloseInformation;
     private View btnShowInformation;
-    private CardView layoutInformation;
+    private CardView cardviewInformation;
     private ProgressBar loading;
 
     @Override
@@ -95,7 +96,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtTakeOffTime = (TextView) findViewById(R.id.main_txt_takeoff);
         txtLandingTime = (TextView) findViewById(R.id.main_txt_landing);
         txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
-        layoutInformation = (CardView) findViewById(R.id.main_cardview_information);
+        cardviewInformation = (CardView) findViewById(R.id.main_cardview_information);
         loading = (ProgressBar) findViewById(R.id.main_loading);
         btnCloseInformation = findViewById(R.id.main_cardview_close);
         btnShowInformation = findViewById(R.id.main_information_btn);
@@ -149,12 +150,17 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_cardview_close:
-                layoutInformation.setVisibility(View.GONE);
+                cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_dae_out));
+                cardviewInformation.setVisibility(View.GONE);
                 btnShowInformation.setVisibility(View.VISIBLE);
+                btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_enter));
                 break;
             case R.id.main_information_btn:
+                btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_leave));
                 btnShowInformation.setVisibility(View.GONE);
-                layoutInformation.setVisibility(View.VISIBLE);
+                cardviewInformation.setVisibility(View.VISIBLE);
+                cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
+
                 break;
         }
     }
@@ -176,7 +182,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
             }
             loading.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);
-            layoutInformation.setVisibility(View.VISIBLE);
+            cardviewInformation.setVisibility(View.VISIBLE);
         }
     }
 
