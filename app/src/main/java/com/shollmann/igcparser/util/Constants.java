@@ -26,7 +26,7 @@ package com.shollmann.igcparser.util;
 
 public class Constants {
     public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
-    public static String XCSOAR_lOG_PATH = "/sdcard/XCSoarData/logs";
+    public static String XCSOAR_LOG_PATH = "/sdcard/XCSoarData/logs";
 
     public class Map {
         public static final int MAP_DEFAULT_ZOOM = 12;
