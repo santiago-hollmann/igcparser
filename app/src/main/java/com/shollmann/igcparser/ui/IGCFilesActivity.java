@@ -93,15 +93,20 @@ public class IGCFilesActivity extends AppCompatActivity {
     private List<File> getListFiles(File parentDir) {
         List<File> inFiles = new ArrayList<>();
         Queue<File> files = new LinkedList<>();
-        files.addAll(Arrays.asList(parentDir.listFiles()));
-        while (!files.isEmpty()) {
-            File file = files.remove();
-            if (file != null && file.isDirectory()) {
-                files.addAll(Arrays.asList(file.listFiles()));
-            } else if (file != null && (file.getName().toLowerCase().endsWith(".igc"))) {
-                inFiles.add(file);
+        try {
+            files.addAll(Arrays.asList(parentDir.listFiles()));
+            while (!files.isEmpty()) {
+                File file = files.remove();
+                if (file != null && file.isDirectory()) {
+                    files.addAll(Arrays.asList(file.listFiles()));
+                } else if (file != null && (file.getName().toLowerCase().endsWith(".igc"))) {
+                    inFiles.add(file);
+                }
             }
+        } catch (Throwable t) {
+            Logger.logError("Couldn't open files");
         }
+
         return inFiles;
     }
 

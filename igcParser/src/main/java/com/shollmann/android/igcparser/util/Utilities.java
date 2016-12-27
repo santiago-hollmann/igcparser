@@ -28,13 +28,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.LatLon;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Utilities {
+    private static DecimalFormat decimalFormatter = null;
+    private static DecimalFormatSymbols symbols = null;
+
     public static LatLon generateCoordinates(String lat, String lon) {
         double latDegrees = Double.valueOf(lat.substring(0, 2));
         String latMinutes = lat.substring(2, 4);
@@ -104,5 +110,14 @@ public class Utilities {
             Logger.logError(e.getMessage());
         }
         return Constants.EMPTY_STRING;
+    }
+
+    public static String getFormattedNumber(int number, Locale locale) {
+        if (decimalFormatter == null) {
+            symbols = DecimalFormatSymbols.getInstance(locale);
+            decimalFormatter = new DecimalFormat();
+            decimalFormatter.setDecimalFormatSymbols(symbols);
+        }
+        return decimalFormatter.format(number);
     }
 }
