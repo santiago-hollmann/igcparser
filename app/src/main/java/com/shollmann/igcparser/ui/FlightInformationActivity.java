@@ -29,8 +29,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ import com.shollmann.igcparser.util.Constants;
 import java.util.List;
 
 
-public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     private String fileToLoadPath;
     private IGCFile igcFile;
     private MapView mapView;
@@ -61,7 +62,9 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtTakeOffTime;
     private TextView txtLandingTime;
     private TextView txtFlightTime;
-    private LinearLayout layoutInformation;
+    private View btnCloseInformation;
+    private View btnShowInformation;
+    private CardView cardviewInformation;
     private ProgressBar loading;
 
     @Override
@@ -69,10 +72,19 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         findViews();
         fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
+        setClickListeners();
+        initMap(savedInstanceState);
 
+    }
+
+    private void initMap(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
 
+    private void setClickListeners() {
+        btnCloseInformation.setOnClickListener(this);
+        btnShowInformation.setOnClickListener(this);
     }
 
     private void findViews() {
@@ -84,24 +96,26 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtTakeOffTime = (TextView) findViewById(R.id.main_txt_takeoff);
         txtLandingTime = (TextView) findViewById(R.id.main_txt_landing);
         txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
-        layoutInformation = (LinearLayout) findViewById(R.id.main_layout_information);
+        cardviewInformation = (CardView) findViewById(R.id.main_cardview_information);
         loading = (ProgressBar) findViewById(R.id.main_loading);
+        btnCloseInformation = findViewById(R.id.main_cardview_close);
+        btnShowInformation = findViewById(R.id.main_information_btn);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setMapToolbarEnabled(true);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+        this.googleMap.getUiSettings().setAllGesturesEnabled(true);
 
         new ParseIGCFileAsynkTask().execute();
     }
 
     private void displayFlightInformation() {
         txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER))));
-        txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), igcFile.getMaxAltitude()));
-        txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), igcFile.getMinAltitude()));
+        txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale)));
+        txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale)));
         txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
         txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime())));
         txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
@@ -132,6 +146,25 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         mapView.onPause();
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.main_cardview_close:
+                cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_dae_out));
+                cardviewInformation.setVisibility(View.GONE);
+                btnShowInformation.setVisibility(View.VISIBLE);
+                btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_enter));
+                break;
+            case R.id.main_information_btn:
+                btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_leave));
+                btnShowInformation.setVisibility(View.GONE);
+                cardviewInformation.setVisibility(View.VISIBLE);
+                cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
+
+                break;
+        }
+    }
+
     private class ParseIGCFileAsynkTask extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... something) {
             igcFile = Parser.parse(Uri.parse(fileToLoadPath));
@@ -145,11 +178,11 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
             displayTrack();
             displayFlightInformation();
             if (latLngPoints != null && !latLngPoints.isEmpty()) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngPoints.get(0), Constants.Map.MAP_DEFAULT_ZOOM));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, latLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
             }
             loading.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);
-            layoutInformation.setVisibility(View.VISIBLE);
+            cardviewInformation.setVisibility(View.VISIBLE);
         }
     }
 
