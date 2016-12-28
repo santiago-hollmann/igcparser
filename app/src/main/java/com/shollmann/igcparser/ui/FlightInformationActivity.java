@@ -120,7 +120,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         this.googleMap = googleMap;
         this.googleMap.getUiSettings().setMapToolbarEnabled(true);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
-        this.googleMap.getUiSettings().setAllGesturesEnabled(true);
+        this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
+        this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
 
         new ParseIGCFileAsynkTask().execute();
     }
