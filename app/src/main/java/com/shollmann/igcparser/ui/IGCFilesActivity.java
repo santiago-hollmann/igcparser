@@ -66,11 +66,11 @@ public class IGCFilesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_igc_files);
-
         findViews();
+        
         setupFilesList();
-
         new findIGCFilesAsynkTask().execute(Constants.XCSOAR_LOG_PATH);
 
     }
