@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/show_information_margin_top"
-            android:src="@drawable/ico_information"
+            android:src="@drawable/ic_information"
             android:visibility="gone" />
 
         <ProgressBar
