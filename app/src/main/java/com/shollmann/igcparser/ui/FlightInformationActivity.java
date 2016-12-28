@@ -24,6 +24,7 @@
 
 package com.shollmann.igcparser.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -71,10 +72,22 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViews();
-        fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
+        handleIntent();
         setClickListeners();
         initMap(savedInstanceState);
+    }
 
+    private void handleIntent() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
+        }
+
+        String action = intent.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {
+            Uri uri = intent.getData();
+            fileToLoadPath = uri.getPath();
+        }
     }
 
     private void initMap(Bundle savedInstanceState) {

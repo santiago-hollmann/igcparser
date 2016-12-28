@@ -1,4 +1,4 @@
-<img src="http://i.imgur.com/vxBapLT.png" height="25%" width="25%"">
+<img src="http://i.imgur.com/K8P2El4.png" height="25%" width="25%"">
 #IGC Parser
 This is an open source project that includes so far:
 - An Android library to parse IGC files.
