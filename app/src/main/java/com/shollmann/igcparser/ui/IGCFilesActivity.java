@@ -24,7 +24,9 @@
 
 package com.shollmann.igcparser.ui;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,11 +68,23 @@ public class IGCFilesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_igc_files);
-
         findViews();
-        setupFilesList();
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (action.compareTo(Intent.ACTION_VIEW) == 0) {
+            String scheme = intent.getScheme();
+            if (scheme.compareTo(ContentResolver.SCHEME_FILE) == 0) {
+                Uri uri = intent.getData();
+                Intent flightInformationIntent = new Intent(this, FlightInformationActivity.class);
+                flightInformationIntent.putExtra(Constants.FILE_TO_LOAD_PATH, uri.getPath());
+                startActivity(flightInformationIntent);
+            }
+        }
+
+        setupFilesList();
         new findIGCFilesAsynkTask().execute(Constants.XCSOAR_LOG_PATH);
 
     }

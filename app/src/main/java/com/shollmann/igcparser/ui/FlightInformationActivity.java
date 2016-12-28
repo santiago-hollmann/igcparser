@@ -74,7 +74,6 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         fileToLoadPath = (String) getIntent().getExtras().get(Constants.FILE_TO_LOAD_PATH);
         setClickListeners();
         initMap(savedInstanceState);
-
     }
 
     private void initMap(Bundle savedInstanceState) {
