@@ -55,21 +55,21 @@ public class Parser {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("B")) {
+                if (isBRecord(line)) {
                     BRecord bRecord = new BRecord(line);
 
                     firstBRecord = setFirstBRecord(bRecord, firstBRecord);
                     maxAltitude = setMaxAltitude(bRecord, maxAltitude);
                     minAltitude = setMinAltitude(bRecord, minAltitude);
                     takeOffTime = setTakeOffTime(firstBRecord, takeOffTime, bRecord);
-                    landingTime = setLandingTime(bRecord, landingTime, firstBRecord);
+                    landingTime = bRecord.getTime();
 
                     igcFile.appendTrackPoint(bRecord);
                 }
             }
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
-            igcFile.setTakeOffTime(takeOffTime);
+            igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) ? firstBRecord.getTime() : takeOffTime);
             igcFile.setLandingTime(landingTime);
 
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
@@ -89,19 +89,16 @@ public class Parser {
         return igcFile;
     }
 
+    private static boolean isBRecord(String line) {
+        return line.startsWith("B");
+    }
+
     @Nullable
     private static String setTakeOffTime(BRecord firstBRecord, String takeOffTime, BRecord bRecord) {
-        if (TextUtils.isEmpty(takeOffTime) && bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT) {
+        if (TextUtils.isEmpty(takeOffTime) && (bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT)) {
             takeOffTime = bRecord.getTime();
         }
         return takeOffTime;
-    }
-
-    private static String setLandingTime(BRecord bRecord, String landingTime, BRecord firstBRecord) {
-        if ((bRecord.getAltitude() - Constants.MARKER_LANDING_HEIGHT) <= firstBRecord.getAltitude()) {
-            landingTime = bRecord.getTime();
-        }
-        return landingTime;
     }
 
     private static BRecord setFirstBRecord(BRecord bRecord, BRecord firstBRecord) {
