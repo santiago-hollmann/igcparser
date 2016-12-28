@@ -69,7 +69,7 @@ public class Parser {
             }
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
-            igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) ? firstBRecord.getTime() : takeOffTime);
+            igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);
             igcFile.setLandingTime(landingTime);
 
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
