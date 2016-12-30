@@ -31,14 +31,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -75,8 +73,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtFlightTime;
     private View btnCloseInformation;
     private View btnShowInformation;
-    private FloatingActionButton btnPlay;
-    private Button btnSpeedUp;
+    private View btnPlay;
+    private View btnSpeedUp;
     private CardView cardviewInformation;
     private ProgressBar loading;
     private int duration;
@@ -127,8 +125,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         loading = (ProgressBar) findViewById(R.id.main_loading);
         btnCloseInformation = findViewById(R.id.main_cardview_close);
         btnShowInformation = findViewById(R.id.main_information_btn);
-        btnPlay = (FloatingActionButton) findViewById(R.id.main_btn_play);
-        btnSpeedUp = (Button) findViewById(R.id.main_btn_speed_up);
+        btnPlay = findViewById(R.id.main_btn_play);
+        btnSpeedUp = findViewById(R.id.main_btn_speed_up);
     }
 
     @Override

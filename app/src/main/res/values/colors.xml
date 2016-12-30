@@ -3,4 +3,6 @@
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#0097A7</color>
     <color name="colorAccent">#CDDC39</color>
+    <color name="replay_button">#FFFFFF</color>
+    <color name="replay_button_selected">#E7E6E5</color>
 </resources>
