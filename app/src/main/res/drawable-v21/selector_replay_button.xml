@@ -23,13 +23,7 @@
   ~ SOFTWARE.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:shape="rectangle">-->
-        <!--<stroke-->
-            <!--android:width="@dimen/one_dp"-->
-            <!--android:color="@color/material_app_background" />-->
-        <!--<solid android:color="@color/white" />-->
-        <!--<corners android:radius="@dimen/small_padding" />-->
-    <!--</shape>-->
-</selector>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/replay_button_selected">
+    <item android:drawable="@drawable/shape_replay_button" />
+</ripple>

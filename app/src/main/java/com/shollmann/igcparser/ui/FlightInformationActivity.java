@@ -251,6 +251,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
 
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(listLatLngPoints.get(0), googleMap.getCameraPosition().zoom));
         animateMarker(marker, true);
+        btnSpeedUp.setVisibility(View.VISIBLE);
     }
 
 
@@ -276,8 +277,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 }
                 i++;
 
-
-                if (t < 1.0) {
+                if (t < 1.0 && i < listLatLngPoints.size()) {
                     handler.postDelayed(this, replaySpeed);
                 } else {
                     if (hideMarker) {
@@ -285,6 +285,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                     } else {
                         marker.setVisible(true);
                     }
+                    btnSpeedUp.setVisibility(View.GONE);
+                    replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
                 }
             }
         });
