@@ -33,5 +33,8 @@ public class Constants {
         public static final int METERS_IN_ONE_KILOMETER = 1000;
         public static final float MAP_TRACK_POLYLINE_WIDTH = 3.0f;
         public static final double FIX_INITIAL_LATITUDE = 0.0195;
+        public static final int DEFAULT_REPLAY_SPEED = 76;
+        public static final int MAX_REPLAY_SPEED = 2;
+        public static final double REPLAY_SPEED_INCREASER = 1.5;
     }
 }
