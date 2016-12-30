@@ -29,10 +29,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,8 +45,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.Parser;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Utilities;
@@ -52,11 +61,15 @@ import java.util.List;
 
 
 public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+    private boolean isFinishReplay = true;
+    private int duration;
+    private int replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
     private String fileToLoadPath;
     private IGCFile igcFile;
+    private List<LatLng> listLatLngPoints;
     private MapView mapView;
     private GoogleMap googleMap;
-    private List<LatLng> latLngPoints;
+    private Marker markerGlider;
     private TextView txtDistance;
     private TextView txtMaxAltitude;
     private TextView txtMinAltitude;
@@ -65,6 +78,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtFlightTime;
     private View btnCloseInformation;
     private View btnShowInformation;
+    private ImageView btnPlay;
+    private ImageView btnFastForward;
     private CardView cardviewInformation;
     private ProgressBar loading;
 
@@ -113,6 +128,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         loading = (ProgressBar) findViewById(R.id.main_loading);
         btnCloseInformation = findViewById(R.id.main_cardview_close);
         btnShowInformation = findViewById(R.id.main_information_btn);
+        btnPlay = (ImageView) findViewById(R.id.main_btn_play);
+        btnFastForward = (ImageView) findViewById(R.id.main_btn_speed_up);
     }
 
     @Override
@@ -127,7 +144,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     }
 
     private void displayFlightInformation() {
-        txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER))));
+        txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf(Utilities.getFormattedNumber((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER), getResources().getConfiguration().locale))));
         txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale)));
         txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale)));
         txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
@@ -137,8 +154,8 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
 
     private void displayTrack() {
         PolylineOptions polyline = new PolylineOptions().width(Constants.Map.MAP_TRACK_POLYLINE_WIDTH).color(Color.BLUE);
-        latLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
-        polyline.addAll(latLngPoints);
+        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
+        polyline.addAll(listLatLngPoints);
         googleMap.addPolyline(polyline);
     }
 
@@ -179,7 +196,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
     }
 
-    private class ParseIGCFileAsynkTask extends AsyncTask<Void, Void, Void> {
+    private class ParseIGCFileAsynkTask extends AsyncTask<Void, Void, Void> implements View.OnClickListener {
         protected Void doInBackground(Void... something) {
             igcFile = Parser.parse(Uri.parse(fileToLoadPath));
             return null;
@@ -189,15 +206,112 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
 
         protected void onPostExecute(Void result) {
+            handleIGCFileLoaded();
+        }
+
+        private void handleIGCFileLoaded() {
             displayTrack();
             displayFlightInformation();
-            if (latLngPoints != null && !latLngPoints.isEmpty()) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, latLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
+            if (listLatLngPoints != null && !listLatLngPoints.isEmpty()) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listLatLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, listLatLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
+                markerGlider = googleMap.addMarker(new MarkerOptions()
+                        .position(listLatLngPoints.get(0))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
+                );
+                setReplayButtons();
             }
-            loading.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);
             cardviewInformation.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.GONE);
+        }
+
+        private void setReplayButtons() {
+            btnPlay.setOnClickListener(this);
+            btnFastForward.setOnClickListener(this);
+
+            btnPlay.setImageResource(R.drawable.ic_play_arrow);
+            btnFastForward.setImageResource(R.drawable.ic_fast_forward);
+
+            btnPlay.setVisibility(View.VISIBLE);
+            btnFastForward.setVisibility(View.GONE);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.main_btn_play:
+                    startFlightReplay();
+                    break;
+                case R.id.main_btn_speed_up:
+                    speedUpReplay();
+                    break;
+            }
         }
     }
 
+    private void speedUpReplay() {
+        if (replaySpeed >= Constants.Map.MAX_REPLAY_SPEED) {
+            replaySpeed = (int) (replaySpeed / Constants.Map.REPLAY_SPEED_INCREASER);
+        }
+    }
+
+    public void startFlightReplay() {
+        if (listLatLngPoints == null || listLatLngPoints.isEmpty()) {
+            return;
+        }
+        isFinishReplay = !isFinishReplay;
+        if (!isFinishReplay) {
+            btnPlay.setImageResource(R.drawable.ic_stop);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerGlider.getPosition(), googleMap.getCameraPosition().zoom));
+            animateMarker();
+            btnFastForward.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private void animateMarker() {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        duration = 300000;
+
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            int i = 0;
+
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed / duration);
+                if (i < listLatLngPoints.size()) {
+                    Double heading = SphericalUtil.computeHeading(markerGlider.getPosition(), listLatLngPoints.get(i));
+                    markerGlider.setRotation(heading.floatValue());
+                    markerGlider.setPosition(listLatLngPoints.get(i));
+                }
+                i++;
+
+                if (t < 1.0 && i < listLatLngPoints.size() && !isFinishReplay) {
+                    handler.postDelayed(this, replaySpeed);
+                } else {
+                    finishReplay();
+                }
+            }
+        });
+    }
+
+    private void finishReplay() {
+        markerGlider.setPosition(listLatLngPoints.get(0));
+        markerGlider.setRotation(0);
+        btnFastForward.setVisibility(View.GONE);
+        replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
+        btnPlay.setImageResource(R.drawable.ic_play_arrow);
+        isFinishReplay = true;
+    }
+
+    @Override
+    protected void onStop() {
+        isFinishReplay = true;
+        super.onStop();
+    }
 }
