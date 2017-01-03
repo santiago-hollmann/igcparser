@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,8 @@
  * SOFTWARE.
  */
 
-package com.shollmann.android.igcparser.util;
+package com.shollmann.android.igcparser.model;
 
-public class Constants {
-    public static final String EMPTY_STRING = "";
-    public static final String FLIGHT_DURATION_FORMAT = "%1$dh %2$dm";
-    public static final String FLIGHT_DURATION_ERROR = "EE:EE";
-
-    public static final int MARKER_TAKE_OFF_HEIGHT = 10;
-
-    public class CRECORD {
-        public static final String TAKEOFF = "TAKEOFF";
-        public static final String START = "START";
-        public static final String TURN = "TURN";
-        public static final String FINISH = "FINISH";
-        public static final String LANDING = "FINISH";
-    }
+public enum CRecordType {
+    TAKEOFF, START, TURN, LANDING, FINISH, UNDEFINED
 }

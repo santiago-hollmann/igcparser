@@ -30,7 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IGCFile {
-    List<BRecord> listTrackPoints;
+    private List<ILatLonRecord> listTrackPoints;
+    private List<ILatLonRecord> listWaypointsPoints;
     private double distance;
     private int maxAltitude;
     private int minAltitude;
@@ -38,21 +39,32 @@ public class IGCFile {
     private String landingTime;
 
     public IGCFile() {
+        listWaypointsPoints = new ArrayList<>();
         listTrackPoints = new ArrayList<>();
     }
 
-    public void appendTrackPoint(BRecord bRecord) {
+    public void appendTrackPoint(BRecordI bRecord) {
         listTrackPoints.add(bRecord);
     }
 
-    public List<BRecord> getTrackPoints() {
+    public void appendWayPoint(CRecordWayPoint waypoint) {
+        listWaypointsPoints.add(waypoint);
+    }
+
+    public List<ILatLonRecord> getTrackPoints() {
         return listTrackPoints;
+    }
+
+    public List<ILatLonRecord> getWaypoints() {
+        return listWaypointsPoints;
     }
 
     @Override
     public String toString() {
         return "IGCFile --- Track Points: "
                 + listTrackPoints.size() + " :: distance (in m): " + distance
+                + " :: amountTrackPoints: " + listTrackPoints.size()
+                + " :: amountWayPoints: " + listWaypointsPoints.size()
                 + " :: maxAltitude: " + maxAltitude
                 + " :: minAltitude: " + minAltitude
                 + " :: landingTime: " + landingTime
@@ -103,4 +115,5 @@ public class IGCFile {
     public String getFlightTime() {
         return Utilities.getFlightTime(takeOffTime, landingTime);
     }
+
 }

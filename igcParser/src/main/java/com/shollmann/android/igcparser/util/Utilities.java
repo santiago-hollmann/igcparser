@@ -25,7 +25,7 @@
 package com.shollmann.android.igcparser.util;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.shollmann.android.igcparser.model.BRecord;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.model.LatLon;
 
 import java.text.DecimalFormat;
@@ -66,10 +66,14 @@ public class Utilities {
         return lat.charAt(lat.length() - 1) == c;
     }
 
-    public static List<LatLng> getLatLngPoints(List<BRecord> listBRecord) {
+    public static List<LatLng> getLatLngPoints(List<ILatLonRecord> listRecord) {
         ArrayList<LatLng> listLatLng = new ArrayList<>();
-        for (BRecord bRecord : listBRecord) {
-            listLatLng.add(new LatLng(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon()));
+        for (ILatLonRecord record : listRecord) {
+            final double lat = record.getLatLon().getLat();
+            final double lon = record.getLatLon().getLon();
+            if (lat != 0 && lon != 0) {
+                listLatLng.add(new LatLng(lat, lon));
+            }
         }
         return listLatLng;
     }

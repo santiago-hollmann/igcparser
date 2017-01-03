@@ -27,7 +27,7 @@ package com.shollmann.android.igcparser.model;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
-public class BRecord {
+public class BRecordI implements ILatLonRecord {
     private static final int TIME_START_INDEX = 1;
     private static final int TIME_END_INDEX = 7;
     private static final int LAT_END_INDEX = 15;
@@ -44,7 +44,7 @@ public class BRecord {
     private int altitudeGps;
 
 
-    public BRecord(String rawRecord) {
+    public BRecordI(String rawRecord) {
         try {
             time = Utilities.generateTime(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
             lat = rawRecord.substring(TIME_END_INDEX, LAT_END_INDEX);

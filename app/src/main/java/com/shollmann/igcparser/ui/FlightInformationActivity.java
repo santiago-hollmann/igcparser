@@ -159,6 +159,15 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         googleMap.addPolyline(polyline);
     }
 
+    private void displayWayPoints() {
+        if (!igcFile.getWaypoints().isEmpty()) {
+            PolylineOptions polyline = new PolylineOptions().width(Constants.Map.MAP_TRACK_POLYLINE_WIDTH).color(Color.RED);
+            listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
+            polyline.addAll(listLatLngPoints);
+            googleMap.addPolyline(polyline);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -210,8 +219,16 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
 
         private void handleIGCFileLoaded() {
+            displayWayPoints();
             displayTrack();
             displayFlightInformation();
+            displayReplayViews();
+            mapView.setVisibility(View.VISIBLE);
+            cardviewInformation.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.GONE);
+        }
+
+        private void displayReplayViews() {
             if (listLatLngPoints != null && !listLatLngPoints.isEmpty()) {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listLatLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, listLatLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
                 markerGlider = googleMap.addMarker(new MarkerOptions()
@@ -220,9 +237,6 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 );
                 setReplayButtons();
             }
-            mapView.setVisibility(View.VISIBLE);
-            cardviewInformation.setVisibility(View.VISIBLE);
-            loading.setVisibility(View.GONE);
         }
 
         private void setReplayButtons() {

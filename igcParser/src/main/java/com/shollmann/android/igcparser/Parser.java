@@ -29,7 +29,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.maps.android.SphericalUtil;
-import com.shollmann.android.igcparser.model.BRecord;
+import com.shollmann.android.igcparser.model.BRecordI;
+import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.Logger;
@@ -45,7 +46,8 @@ public class Parser {
         IGCFile igcFile = new IGCFile();
         int maxAltitude = -10000;
         int minAltitude = 10000;
-        BRecord firstBRecord = null;
+        boolean isFirstCRecord = true;
+        BRecordI firstBRecord = null;
         String takeOffTime = Constants.EMPTY_STRING;
         String landingTime = Constants.EMPTY_STRING;
         BufferedReader reader = null;
@@ -56,7 +58,7 @@ public class Parser {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (isBRecord(line)) {
-                    BRecord bRecord = new BRecord(line);
+                    BRecordI bRecord = new BRecordI(line);
 
                     firstBRecord = setFirstBRecord(bRecord, firstBRecord);
                     maxAltitude = setMaxAltitude(bRecord, maxAltitude);
@@ -65,8 +67,18 @@ public class Parser {
                     landingTime = bRecord.getTime();
 
                     igcFile.appendTrackPoint(bRecord);
+                } else {
+                    // C Records is always before the B Records
+                    if (isCRecord(line)) {
+                        if (!isFirstCRecord) {
+                            igcFile.appendWayPoint(new CRecordWayPoint(line));
+                        }
+                        isFirstCRecord = false;
+                    }
                 }
+
             }
+
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
             igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);
@@ -93,29 +105,33 @@ public class Parser {
         return line.startsWith("B");
     }
 
+    private static boolean isCRecord(String line) {
+        return line.startsWith("C");
+    }
+
     @Nullable
-    private static String setTakeOffTime(BRecord firstBRecord, String takeOffTime, BRecord bRecord) {
+    private static String setTakeOffTime(BRecordI firstBRecord, String takeOffTime, BRecordI bRecord) {
         if (TextUtils.isEmpty(takeOffTime) && (bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT)) {
             takeOffTime = bRecord.getTime();
         }
         return takeOffTime;
     }
 
-    private static BRecord setFirstBRecord(BRecord bRecord, BRecord firstBRecord) {
+    private static BRecordI setFirstBRecord(BRecordI bRecord, BRecordI firstBRecord) {
         if (firstBRecord == null) {
             firstBRecord = bRecord;
         }
         return firstBRecord;
     }
 
-    private static int setMinAltitude(BRecord bRecord, int minAltitude) {
+    private static int setMinAltitude(BRecordI bRecord, int minAltitude) {
         if (bRecord.getAltitude() < minAltitude) {
             minAltitude = bRecord.getAltitude();
         }
         return minAltitude;
     }
 
-    private static int setMaxAltitude(BRecord bRecord, int maxAltitude) {
+    private static int setMaxAltitude(BRecordI bRecord, int maxAltitude) {
         if (bRecord.getAltitude() > maxAltitude) {
             maxAltitude = bRecord.getAltitude();
         }
