@@ -42,6 +42,7 @@
                 android:id="@+id/main_btn_play"
                 android:layout_width="@dimen/replay_button_dimension"
                 android:layout_height="@dimen/replay_button_dimension"
+                android:layout_marginRight="@dimen/small_margin"
                 android:background="@drawable/selector_replay_button"
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_play_arrow" />
