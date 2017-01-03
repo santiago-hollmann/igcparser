@@ -167,12 +167,17 @@
 
     </LinearLayout>
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/main_cardview_close"
-        android:layout_width="@dimen/information_close_size"
-        android:layout_height="@dimen/information_close_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:layout_margin="@dimen/large_margin"
-        android:visibility="visible"
-        app:srcCompat="@drawable/ic_close" />
+        android:padding="@dimen/large_margin">
+
+        <ImageView
+            android:layout_width="@dimen/information_close_size"
+            android:layout_height="@dimen/information_close_size"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_close" />
+    </FrameLayout>
 </android.support.v7.widget.CardView>

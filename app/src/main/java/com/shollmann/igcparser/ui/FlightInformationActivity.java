@@ -52,7 +52,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.Parser;
+import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.util.Constants;
@@ -135,7 +137,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.getUiSettings().setMapToolbarEnabled(true);
+        this.googleMap.getUiSettings().setMapToolbarEnabled(false);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
@@ -165,6 +167,16 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
             listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
             polyline.addAll(listLatLngPoints);
             googleMap.addPolyline(polyline);
+        }
+
+        for (ILatLonRecord wayPoint : igcFile.getWaypoints()) {
+            if (wayPoint.getLatLon().getLat() != 0 && wayPoint.getLatLon().getLat() != 0) {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
+                        .draggable(false)
+                        .alpha(0.7f)
+                        .title(((CRecordWayPoint) wayPoint).getDescription()));
+            }
         }
     }
 
@@ -233,6 +245,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listLatLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, listLatLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
                 markerGlider = googleMap.addMarker(new MarkerOptions()
                         .position(listLatLngPoints.get(0))
+                        .zIndex(1.0f)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
                 );
                 setReplayButtons();
