@@ -27,7 +27,7 @@
     <!-- pressed state -->
     <item android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-            <stroke android:width="@dimen/one_dp" android:color="@color/replay_button_border" />
+            <stroke android:width="@dimen/half_dp" android:color="@color/replay_button_border" />
             <corners android:bottomLeftRadius="@dimen/extra_small_margin" android:bottomRightRadius="@dimen/extra_small_margin" android:topLeftRadius="@dimen/extra_small_margin" android:topRightRadius="@dimen/extra_small_margin" />
             <solid android:color="@color/replay_button_selected" />
             <padding android:bottom="@dimen/small_margin" android:left="@dimen/small_margin" android:right="@dimen/small_margin" android:top="@dimen/small_margin" />
@@ -37,7 +37,7 @@
     <!-- focused state -->
     <item android:state_focused="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-            <stroke android:width="@dimen/one_dp" android:color="@color/replay_button_border" />
+            <stroke android:width="@dimen/half_dp" android:color="@color/replay_button_border" />
             <corners android:bottomLeftRadius="@dimen/extra_small_margin" android:bottomRightRadius="@dimen/extra_small_margin" android:topLeftRadius="@dimen/extra_small_margin" android:topRightRadius="@dimen/extra_small_margin" />
             <solid android:color="@color/replay_button_selected" />
             <padding android:bottom="@dimen/small_margin" android:left="@dimen/small_margin" android:right="@dimen/small_margin" android:top="@dimen/small_margin" />
@@ -48,7 +48,7 @@
     <!-- normal state -->
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-            <stroke android:width="@dimen/one_dp" android:color="@color/replay_button_border" />
+            <stroke android:width="@dimen/half_dp" android:color="@color/replay_button_border" />
             <corners android:bottomLeftRadius="@dimen/extra_small_margin" android:bottomRightRadius="@dimen/extra_small_margin" android:topLeftRadius="@dimen/extra_small_margin" android:topRightRadius="@dimen/extra_small_margin" />
             <solid android:color="@color/replay_button" />
             <padding android:bottom="@dimen/small_margin" android:left="@dimen/small_margin" android:right="@dimen/small_margin" android:top="@dimen/small_margin" />
