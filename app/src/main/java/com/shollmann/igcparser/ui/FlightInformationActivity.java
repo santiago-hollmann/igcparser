@@ -174,7 +174,6 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
                         .draggable(false)
-                        .alpha(0.7f)
                         .title(((CRecordWayPoint) wayPoint).getDescription()));
             }
         }
