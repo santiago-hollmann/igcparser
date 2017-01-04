@@ -24,9 +24,12 @@
 
 package com.shollmann.igcparser.util;
 
-public class Constants {
+public class Constants extends com.shollmann.android.igcparser.util.Constants {
     public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
     public static String XCSOAR_LOG_PATH = "/sdcard/XCSoarData/logs";
+    public static String SAMSUNG_XCSOAR_LOG_PATH = "/sdcard/external_sd/XCSoarData/logs";
+    public static String STORAGE_XCSOAR_LOG_PATH = "/storage/emulated/0/XCSoarData/logs";
+    public static String STORAGE_LEGACY_XCSOAR_LOG_PATH = "/storage/emulated/legacy/XCSoarData/logs";
 
     public class Map {
         public static final int MAP_DEFAULT_ZOOM = 12;
