@@ -37,6 +37,9 @@ public class IGCFile {
     private int minAltitude;
     private String takeOffTime;
     private String landingTime;
+    private String pilotInCharge;
+    private String gliderId;
+    private String gliderType;
 
     public IGCFile() {
         listWaypointsPoints = new ArrayList<>();
@@ -116,4 +119,27 @@ public class IGCFile {
         return Utilities.getFlightTime(takeOffTime, landingTime);
     }
 
+    public String getGliderType() {
+        return gliderType;
+    }
+
+    public void setGliderType(String gliderType) {
+        this.gliderType = gliderType;
+    }
+
+    public String getGliderId() {
+        return gliderId;
+    }
+
+    public void setGliderId(String gliderId) {
+        this.gliderId = gliderId;
+    }
+
+    public String getPilotInCharge() {
+        return pilotInCharge;
+    }
+
+    public void setPilotInCharge(String pilotInCharge) {
+        this.pilotInCharge = pilotInCharge;
+    }
 }

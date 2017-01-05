@@ -33,11 +33,13 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -79,6 +81,10 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private TextView txtTakeOffTime;
     private TextView txtLandingTime;
     private TextView txtFlightTime;
+    private TextView txtPilot;
+    private TextView txtGlider;
+    private LinearLayout layoutPilot;
+    private LinearLayout layoutGlider;
     private View btnCloseInformation;
     private View btnShowInformation;
     private ImageView btnPlay;
@@ -127,6 +133,10 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtTakeOffTime = (TextView) findViewById(R.id.main_txt_takeoff);
         txtLandingTime = (TextView) findViewById(R.id.main_txt_landing);
         txtFlightTime = (TextView) findViewById(R.id.main_txt_duration);
+        txtGlider = (TextView) findViewById(R.id.main_txt_glider);
+        txtPilot = (TextView) findViewById(R.id.main_txt_pilot);
+        layoutGlider = (LinearLayout) findViewById(R.id.main_layout_glider);
+        layoutPilot = (LinearLayout) findViewById(R.id.main_layout_pilot);
         cardviewInformation = (CardView) findViewById(R.id.main_cardview_information);
         loading = (ProgressBar) findViewById(R.id.main_loading);
         btnCloseInformation = findViewById(R.id.main_cardview_close);
@@ -153,6 +163,36 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
         txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime())));
         txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
+        displayPilot();
+        displayGlider();
+    }
+
+    private void displayGlider() {
+        final String gliderType = igcFile.getGliderType();
+        final String gliderId = igcFile.getGliderId();
+        if (TextUtils.isEmpty(gliderId) && TextUtils.isEmpty(gliderType)) {
+            return;
+        }
+
+        layoutGlider.setVisibility(View.VISIBLE);
+        if (TextUtils.isEmpty(gliderType)) {
+            txtGlider.setText(String.format(getResources().getString(R.string.information_glider), gliderId));
+        } else {
+            if (!TextUtils.isEmpty(gliderId)) {
+                String gliderInformationPlaceholder = "%1$s (%2$s)";
+                txtGlider.setText(String.format(getResources().getString(R.string.information_glider), String.format(gliderInformationPlaceholder, gliderType, gliderId)));
+            } else {
+                txtGlider.setText(String.format(getResources().getString(R.string.information_glider), gliderType));
+            }
+        }
+
+    }
+
+    private void displayPilot() {
+        if (!TextUtils.isEmpty(igcFile.getPilotInCharge())) {
+            layoutPilot.setVisibility(View.VISIBLE);
+            txtPilot.setText(String.format(getResources().getString(R.string.information_pilot), igcFile.getPilotInCharge()));
+        }
     }
 
     private void displayTrack() {
@@ -277,6 +317,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                     break;
             }
         }
+
     }
 
     private void speedUpReplay() {

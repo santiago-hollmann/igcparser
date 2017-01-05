@@ -34,4 +34,6 @@
     <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\nSi tienes algunos muévelos al directorio logs de XCSoar o al directorio sdcard.</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Buscando archivos IGC en el directorio logs de XCSoar</string>
     <string name="searching_igc_all_sdcard">Buscando archivos IGC en otros directorios</string>
+    <string name="information_glider">Planeador: %1$s</string>
+    <string name="information_pilot">Piloto: %1$s</string>
 </resources>
