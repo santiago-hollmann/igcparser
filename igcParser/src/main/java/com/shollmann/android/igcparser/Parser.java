@@ -30,6 +30,7 @@ import android.text.TextUtils;
 
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
+import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.Logger;
@@ -45,6 +46,7 @@ public class Parser {
         IGCFile igcFile = new IGCFile();
         int maxAltitude = -10000;
         int minAltitude = 10000;
+        boolean isFirstCRecord = true;
         BRecord firstBRecord = null;
         String takeOffTime = Constants.EMPTY_STRING;
         String landingTime = Constants.EMPTY_STRING;
@@ -65,8 +67,18 @@ public class Parser {
                     landingTime = bRecord.getTime();
 
                     igcFile.appendTrackPoint(bRecord);
+                } else {
+                    // C Records is always before the B Records
+                    if (isCRecord(line)) {
+                        if (!isFirstCRecord) {
+                            igcFile.appendWayPoint(new CRecordWayPoint(line));
+                        }
+                        isFirstCRecord = false;
+                    }
                 }
+
             }
+
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
             igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);
@@ -91,6 +103,10 @@ public class Parser {
 
     private static boolean isBRecord(String line) {
         return line.startsWith("B");
+    }
+
+    private static boolean isCRecord(String line) {
+        return line.startsWith("C");
     }
 
     @Nullable

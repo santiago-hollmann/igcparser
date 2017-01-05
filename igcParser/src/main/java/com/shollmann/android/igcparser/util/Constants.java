@@ -30,5 +30,24 @@ public class Constants {
     public static final String FLIGHT_DURATION_ERROR = "EE:EE";
 
     public static final int MARKER_TAKE_OFF_HEIGHT = 10;
-    public static final int MARKER_LANDING_HEIGHT = 10;
+
+
+    public static class Path {
+        public static String XCSOARDATA = "/sdcard/XCSoarData/logs";
+        public static String SAMSUNG_XCSOARDATA = "/sdcard/external_sd/XCSoarData/logs";
+        public static String STORAGE_XCSOARDATA = "/storage/emulated/0/XCSoarData/logs";
+        public static String STORAGE_LEGACY_XCSOARDATA = "/storage/emulated/legacy/XCSoarData/logs";
+        public static String SDCARD = "/sdcard";
+        public static String SAMSUNG_SDCARD = "/sdcard/external_sd";
+        public static String STORAGE_SDCARD = "/storage/emulated/0";
+        public static String STORAGE_LEGACY_SDCARD = "/storage/emulated/legacy";
+    }
+
+    public class CRecord {
+        public static final String TAKEOFF = "TAKEOFF";
+        public static final String START = "START";
+        public static final String TURN = "TURN";
+        public static final String FINISH = "FINISH";
+        public static final String LANDING = "FINISH";
+    }
 }
