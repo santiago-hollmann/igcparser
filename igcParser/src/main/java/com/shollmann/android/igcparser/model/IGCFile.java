@@ -31,7 +31,7 @@ import java.util.List;
 
 public class IGCFile {
     private List<ILatLonRecord> listTrackPoints;
-    private List<ILatLonRecord> listWaypointsPoints;
+    private List<ILatLonRecord> listWayPoints;
     private double distance;
     private int maxAltitude;
     private int minAltitude;
@@ -40,9 +40,10 @@ public class IGCFile {
     private String pilotInCharge;
     private String gliderId;
     private String gliderType;
+    private String date;
 
     public IGCFile() {
-        listWaypointsPoints = new ArrayList<>();
+        listWayPoints = new ArrayList<>();
         listTrackPoints = new ArrayList<>();
     }
 
@@ -51,7 +52,7 @@ public class IGCFile {
     }
 
     public void appendWayPoint(CRecordWayPoint waypoint) {
-        listWaypointsPoints.add(waypoint);
+        listWayPoints.add(waypoint);
     }
 
     public List<ILatLonRecord> getTrackPoints() {
@@ -59,7 +60,7 @@ public class IGCFile {
     }
 
     public List<ILatLonRecord> getWaypoints() {
-        return listWaypointsPoints;
+        return listWayPoints;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class IGCFile {
         return "IGCFile --- Track Points: "
                 + listTrackPoints.size() + " :: distance (in m): " + distance
                 + " :: amountTrackPoints: " + listTrackPoints.size()
-                + " :: amountWayPoints: " + listWaypointsPoints.size()
+                + " :: amountWayPoints: " + listWayPoints.size()
                 + " :: maxAltitude: " + maxAltitude
                 + " :: minAltitude: " + minAltitude
                 + " :: landingTime: " + landingTime
@@ -141,5 +142,13 @@ public class IGCFile {
 
     public void setPilotInCharge(String pilotInCharge) {
         this.pilotInCharge = pilotInCharge;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

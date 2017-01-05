@@ -81,11 +81,14 @@ public class Parser {
 
                         if (isGliderIdRecord(line)) {
                             igcFile.setGliderId(getValueOfColonField(line));
-
                         }
 
                         if (isGliderTypeRecord(line)) {
                             igcFile.setGliderType(getValueOfColonField(line));
+                        }
+
+                        if (isDateRecord(line)) {
+                            igcFile.setDate(parseDate(line));
                         }
                     }
                 }
@@ -114,6 +117,19 @@ public class Parser {
         return igcFile;
     }
 
+    private static String parseDate(String line) {
+        StringBuilder sb = new StringBuilder();
+        line = line.toUpperCase().replace(Constants.GeneralRecord.DATE, Constants.EMPTY_STRING);
+        try {
+            sb.append(line.substring(0, 2)).append(Constants.SLASH);
+            sb.append(line.substring(2, 4)).append(Constants.SLASH);
+            sb.append(line.substring(4));
+        } catch (Throwable t) {
+            Logger.logError("Unable to parse date");
+        }
+        return sb.toString();
+    }
+
     @NonNull
     private static String getValueOfColonField(String line) {
         try {
@@ -121,7 +137,7 @@ public class Parser {
             if (value.equals(Constants.COLON)) {
                 return Constants.EMPTY_STRING;
             }
-            return value.replace(Constants.COLON, Constants.EMPTY_STRING).trim();
+            return value.trim().replace(Constants.COLON, Constants.EMPTY_STRING).trim();
         } catch (Throwable t) {
             Logger.logError("Couldn't parse line: " + line);
             return Constants.EMPTY_STRING;
@@ -136,6 +152,11 @@ public class Parser {
     private static boolean isGliderTypeRecord(String line) {
         final String lineUpperCase = line.toUpperCase();
         return lineUpperCase.startsWith(Constants.GeneralRecord.GLIDER_TYPE);
+    }
+
+    private static boolean isDateRecord(String line) {
+        final String lineUpperCase = line.toUpperCase();
+        return lineUpperCase.startsWith(Constants.GeneralRecord.DATE);
     }
 
     private static boolean isGliderIdRecord(String line) {

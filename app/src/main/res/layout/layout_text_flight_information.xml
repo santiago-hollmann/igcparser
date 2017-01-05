@@ -61,6 +61,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:paddingRight="@dimen/information_close_size"
                 android:text="Pilot: Santiago Hollmann"
                 android:textSize="@dimen/textsize_information" />
         </LinearLayout>

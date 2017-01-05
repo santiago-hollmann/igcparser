@@ -161,7 +161,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale)));
         txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale)));
         txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
-        txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime())));
+        txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime()), igcFile.getDate()));
         txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
         displayPilot();
         displayGlider();
@@ -191,7 +191,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private void displayPilot() {
         if (!TextUtils.isEmpty(igcFile.getPilotInCharge())) {
             layoutPilot.setVisibility(View.VISIBLE);
-            txtPilot.setText(String.format(getResources().getString(R.string.information_pilot), igcFile.getPilotInCharge()));
+            txtPilot.setText(String.format(getResources().getString(R.string.information_pilot), Utilities.capitalizeText(igcFile.getPilotInCharge())));
         }
     }
 
