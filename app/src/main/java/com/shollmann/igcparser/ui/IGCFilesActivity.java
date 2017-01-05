@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
@@ -104,7 +105,10 @@ public class IGCFilesActivity extends AppCompatActivity {
                 }
             }
         } catch (Throwable t) {
-            Logger.logError("Couldn't open files");
+            final String message = "Couldn't open files";
+            Crashlytics.log(message);
+            Crashlytics.logException(t);
+            Logger.logError(message);
         }
 
         return inFiles;
@@ -145,7 +149,9 @@ public class IGCFilesActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             } else {
                 if (!isEntireFolder) {
-                    Logger.log("No IGC files found on XCSoar folder. Searching on other folders");
+                    final String message = "No IGC files found on XCSoar folder. Searching on other folders";
+                    Logger.log(message);
+                    Crashlytics.log(message);
                     txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
                     new FindIGCFilesAsynkTask().execute(Utilities.getSdCardFolder());
                 } else {
