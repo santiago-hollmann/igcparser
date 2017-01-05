@@ -24,6 +24,8 @@
 
 package com.shollmann.android.igcparser.util;
 
+import android.text.TextUtils;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.model.LatLon;
@@ -173,5 +175,31 @@ public class Utilities {
         }
 
         return xcsoarDataFile;
+    }
+
+    public static String capitalizeText(String title) {
+        if (title == null) {
+            return null;
+        }
+        StringBuilder standardizeTitle = new StringBuilder();
+        for (String word : title.split(Constants.SPACE_STRING)) {
+            word = word.toLowerCase();
+            word = capitalize(word);
+            standardizeTitle.append(word).append(Constants.SPACE_STRING);
+        }
+
+        return standardizeTitle.toString().trim();
+    }
+
+    private static String capitalize(String word) {
+        if (TextUtils.isEmpty(word)) {
+            return Constants.EMPTY_STRING;
+        }
+        char first = word.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return word;
+        } else {
+            return Character.toUpperCase(first) + word.substring(1);
+        }
     }
 }

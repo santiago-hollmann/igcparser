@@ -25,6 +25,7 @@
 package com.shollmann.android.igcparser;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -68,12 +69,27 @@ public class Parser {
 
                     igcFile.appendTrackPoint(bRecord);
                 } else {
-                    // C Records is always before the B Records
                     if (isCRecord(line)) {
                         if (!isFirstCRecord) {
                             igcFile.appendWayPoint(new CRecordWayPoint(line));
                         }
                         isFirstCRecord = false;
+                    } else {
+                        if (isPilotInChargeRecord(line)) {
+                            igcFile.setPilotInCharge(getValueOfColonField(line));
+                        }
+
+                        if (isGliderIdRecord(line)) {
+                            igcFile.setGliderId(getValueOfColonField(line));
+                        }
+
+                        if (isGliderTypeRecord(line)) {
+                            igcFile.setGliderType(getValueOfColonField(line));
+                        }
+
+                        if (isDateRecord(line)) {
+                            igcFile.setDate(parseDate(line));
+                        }
                     }
                 }
 
@@ -99,6 +115,53 @@ public class Parser {
         }
         Logger.log(igcFile.toString());
         return igcFile;
+    }
+
+    private static String parseDate(String line) {
+        StringBuilder sb = new StringBuilder();
+        line = line.toUpperCase().replace(Constants.GeneralRecord.DATE, Constants.EMPTY_STRING);
+        try {
+            sb.append(line.substring(0, 2)).append(Constants.SLASH);
+            sb.append(line.substring(2, 4)).append(Constants.SLASH);
+            sb.append(line.substring(4));
+        } catch (Throwable t) {
+            Logger.logError("Unable to parse date");
+        }
+        return sb.toString();
+    }
+
+    @NonNull
+    private static String getValueOfColonField(String line) {
+        try {
+            String value = line.substring(line.indexOf(Constants.COLON), line.length());
+            if (value.equals(Constants.COLON)) {
+                return Constants.EMPTY_STRING;
+            }
+            return value.trim().replace(Constants.COLON, Constants.EMPTY_STRING).trim();
+        } catch (Throwable t) {
+            Logger.logError("Couldn't parse line: " + line);
+            return Constants.EMPTY_STRING;
+        }
+    }
+
+    private static boolean isPilotInChargeRecord(String line) {
+        final String lineUpperCase = line.toUpperCase();
+        return lineUpperCase.startsWith(Constants.GeneralRecord.PILOT) || lineUpperCase.startsWith(Constants.GeneralRecord.PILOT_IN_CHARGE);
+    }
+
+    private static boolean isGliderTypeRecord(String line) {
+        final String lineUpperCase = line.toUpperCase();
+        return lineUpperCase.startsWith(Constants.GeneralRecord.GLIDER_TYPE);
+    }
+
+    private static boolean isDateRecord(String line) {
+        final String lineUpperCase = line.toUpperCase();
+        return lineUpperCase.startsWith(Constants.GeneralRecord.DATE);
+    }
+
+    private static boolean isGliderIdRecord(String line) {
+        final String lineUpperCase = line.toUpperCase();
+        return lineUpperCase.startsWith(Constants.GeneralRecord.GLIDER_ID);
     }
 
     private static boolean isBRecord(String line) {
