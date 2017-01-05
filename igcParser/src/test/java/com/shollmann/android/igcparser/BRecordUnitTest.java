@@ -24,7 +24,7 @@
 
 package com.shollmann.android.igcparser;
 
-import com.shollmann.android.igcparser.model.BRecordI;
+import com.shollmann.android.igcparser.model.BRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import org.junit.Test;
 public class BRecordUnitTest {
     @Test
     public void parse_isCorrect() throws Exception {
-        BRecordI brecord = new BRecordI("B1935253428508S05925277WA000970005100000");
+        BRecord brecord = new BRecord("B1935253428508S05925277WA000970005100000");
         Assert.assertEquals(193525, brecord.getTime());
         Assert.assertEquals("3428508S", brecord.getLat());
         Assert.assertEquals("05925277W",brecord.getLon());
@@ -43,7 +43,7 @@ public class BRecordUnitTest {
 
     @Test
     public void parse_isCorrect_1() throws Exception {
-        BRecordI brecord = new BRecordI("B1935253428508N45925277EA123971235100000");
+        BRecord brecord = new BRecord("B1935253428508N45925277EA123971235100000");
         Assert.assertEquals(193525, brecord.getTime());
         Assert.assertEquals("3428508N", brecord.getLat());
         Assert.assertEquals("45925277W",brecord.getLon());

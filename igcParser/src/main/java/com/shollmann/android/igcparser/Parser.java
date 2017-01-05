@@ -29,7 +29,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.maps.android.SphericalUtil;
-import com.shollmann.android.igcparser.model.BRecordI;
+import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Constants;
@@ -47,7 +47,7 @@ public class Parser {
         int maxAltitude = -10000;
         int minAltitude = 10000;
         boolean isFirstCRecord = true;
-        BRecordI firstBRecord = null;
+        BRecord firstBRecord = null;
         String takeOffTime = Constants.EMPTY_STRING;
         String landingTime = Constants.EMPTY_STRING;
         BufferedReader reader = null;
@@ -58,7 +58,7 @@ public class Parser {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (isBRecord(line)) {
-                    BRecordI bRecord = new BRecordI(line);
+                    BRecord bRecord = new BRecord(line);
 
                     firstBRecord = setFirstBRecord(bRecord, firstBRecord);
                     maxAltitude = setMaxAltitude(bRecord, maxAltitude);
@@ -110,28 +110,28 @@ public class Parser {
     }
 
     @Nullable
-    private static String setTakeOffTime(BRecordI firstBRecord, String takeOffTime, BRecordI bRecord) {
+    private static String setTakeOffTime(BRecord firstBRecord, String takeOffTime, BRecord bRecord) {
         if (TextUtils.isEmpty(takeOffTime) && (bRecord.getAltitude() - firstBRecord.getAltitude() >= Constants.MARKER_TAKE_OFF_HEIGHT)) {
             takeOffTime = bRecord.getTime();
         }
         return takeOffTime;
     }
 
-    private static BRecordI setFirstBRecord(BRecordI bRecord, BRecordI firstBRecord) {
+    private static BRecord setFirstBRecord(BRecord bRecord, BRecord firstBRecord) {
         if (firstBRecord == null) {
             firstBRecord = bRecord;
         }
         return firstBRecord;
     }
 
-    private static int setMinAltitude(BRecordI bRecord, int minAltitude) {
+    private static int setMinAltitude(BRecord bRecord, int minAltitude) {
         if (bRecord.getAltitude() < minAltitude) {
             minAltitude = bRecord.getAltitude();
         }
         return minAltitude;
     }
 
-    private static int setMaxAltitude(BRecordI bRecord, int maxAltitude) {
+    private static int setMaxAltitude(BRecord bRecord, int maxAltitude) {
         if (bRecord.getAltitude() > maxAltitude) {
             maxAltitude = bRecord.getAltitude();
         }

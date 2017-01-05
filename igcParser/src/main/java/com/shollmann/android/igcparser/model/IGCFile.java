@@ -43,7 +43,7 @@ public class IGCFile {
         listTrackPoints = new ArrayList<>();
     }
 
-    public void appendTrackPoint(BRecordI bRecord) {
+    public void appendTrackPoint(BRecord bRecord) {
         listTrackPoints.add(bRecord);
     }
 
