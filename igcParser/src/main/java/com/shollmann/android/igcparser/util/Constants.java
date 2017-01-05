@@ -26,9 +26,12 @@ package com.shollmann.android.igcparser.util;
 
 public class Constants {
     public static final String EMPTY_STRING = "";
+    public static final String COLON = ":";
+    public static final String SPACE_STRING = " ";
+    public static final String SLASH = "/";
+
     public static final String FLIGHT_DURATION_FORMAT = "%1$dh %2$dm";
     public static final String FLIGHT_DURATION_ERROR = "EE:EE";
-
     public static final int MARKER_TAKE_OFF_HEIGHT = 10;
 
 
@@ -50,4 +53,14 @@ public class Constants {
         public static final String FINISH = "FINISH";
         public static final String LANDING = "FINISH";
     }
+
+    public class GeneralRecord {
+        public static final String PILOT = "HFPLTPILOT";
+        public static final String PILOT_IN_CHARGE = "HFPLTPILOTINCHARGE";
+        public static final String GLIDER_ID = "HFGIDGLIDERID";
+        public static final String GLIDER_TYPE = "HFGTYGLIDERTYPE";
+        public static final String DATE = "HFDTE";
+    }
+
+
 }
