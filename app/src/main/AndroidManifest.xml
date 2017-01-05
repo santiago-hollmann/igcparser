@@ -54,10 +54,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAPS_KEY" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="@string/CRASHLYTICS_KEY" />
     </application>
 
 
