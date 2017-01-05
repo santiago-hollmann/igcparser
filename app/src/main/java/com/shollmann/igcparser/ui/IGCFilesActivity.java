@@ -40,6 +40,7 @@ import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
+import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
 import com.shollmann.igcparser.util.Constants;
 
@@ -128,6 +129,7 @@ public class IGCFilesActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FileClickEvent event) {
+        TrackerHelper.trackTapFile();
         Intent intent = new Intent(this, FlightInformationActivity.class);
         intent.putExtra(Constants.FILE_TO_LOAD_PATH, event.getFile().getAbsoluteFile().toString());
         startActivity(intent);
@@ -157,6 +159,7 @@ public class IGCFilesActivity extends AppCompatActivity {
                 } else {
                     progress.setVisibility(View.GONE);
                     txtLoading.setText(getString(R.string.no_files_found_with_explanation));
+                    TrackerHelper.trackNoFilesFound();
                 }
             }
         }

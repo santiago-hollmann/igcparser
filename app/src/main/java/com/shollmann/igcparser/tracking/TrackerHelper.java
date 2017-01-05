@@ -32,6 +32,8 @@ public class TrackerHelper {
     private static final String FLIGHT_PLAY = "Play Flight";
     private static final String FLIGHT_STOP = "Stop Flight";
     private static final String FLIGHT_FAST_FORWARD = "Fast Forward Flight";
+    private static final String TAP_FILE = "Tap File";
+    private static final String NO_FILES_FOUND = "No Files Found";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -58,5 +60,13 @@ public class TrackerHelper {
 
     public static void trackFastForwardFlight() {
         AnswersHelper.trackEvent(FLIGHT_FAST_FORWARD);
+    }
+
+    public static void trackTapFile() {
+        AnswersHelper.trackEvent(TAP_FILE);
+    }
+
+    public static void trackNoFilesFound() {
+        AnswersHelper.trackEvent(NO_FILES_FOUND);
     }
 }
