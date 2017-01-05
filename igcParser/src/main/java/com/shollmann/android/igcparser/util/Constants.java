@@ -31,7 +31,19 @@ public class Constants {
 
     public static final int MARKER_TAKE_OFF_HEIGHT = 10;
 
-    public class CRECORD {
+
+    public static class Path {
+        public static String XCSOARDATA = "/sdcard/XCSoarData/logs";
+        public static String SAMSUNG_XCSOARDATA = "/sdcard/external_sd/XCSoarData/logs";
+        public static String STORAGE_XCSOARDATA = "/storage/emulated/0/XCSoarData/logs";
+        public static String STORAGE_LEGACY_XCSOARDATA = "/storage/emulated/legacy/XCSoarData/logs";
+        public static String SDCARD = "/sdcard";
+        public static String SAMSUNG_SDCARD = "/sdcard/external_sd";
+        public static String STORAGE_SDCARD = "/storage/emulated/0";
+        public static String STORAGE_LEGACY_SDCARD = "/storage/emulated/legacy";
+    }
+
+    public class CRecord {
         public static final String TAKEOFF = "TAKEOFF";
         public static final String START = "START";
         public static final String TURN = "TURN";

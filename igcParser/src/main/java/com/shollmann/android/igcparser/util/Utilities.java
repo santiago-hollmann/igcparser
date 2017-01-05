@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.model.LatLon;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -123,5 +124,54 @@ public class Utilities {
             decimalFormatter.setDecimalFormatSymbols(symbols);
         }
         return decimalFormatter.format(number);
+    }
+
+    public static File getXCSoarDataFolder() {
+        File xcsoarDataFile = new File(Constants.Path.XCSOARDATA);
+
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        xcsoarDataFile = new File(Constants.Path.SAMSUNG_XCSOARDATA);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        xcsoarDataFile = new File(Constants.Path.STORAGE_XCSOARDATA);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        xcsoarDataFile = new File(Constants.Path.STORAGE_LEGACY_XCSOARDATA);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        return xcsoarDataFile;
+    }
+
+    public static File getSdCardFolder() {
+        File xcsoarDataFile = new File(Constants.Path.SDCARD);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        xcsoarDataFile = new File(Constants.Path.STORAGE_SDCARD);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        xcsoarDataFile = new File(Constants.Path.STORAGE_LEGACY_SDCARD);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        xcsoarDataFile = new File(Constants.Path.SAMSUNG_SDCARD);
+        if (xcsoarDataFile.listFiles() != null) {
+            return xcsoarDataFile;
+        }
+
+        return xcsoarDataFile;
     }
 }

@@ -3,6 +3,7 @@
     package="com.shollmann.igcparser">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -52,7 +53,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDu87vcT6VCCNFLbQ7tRgWuHre5Zh6YfRI" />
+            android:value="@string/MAPS_KEY" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="@string/CRASHLYTICS_KEY" />
     </application>
 
 

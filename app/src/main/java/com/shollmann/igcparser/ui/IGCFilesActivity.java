@@ -27,7 +27,6 @@ package com.shollmann.igcparser.ui;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.shollmann.android.igcparser.util.Logger;
+import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
@@ -71,7 +71,7 @@ public class IGCFilesActivity extends AppCompatActivity {
         findViews();
 
         setupFilesList();
-        new FindIGCFilesAsynkTask().execute(Constants.XCSOAR_LOG_PATH);
+        new FindIGCFilesAsynkTask().execute(Utilities.getXCSoarDataFolder());
 
     }
 
@@ -94,12 +94,6 @@ public class IGCFilesActivity extends AppCompatActivity {
         List<File> inFiles = new ArrayList<>();
         Queue<File> files = new LinkedList<>();
         try {
-            if (parentDir == null || parentDir.listFiles() == null) {
-                parentDir = getAlternativeXCSoarDataFolder();
-                if (parentDir.listFiles() == null) {
-                    return inFiles;
-                }
-            }
             files.addAll(Arrays.asList(parentDir.listFiles()));
             while (!files.isEmpty()) {
                 File file = files.remove();
@@ -114,24 +108,6 @@ public class IGCFilesActivity extends AppCompatActivity {
         }
 
         return inFiles;
-    }
-
-    private File getAlternativeXCSoarDataFolder() {
-        File xcsoarDataFile = new File(Constants.SAMSUNG_XCSOAR_LOG_PATH);
-        if (xcsoarDataFile.listFiles() != null) {
-            return xcsoarDataFile;
-        } else {
-            xcsoarDataFile = new File(Constants.STORAGE_XCSOAR_LOG_PATH);
-            if (xcsoarDataFile.listFiles() != null) {
-                return xcsoarDataFile;
-            } else {
-                xcsoarDataFile = new File(Constants.STORAGE_LEGACY_XCSOAR_LOG_PATH);
-                if (xcsoarDataFile.listFiles() != null) {
-                    return xcsoarDataFile;
-                }
-            }
-        }
-        return xcsoarDataFile;
     }
 
     @Override
@@ -153,10 +129,10 @@ public class IGCFilesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private class FindIGCFilesAsynkTask extends AsyncTask<String, Void, Boolean> {
-        protected Boolean doInBackground(String... path) {
-            listFiles = getListFiles(new File(path[0]));
-            return path[0].equalsIgnoreCase(Environment.getExternalStorageDirectory().getAbsolutePath());
+    private class FindIGCFilesAsynkTask extends AsyncTask<File, Void, Boolean> {
+        protected Boolean doInBackground(File... file) {
+            listFiles = getListFiles(file[0]);
+            return file[0].getAbsolutePath().equals(Utilities.getSdCardFolder().getAbsolutePath());
         }
 
         protected void onProgressUpdate(Void... something) {
@@ -171,7 +147,7 @@ public class IGCFilesActivity extends AppCompatActivity {
                 if (!isEntireFolder) {
                     Logger.log("No IGC files found on XCSoar folder. Searching on other folders");
                     txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
-                    new FindIGCFilesAsynkTask().execute(Environment.getExternalStorageDirectory().getAbsolutePath());
+                    new FindIGCFilesAsynkTask().execute(Utilities.getSdCardFolder());
                 } else {
                     progress.setVisibility(View.GONE);
                     txtLoading.setText(getString(R.string.no_files_found_with_explanation));

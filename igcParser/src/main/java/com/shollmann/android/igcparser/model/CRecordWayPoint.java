@@ -51,16 +51,16 @@ public class CRecordWayPoint implements ILatLonRecord {
     private int getTypeLastCharPosition(String rawRecord) {
         switch (type) {
             case START:
-                return rawRecord.indexOf(Constants.CRECORD.START) + Constants.CRECORD.START.length();
+                return rawRecord.indexOf(Constants.CRecord.START) + Constants.CRecord.START.length();
             case TAKEOFF:
-                return rawRecord.indexOf(Constants.CRECORD.TAKEOFF) + Constants.CRECORD.TAKEOFF.length();
+                return rawRecord.indexOf(Constants.CRecord.TAKEOFF) + Constants.CRecord.TAKEOFF.length();
             case FINISH:
-                return rawRecord.indexOf(Constants.CRECORD.FINISH) + Constants.CRECORD.FINISH.length();
+                return rawRecord.indexOf(Constants.CRecord.FINISH) + Constants.CRecord.FINISH.length();
             case LANDING:
-                return rawRecord.indexOf(Constants.CRECORD.LANDING) + Constants.CRECORD.LANDING.length();
+                return rawRecord.indexOf(Constants.CRecord.LANDING) + Constants.CRecord.LANDING.length();
             case TURN:
-                if (rawRecord.contains(Constants.CRECORD.TURN)) {
-                    return rawRecord.indexOf(Constants.CRECORD.TURN) + Constants.CRECORD.TURN.length();
+                if (rawRecord.contains(Constants.CRecord.TURN)) {
+                    return rawRecord.indexOf(Constants.CRecord.TURN) + Constants.CRecord.TURN.length();
                 } else {
                     return rawRecord.indexOf("W") == -1 ? rawRecord.indexOf("E") + 1 : rawRecord.indexOf("W") + 1;
                 }
@@ -69,15 +69,15 @@ public class CRecordWayPoint implements ILatLonRecord {
     }
 
     private CRecordType parseType(String rawRecord) {
-        if (rawRecord.contains(Constants.CRECORD.TAKEOFF)) {
+        if (rawRecord.contains(Constants.CRecord.TAKEOFF)) {
             return CRecordType.TAKEOFF;
-        } else if (rawRecord.contains(Constants.CRECORD.START)) {
+        } else if (rawRecord.contains(Constants.CRecord.START)) {
             return CRecordType.START;
-        } else if (rawRecord.contains(Constants.CRECORD.TURN)) {
+        } else if (rawRecord.contains(Constants.CRecord.TURN)) {
             return CRecordType.TURN;
-        } else if (rawRecord.contains(Constants.CRECORD.FINISH)) {
+        } else if (rawRecord.contains(Constants.CRecord.FINISH)) {
             return CRecordType.FINISH;
-        } else if (rawRecord.contains(Constants.CRECORD.LANDING)) {
+        } else if (rawRecord.contains(Constants.CRecord.LANDING)) {
             return CRecordType.LANDING;
         }
         return CRecordType.TURN;
