@@ -57,6 +57,7 @@ import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
 
 import java.util.List;
@@ -205,13 +206,14 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 cardviewInformation.setVisibility(View.GONE);
                 btnShowInformation.setVisibility(View.VISIBLE);
                 btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_enter));
+                TrackerHelper.trackCloseInformation();
                 break;
             case R.id.main_information_btn:
                 btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_leave));
                 btnShowInformation.setVisibility(View.GONE);
                 cardviewInformation.setVisibility(View.VISIBLE);
                 cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
-
+                TrackerHelper.trackOpenInformation();
                 break;
         }
     }
@@ -248,6 +250,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
                 );
                 setReplayButtons();
+                TrackerHelper.trackFlightDisplayed();
             }
         }
 
@@ -279,6 +282,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private void speedUpReplay() {
         if (replaySpeed >= Constants.Map.MAX_REPLAY_SPEED) {
             replaySpeed = (int) (replaySpeed / Constants.Map.REPLAY_SPEED_INCREASER);
+            TrackerHelper.trackFastForwardFlight();
         }
     }
 
@@ -288,10 +292,13 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
         isFinishReplay = !isFinishReplay;
         if (!isFinishReplay) {
+            TrackerHelper.trackPlayFlight();
             btnPlay.setImageResource(R.drawable.ic_stop);
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerGlider.getPosition(), googleMap.getCameraPosition().zoom));
             animateMarker();
             btnFastForward.setVisibility(View.VISIBLE);
+        } else {
+            TrackerHelper.trackStopFlight();
         }
     }
 
