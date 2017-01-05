@@ -27,7 +27,7 @@ package com.shollmann.android.igcparser.model;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
-public class BRecord {
+public class BRecord implements ILatLonRecord {
     private static final int TIME_START_INDEX = 1;
     private static final int TIME_END_INDEX = 7;
     private static final int LAT_END_INDEX = 15;

@@ -77,7 +77,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new FileClickEvent(file));
-
             }
         });
 

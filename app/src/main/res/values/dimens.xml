@@ -12,7 +12,7 @@
     <dimen name="information_margin_top">6dp</dimen>
     <dimen name="information_close_size">24dp</dimen>
     <dimen name="show_information_margin_top">32dp</dimen>
-    <dimen name="replay_button_dimension">42dp</dimen>
+    <dimen name="replay_button_dimension">40dp</dimen>
     <dimen name="minus_one">-1dp</dimen>
     <dimen name="one_dp">1dp</dimen>
     <dimen name="half_dp">0.5dp</dimen>

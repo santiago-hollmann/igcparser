@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,8 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.util;
+package com.shollmann.android.igcparser.model;
 
-public class Constants extends com.shollmann.android.igcparser.util.Constants {
-    public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
-
-    public class Map {
-        public static final int MAP_DEFAULT_ZOOM = 12;
-        public static final int METERS_IN_ONE_KILOMETER = 1000;
-        public static final float MAP_TRACK_POLYLINE_WIDTH = 3.0f;
-        public static final double FIX_INITIAL_LATITUDE = 0.0195;
-        public static final int DEFAULT_REPLAY_SPEED = 76;
-        public static final int MAX_REPLAY_SPEED = 2;
-        public static final double REPLAY_SPEED_INCREASER = 1.5;
-    }
+public interface ILatLonRecord {
+    LatLon getLatLon();
 }

@@ -52,9 +52,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.Parser;
+import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
 
 import java.util.List;
@@ -135,7 +138,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.getUiSettings().setMapToolbarEnabled(true);
+        this.googleMap.getUiSettings().setMapToolbarEnabled(false);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
@@ -157,6 +160,24 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         polyline.addAll(listLatLngPoints);
         googleMap.addPolyline(polyline);
+    }
+
+    private void displayWayPoints() {
+        if (!igcFile.getWaypoints().isEmpty()) {
+            PolylineOptions polyline = new PolylineOptions().width(Constants.Map.MAP_TRACK_POLYLINE_WIDTH).color(Color.RED);
+            listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
+            polyline.addAll(listLatLngPoints);
+            googleMap.addPolyline(polyline);
+        }
+
+        for (ILatLonRecord wayPoint : igcFile.getWaypoints()) {
+            if (wayPoint.getLatLon().getLat() != 0 && wayPoint.getLatLon().getLat() != 0) {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
+                        .draggable(false)
+                        .title(((CRecordWayPoint) wayPoint).getDescription()));
+            }
+        }
     }
 
     @Override
@@ -185,13 +206,14 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 cardviewInformation.setVisibility(View.GONE);
                 btnShowInformation.setVisibility(View.VISIBLE);
                 btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_enter));
+                TrackerHelper.trackCloseInformation();
                 break;
             case R.id.main_information_btn:
                 btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_leave));
                 btnShowInformation.setVisibility(View.GONE);
                 cardviewInformation.setVisibility(View.VISIBLE);
                 cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
-
+                TrackerHelper.trackOpenInformation();
                 break;
         }
     }
@@ -210,19 +232,26 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
 
         private void handleIGCFileLoaded() {
+            displayWayPoints();
             displayTrack();
             displayFlightInformation();
+            displayReplayViews();
+            mapView.setVisibility(View.VISIBLE);
+            cardviewInformation.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.GONE);
+        }
+
+        private void displayReplayViews() {
             if (listLatLngPoints != null && !listLatLngPoints.isEmpty()) {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listLatLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, listLatLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
                 markerGlider = googleMap.addMarker(new MarkerOptions()
                         .position(listLatLngPoints.get(0))
+                        .zIndex(1.0f)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
                 );
                 setReplayButtons();
+                TrackerHelper.trackFlightDisplayed();
             }
-            mapView.setVisibility(View.VISIBLE);
-            cardviewInformation.setVisibility(View.VISIBLE);
-            loading.setVisibility(View.GONE);
         }
 
         private void setReplayButtons() {
@@ -253,6 +282,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private void speedUpReplay() {
         if (replaySpeed >= Constants.Map.MAX_REPLAY_SPEED) {
             replaySpeed = (int) (replaySpeed / Constants.Map.REPLAY_SPEED_INCREASER);
+            TrackerHelper.trackFastForwardFlight();
         }
     }
 
@@ -262,10 +292,13 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
         isFinishReplay = !isFinishReplay;
         if (!isFinishReplay) {
+            TrackerHelper.trackPlayFlight();
             btnPlay.setImageResource(R.drawable.ic_stop);
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerGlider.getPosition(), googleMap.getCameraPosition().zoom));
             animateMarker();
             btnFastForward.setVisibility(View.VISIBLE);
+        } else {
+            TrackerHelper.trackStopFlight();
         }
     }
 
