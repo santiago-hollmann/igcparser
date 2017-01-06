@@ -10,7 +10,7 @@
     <dimen name="medium_margin">8dp</dimen>
     <dimen name="small_margin">4dp</dimen>
     <dimen name="extra_small_margin">2dp</dimen>
-    <dimen name="information_margin_top">6dp</dimen>
+    <dimen name="information_margin_top">8dp</dimen>
     <dimen name="information_close_size">24dp</dimen>
     <dimen name="show_information_margin_top">32dp</dimen>
     <dimen name="replay_button_dimension">40dp</dimen>
