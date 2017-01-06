@@ -23,4 +23,5 @@
     <string name="about_contact">You can send me e-mails to santiago.hollmann@gmail or tweet to @santihollmann.</string>
     <string name="about_enjoy">Have good flights!</string>
     <string name="version">"Version: "</string>
+    <string name="sort">Sort</string>
 </resources>

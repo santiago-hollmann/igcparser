@@ -47,4 +47,5 @@
     <string name="about_contact">Podés mandarme e-mail a santiago.hollmann@gmail.com o twittearme a @santihollmann.</string>
     <string name="about_why">Creé esta aplicación para que la comunidad de pilotos de planeador puedan ver y disfrutar sus vuelos.\n\nSentite libre contactarme por mejoras, sugerencias, problemas o cualquier tipo de feedback.</string>
     <string name="version">"Versión: "</string>
+    <string name="sort">Sort</string>
 </resources>

@@ -30,10 +30,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,7 +67,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
+public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
 
     private LinearLayout layoutLoading;
     private RecyclerView recyclerView;
@@ -153,18 +156,31 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         getMenuInflater().inflate(R.menu.files_menu, menu);
         MenuItem menuSearchEntireSdCard = menu.findItem(R.id.menu_search_sdcard);
         MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
-        MenuItem menuSortByPilot = menu.findItem(R.id.menu_sort_pilot);
-        MenuItem menuSortByGliderId = menu.findItem(R.id.menu_sort_glider);
-        MenuItem menuSortByDate = menu.findItem(R.id.menu_sort_date);
         MenuItem menuAbout = menu.findItem(R.id.menu_about);
 
+        ImageView viewAttach = (ImageView) menu.findItem(R.id.menu_sort).getActionView();
+        viewAttach.setBackgroundResource(R.drawable.drawable_sort_icon);
+        viewAttach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSortDialog(v);
+            }
+
+        });
+
         menuSearchEntireSdCard.setOnMenuItemClickListener(this);
-        menuSortByDate.setOnMenuItemClickListener(this);
-        menuSortByGliderId.setOnMenuItemClickListener(this);
         menuRefresh.setOnMenuItemClickListener(this);
-        menuSortByPilot.setOnMenuItemClickListener(this);
         menuAbout.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void showSortDialog(View v) {
+        TrackerHelper.trackSortDialog();
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.sort_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);
+        popup.show();
     }
 
     @Override

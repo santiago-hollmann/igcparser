@@ -40,6 +40,7 @@ public class TrackerHelper {
     private static final String SORT_BY_DATE = "Sort by Date";
     private static final String SEARCH_SD_CARD = "Search SD Card";
     private static final String REFRESH = "Refresh";
+    private static final String SORT_DIALOG = "Sort Dialog Open";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -98,5 +99,9 @@ public class TrackerHelper {
 
     public static void trackRefresh() {
         AnswersHelper.trackEvent(REFRESH);
+    }
+
+    public static void trackSortDialog() {
+        AnswersHelper.trackEvent(SORT_DIALOG);
     }
 }
