@@ -164,28 +164,15 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime()), igcFile.getDate()));
         txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
         displayPilot();
-        displayGlider();
+        displayGliderInformation();
     }
 
-    private void displayGlider() {
-        final String gliderType = igcFile.getGliderType();
-        final String gliderId = igcFile.getGliderId();
-        if (TextUtils.isEmpty(gliderId) && TextUtils.isEmpty(gliderType)) {
-            return;
+    private void displayGliderInformation() {
+        final String gliderTypeAndId = igcFile.getGliderTypeAndId();
+        if (!TextUtils.isEmpty(gliderTypeAndId)) {
+            layoutGlider.setVisibility(View.VISIBLE);
+            txtGlider.setText(String.format(getResources().getString(R.string.information_glider), gliderTypeAndId));
         }
-
-        layoutGlider.setVisibility(View.VISIBLE);
-        if (TextUtils.isEmpty(gliderType)) {
-            txtGlider.setText(String.format(getResources().getString(R.string.information_glider), gliderId));
-        } else {
-            if (!TextUtils.isEmpty(gliderId)) {
-                String gliderInformationPlaceholder = "%1$s (%2$s)";
-                txtGlider.setText(String.format(getResources().getString(R.string.information_glider), String.format(gliderInformationPlaceholder, gliderType, gliderId)));
-            } else {
-                txtGlider.setText(String.format(getResources().getString(R.string.information_glider), gliderType));
-            }
-        }
-
     }
 
     private void displayPilot() {

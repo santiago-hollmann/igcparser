@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/searching_for_igc_files_on_xcsoar_s_logs_folder"
-            android:textSize="@dimen/textsize_information" />
+            android:textSize="@dimen/material_text_body" />
     </LinearLayout>
 
 </RelativeLayout>

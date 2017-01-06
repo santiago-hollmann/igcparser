@@ -92,16 +92,70 @@ public class Parser {
                         }
                     }
                 }
-
             }
-
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
             igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);
             igcFile.setLandingTime(landingTime);
+            igcFile.setFileData(filePath);
 
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
+        } catch (IOException e) {
+            Logger.logError(e.getMessage());
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Logger.logError(e.getMessage());
+                }
+            }
+        }
+        Logger.log(igcFile.toString());
+        return igcFile;
+    }
+
+    public static IGCFile quickParse(Uri filePath) {
+        IGCFile igcFile = new IGCFile();
+        boolean isFirstCRecord = true;
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(filePath.toString()), "UTF-8"));
+
+            String line;
+            boolean isFinished = false;
+            while ((line = reader.readLine()) != null && !isFinished) {
+                if (isBRecord(line)) {
+                    isFinished = true;
+                }
+                if (isCRecord(line)) {
+                    if (!isFirstCRecord) {
+                        igcFile.appendWayPoint(new CRecordWayPoint(line));
+                    }
+                    isFirstCRecord = false;
+                } else {
+                    if (isPilotInChargeRecord(line)) {
+                        igcFile.setPilotInCharge(getValueOfColonField(line));
+                    }
+
+                    if (isGliderIdRecord(line)) {
+                        igcFile.setGliderId(getValueOfColonField(line));
+                    }
+
+                    if (isGliderTypeRecord(line)) {
+                        igcFile.setGliderType(getValueOfColonField(line));
+                    }
+
+                    if (isDateRecord(line)) {
+                        igcFile.setDate(parseDate(line));
+                    }
+                }
+            }
+
+            igcFile.setFileData(filePath);
+
         } catch (IOException e) {
             Logger.logError(e.getMessage());
         } finally {
