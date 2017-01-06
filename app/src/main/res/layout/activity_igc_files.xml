@@ -30,7 +30,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/files_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/medium_margin"
+        android:paddingTop="@dimen/medium_margin" />
 
     <LinearLayout
         android:id="@+id/files_layout_loading"

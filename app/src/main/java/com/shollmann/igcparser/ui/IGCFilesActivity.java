@@ -30,11 +30,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.shollmann.android.igcparser.Parser;
@@ -45,6 +51,7 @@ import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
+import com.shollmann.igcparser.util.Comparators;
 import com.shollmann.igcparser.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,11 +61,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class IGCFilesActivity extends AppCompatActivity {
+public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
 
     private LinearLayout layoutLoading;
     private RecyclerView recyclerView;
@@ -67,6 +76,8 @@ public class IGCFilesActivity extends AppCompatActivity {
     private FilesAdapter adapter;
     private LinearLayoutManager layoutManager;
     private List<IGCFile> listFiles = new ArrayList<>();
+    private File lastSearchedPath;
+    private boolean isSearching = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +126,8 @@ public class IGCFilesActivity extends AppCompatActivity {
             Logger.logError(message);
         }
 
+        Collections.sort(inFiles, Comparators.compareByDate);
+
         return inFiles;
     }
 
@@ -138,8 +151,93 @@ public class IGCFilesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.files_menu, menu);
+        MenuItem menuSearchEntireSdCard = menu.findItem(R.id.menu_search_sdcard);
+        MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
+        MenuItem menuAbout = menu.findItem(R.id.menu_about);
+
+        ImageView viewAttach = (ImageView) menu.findItem(R.id.menu_sort).getActionView();
+        viewAttach.setBackgroundResource(R.drawable.drawable_sort_icon);
+        viewAttach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSortDialog(v);
+            }
+
+        });
+
+        menuSearchEntireSdCard.setOnMenuItemClickListener(this);
+        menuRefresh.setOnMenuItemClickListener(this);
+        menuAbout.setOnMenuItemClickListener(this);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void showSortDialog(View v) {
+        TrackerHelper.trackSortDialog();
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.sort_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (isSearching) {
+            Toast.makeText(this, R.string.search_flights_wait, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.menu_refresh:
+                TrackerHelper.trackRefresh();
+                searchForFiles(lastSearchedPath);
+                break;
+            case R.id.menu_search_sdcard:
+                TrackerHelper.trackSearchSdCard();
+                searchForFiles(Utilities.getSdCardFolder());
+                break;
+            case R.id.menu_sort_glider:
+                TrackerHelper.trackSortByGlider();
+                sortBy(Comparators.compareByGlider);
+                break;
+            case R.id.menu_sort_pilot:
+                TrackerHelper.trackSortByPilot();
+                sortBy(Comparators.compareByPilot);
+                break;
+            case R.id.menu_sort_date:
+                TrackerHelper.trackSortByDate();
+                sortBy(Comparators.compareByDate);
+                break;
+            case R.id.menu_about:
+                TrackerHelper.trackAbout();
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return false;
+    }
+
+    private void searchForFiles(File path) {
+        listFiles.clear();
+        adapter.notifyDataSetChanged();
+        layoutLoading.setVisibility(View.VISIBLE);
+        new FindIGCFilesAsynkTask().execute(path);
+    }
+
+    private void sortBy(Comparator<IGCFile> comparator) {
+        if (!isSearching) {
+            Collections.sort(listFiles, comparator);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     private class FindIGCFilesAsynkTask extends AsyncTask<File, Void, Boolean> {
+
         protected Boolean doInBackground(File... file) {
+            isSearching = true;
+            lastSearchedPath = file[0];
             listFiles = getListIGCFiles(file[0]);
             return file[0].getAbsolutePath().equals(Utilities.getSdCardFolder().getAbsolutePath());
         }
@@ -165,6 +263,7 @@ public class IGCFilesActivity extends AppCompatActivity {
                     TrackerHelper.trackNoFilesFound();
                 }
             }
+            isSearching = false;
         }
     }
 }
