@@ -11,4 +11,11 @@
     <string name="no_files_found_with_explanation">No IGC files found.\nIf you have some, move them into XCSoar logs folder or the sdcard folder.</string>
     <string name="information_glider">Glider: %1$s</string>
     <string name="information_pilot">Pilot: %1$s</string>
+    <string name="search_flights_wait">Searching for files, wait please.</string>
+    <string name="refresh">Refresh</string>
+    <string name="scan_complete_sd_card">Scan complete SD Card</string>
+    <string name="sort_by_pilot">Sort by pilot</string>
+    <string name="sort_by_glider">Sort by glider</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="about">About the app</string>
 </resources>

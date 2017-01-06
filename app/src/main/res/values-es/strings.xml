@@ -35,4 +35,10 @@
     <string name="searching_igc_all_sdcard">Buscando archivos IGC en otros directorios</string>
     <string name="information_glider">Planeador: %1$s</string>
     <string name="information_pilot">Piloto: %1$s</string>
+    <string name="search_flights_wait">Buscando archivos, espere por favor.</string>
+    <string name="refresh">Actualizar</string>
+    <string name="sort_by_pilot">Ordenar por piloto</string>
+    <string name="sort_by_glider">Ordenar por planeador</string>
+    <string name="sort_by_date">Ordenar por fecha</string>
+    <string name="about">Acerca de la app</string>
 </resources>

@@ -31,10 +31,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.shollmann.android.igcparser.Parser;
@@ -45,6 +48,7 @@ import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
+import com.shollmann.igcparser.util.Comparators;
 import com.shollmann.igcparser.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,11 +58,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class IGCFilesActivity extends AppCompatActivity {
+public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
 
     private LinearLayout layoutLoading;
     private RecyclerView recyclerView;
@@ -67,6 +73,8 @@ public class IGCFilesActivity extends AppCompatActivity {
     private FilesAdapter adapter;
     private LinearLayoutManager layoutManager;
     private List<IGCFile> listFiles = new ArrayList<>();
+    private File lastSearchedPath;
+    private boolean isSearching = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +123,8 @@ public class IGCFilesActivity extends AppCompatActivity {
             Logger.logError(message);
         }
 
+        Collections.sort(inFiles, Comparators.compareByDate);
+
         return inFiles;
     }
 
@@ -138,8 +148,61 @@ public class IGCFilesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.files_menu, menu);
+        MenuItem menuSearchEntireSdCard = menu.findItem(R.id.menu_search_sdcard);
+        MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
+        MenuItem menuSortByPilot = menu.findItem(R.id.menu_sort_pilot);
+        MenuItem menuSortByGliderId = menu.findItem(R.id.menu_sort_glider);
+        MenuItem menuSortByDate = menu.findItem(R.id.menu_sort_date);
+
+        menuSearchEntireSdCard.setOnMenuItemClickListener(this);
+        menuSortByDate.setOnMenuItemClickListener(this);
+        menuSortByGliderId.setOnMenuItemClickListener(this);
+        menuRefresh.setOnMenuItemClickListener(this);
+        menuSortByPilot.setOnMenuItemClickListener(this);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (isSearching) {
+            Toast.makeText(this, R.string.search_flights_wait, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.menu_refresh:
+                new FindIGCFilesAsynkTask().execute(lastSearchedPath);
+                break;
+            case R.id.menu_search_sdcard:
+                new FindIGCFilesAsynkTask().execute(Utilities.getSdCardFolder());
+                break;
+            case R.id.menu_sort_glider:
+                sortBy(Comparators.compareByGlider);
+                break;
+            case R.id.menu_sort_pilot:
+                sortBy(Comparators.compareByPilot);
+                break;
+            case R.id.menu_sort_date:
+                sortBy(Comparators.compareByDate);
+                break;
+        }
+        return false;
+    }
+
+    private void sortBy(Comparator<IGCFile> comparator) {
+        if (!isSearching) {
+            Collections.sort(listFiles, comparator);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     private class FindIGCFilesAsynkTask extends AsyncTask<File, Void, Boolean> {
+
         protected Boolean doInBackground(File... file) {
+            isSearching = true;
+            lastSearchedPath = file[0];
             listFiles = getListIGCFiles(file[0]);
             return file[0].getAbsolutePath().equals(Utilities.getSdCardFolder().getAbsolutePath());
         }
@@ -165,6 +228,7 @@ public class IGCFilesActivity extends AppCompatActivity {
                     TrackerHelper.trackNoFilesFound();
                 }
             }
+            isSearching = false;
         }
     }
 }
