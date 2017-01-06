@@ -63,7 +63,7 @@
                 android:maxLines="1"
                 android:paddingRight="@dimen/information_close_size"
                 android:text="Pilot: Santiago Hollmann"
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +89,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Glider: Schleicher ASK 18 (LV-RSH)"
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Duration: "
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Distance (in meters): "
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -152,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Max Height: "
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start Height: "
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -194,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Take off (UTC): "
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -215,7 +215,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Landing (UTC): "
-                android:textSize="@dimen/textsize_information" />
+                android:textSize="@dimen/material_text_body" />
         </LinearLayout>
 
     </LinearLayout>

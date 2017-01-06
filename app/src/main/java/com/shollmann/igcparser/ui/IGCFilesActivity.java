@@ -25,6 +25,7 @@
 package com.shollmann.igcparser.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.shollmann.android.igcparser.Parser;
+import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
@@ -63,7 +66,7 @@ public class IGCFilesActivity extends AppCompatActivity {
     private ProgressBar progress;
     private FilesAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private List<File> listFiles = new ArrayList<>();
+    private List<IGCFile> listFiles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +95,8 @@ public class IGCFilesActivity extends AppCompatActivity {
         progress = (ProgressBar) findViewById(R.id.files_loading_progress);
     }
 
-    private List<File> getListFiles(File parentDir) {
-        List<File> inFiles = new ArrayList<>();
+    private List<IGCFile> getListIGCFiles(File parentDir) {
+        List<IGCFile> inFiles = new ArrayList<>();
         Queue<File> files = new LinkedList<>();
         try {
             files.addAll(Arrays.asList(parentDir.listFiles()));
@@ -102,7 +105,7 @@ public class IGCFilesActivity extends AppCompatActivity {
                 if (file != null && file.isDirectory()) {
                     files.addAll(Arrays.asList(file.listFiles()));
                 } else if (file != null && (file.getName().toLowerCase().endsWith(".igc"))) {
-                    inFiles.add(file);
+                    inFiles.add(Parser.quickParse(Uri.parse(file.getAbsolutePath())));
                 }
             }
         } catch (Throwable t) {
@@ -137,7 +140,7 @@ public class IGCFilesActivity extends AppCompatActivity {
 
     private class FindIGCFilesAsynkTask extends AsyncTask<File, Void, Boolean> {
         protected Boolean doInBackground(File... file) {
-            listFiles = getListFiles(file[0]);
+            listFiles = getListIGCFiles(file[0]);
             return file[0].getAbsolutePath().equals(Utilities.getSdCardFolder().getAbsolutePath());
         }
 

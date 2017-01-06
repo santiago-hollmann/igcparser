@@ -3,8 +3,9 @@
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#0097A7</color>
     <color name="colorAccent">#CDDC39</color>
+    <color name="gray">#535353</color>
     <color name="replay_button">#CCFFFFFF</color>
     <color name="replay_button_selected">#EECCCCCC</color>
     <color name="replay_button_border">#CCCCCC</color>
-    <color name="replay_icon_color">#535353</color>
+    <color name="replay_icon_color">@color/gray</color>
 </resources>

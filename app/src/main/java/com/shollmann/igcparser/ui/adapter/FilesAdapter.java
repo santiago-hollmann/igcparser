@@ -28,58 +28,40 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.igcparser.R;
-import com.shollmann.igcparser.events.FileClickEvent;
+import com.shollmann.igcparser.ui.viewholder.FileViewHolder;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 import java.util.List;
 
-public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.ViewHolder> {
+public class FilesAdapter extends RecyclerView.Adapter<FileViewHolder> {
 
-    private List<File> dataset;
+    private List<IGCFile> dataset;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtFileName;
 
-        public ViewHolder(View v) {
-            super(v);
-            txtFileName = (TextView) v.findViewById(R.id.view_file_txt_name);
-        }
-    }
-
-    public FilesAdapter(List<File> dataset) {
+    public FilesAdapter(List<IGCFile> dataset) {
         this.dataset = dataset;
     }
 
-    public void setDataset(List<File> dataset) {
+    public void setDataset(List<IGCFile> dataset) {
         this.dataset = dataset;
     }
 
     @Override
-    public FilesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_file, parent, false);
+                .inflate(R.layout.viewholder_file, parent, false);
 
 
-        ViewHolder vh = new ViewHolder(v);
+        FileViewHolder vh = new FileViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final File file = dataset.get(position);
-        holder.txtFileName.setText(file.getName());
-        holder.txtFileName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EventBus.getDefault().post(new FileClickEvent(file));
-            }
-        });
-
+    public void onBindViewHolder(FileViewHolder holder, int position) {
+        final IGCFile file = dataset.get(position);
+        holder.setData(file);
     }
 
     @Override
