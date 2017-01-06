@@ -87,7 +87,7 @@ public class Utilities {
             final String minutesString = igcTime.substring(2, 4);
             final String secondsString = igcTime.substring(4, 6);
             return hoursString + ":" + minutesString + ":" + secondsString;
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Throwable e) {
             Logger.logError(e.getMessage());
         }
         return Constants.EMPTY_STRING;
@@ -104,7 +104,7 @@ public class Utilities {
             long diffHours = diff / (60 * 60 * 1000);
 
             return String.format(Constants.FLIGHT_DURATION_FORMAT, diffHours, diffMinutes);
-        } catch (ParseException e) {
+        } catch (Throwable e) {
             Logger.logError(e.getMessage());
         }
         return Constants.FLIGHT_DURATION_ERROR;
@@ -113,7 +113,7 @@ public class Utilities {
     public static String getTimeHHMM(String timeHHMMSS) {
         try {
             return timeHHMMSS.substring(0, timeHHMMSS.length() - 3);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Throwable e) {
             Logger.logError(e.getMessage());
         }
         return Constants.EMPTY_STRING;
