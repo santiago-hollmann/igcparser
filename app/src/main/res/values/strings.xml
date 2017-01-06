@@ -18,4 +18,9 @@
     <string name="sort_by_glider">Sort by glider</string>
     <string name="sort_by_date">Sort by date</string>
     <string name="about">About the app</string>
+    <string name="about_developer">Developed by Santiago Hollmann.</string>
+    <string name="about_why">I kindly offer this app to the glider pilots community so they can view and enjoy their flights.\n\nFeel free to contact me for improvements, suggestions or any kind of feedback.</string>
+    <string name="about_contact">You can send me e-mails to santiago.hollmann@gmail or tweet to @santihollmann.</string>
+    <string name="about_enjoy">Have good flights!</string>
+    <string name="version">"Version: "</string>
 </resources>

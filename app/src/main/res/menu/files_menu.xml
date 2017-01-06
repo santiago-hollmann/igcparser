@@ -40,6 +40,5 @@
         android:title="@string/sort_by_date" />
     <item
         android:id="@+id/menu_about"
-        android:title="@string/about"
-        android:visible="false" />
+        android:title="@string/about" />
 </menu>

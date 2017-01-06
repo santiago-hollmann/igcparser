@@ -156,12 +156,14 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         MenuItem menuSortByPilot = menu.findItem(R.id.menu_sort_pilot);
         MenuItem menuSortByGliderId = menu.findItem(R.id.menu_sort_glider);
         MenuItem menuSortByDate = menu.findItem(R.id.menu_sort_date);
+        MenuItem menuAbout = menu.findItem(R.id.menu_about);
 
         menuSearchEntireSdCard.setOnMenuItemClickListener(this);
         menuSortByDate.setOnMenuItemClickListener(this);
         menuSortByGliderId.setOnMenuItemClickListener(this);
         menuRefresh.setOnMenuItemClickListener(this);
         menuSortByPilot.setOnMenuItemClickListener(this);
+        menuAbout.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -186,6 +188,10 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                 break;
             case R.id.menu_sort_date:
                 sortBy(Comparators.compareByDate);
+                break;
+            case R.id.menu_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
                 break;
         }
         return false;

@@ -34,6 +34,7 @@ public class TrackerHelper {
     private static final String FLIGHT_FAST_FORWARD = "Fast Forward Flight";
     private static final String TAP_FILE = "Tap File";
     private static final String NO_FILES_FOUND = "No Files Found";
+    private static final String ABOUT = "About";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -68,5 +69,9 @@ public class TrackerHelper {
 
     public static void trackNoFilesFound() {
         AnswersHelper.trackEvent(NO_FILES_FOUND);
+    }
+
+    public static void trackAbout() {
+        AnswersHelper.trackEvent(ABOUT);
     }
 }
