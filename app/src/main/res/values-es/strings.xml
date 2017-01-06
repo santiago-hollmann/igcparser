@@ -37,6 +37,7 @@
     <string name="information_pilot">Piloto: %1$s</string>
     <string name="search_flights_wait">Buscando archivos, espere por favor.</string>
     <string name="refresh">Actualizar</string>
+    <string name="scan_complete_sd_card">Buscar en toda la tarjeta SD</string>
     <string name="sort_by_pilot">Ordenar por piloto</string>
     <string name="sort_by_glider">Ordenar por planeador</string>
     <string name="sort_by_date">Ordenar por fecha</string>
@@ -45,6 +46,5 @@
     <string name="about_enjoy">¡Buenos vuelos!</string>
     <string name="about_contact">Podés mandarme e-mail a santiago.hollmann@gmail.com o twittearme a @santihollmann.</string>
     <string name="about_why">Creé esta aplicación para que la comunidad de pilotos de planeador puedan ver y disfrutar sus vuelos.\n\nSentite libre contactarme por mejoras, sugerencias, problemas o cualquier tipo de feedback.</string>
-    <string name="scan_complete_sd_card">Buscar en toda la tarjeta SD.</string>
     <string name="version">"Versión: "</string>
 </resources>

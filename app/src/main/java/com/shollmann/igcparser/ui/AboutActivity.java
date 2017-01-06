@@ -39,6 +39,5 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
         TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
         txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
-        TrackerHelper.trackAbout();
     }
 }

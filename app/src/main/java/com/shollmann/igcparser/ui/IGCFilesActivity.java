@@ -175,26 +175,39 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         }
         switch (menuItem.getItemId()) {
             case R.id.menu_refresh:
-                new FindIGCFilesAsynkTask().execute(lastSearchedPath);
+                TrackerHelper.trackRefresh();
+                searchForFiles(lastSearchedPath);
                 break;
             case R.id.menu_search_sdcard:
-                new FindIGCFilesAsynkTask().execute(Utilities.getSdCardFolder());
+                TrackerHelper.trackSearchSdCard();
+                searchForFiles(Utilities.getSdCardFolder());
                 break;
             case R.id.menu_sort_glider:
+                TrackerHelper.trackSortByGlider();
                 sortBy(Comparators.compareByGlider);
                 break;
             case R.id.menu_sort_pilot:
+                TrackerHelper.trackSortByPilot();
                 sortBy(Comparators.compareByPilot);
                 break;
             case R.id.menu_sort_date:
+                TrackerHelper.trackSortByDate();
                 sortBy(Comparators.compareByDate);
                 break;
             case R.id.menu_about:
+                TrackerHelper.trackAbout();
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
         }
         return false;
+    }
+
+    private void searchForFiles(File path) {
+        listFiles.clear();
+        adapter.notifyDataSetChanged();
+        layoutLoading.setVisibility(View.VISIBLE);
+        new FindIGCFilesAsynkTask().execute(path);
     }
 
     private void sortBy(Comparator<IGCFile> comparator) {

@@ -35,6 +35,11 @@ public class TrackerHelper {
     private static final String TAP_FILE = "Tap File";
     private static final String NO_FILES_FOUND = "No Files Found";
     private static final String ABOUT = "About";
+    private static final String SORT_BY_PILOT = "Sort by Pilot";
+    private static final String SORT_BY_GLIDER = "Sort by Glider";
+    private static final String SORT_BY_DATE = "Sort by Date";
+    private static final String SEARCH_SD_CARD = "Search SD Card";
+    private static final String REFRESH = "Refresh";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -73,5 +78,25 @@ public class TrackerHelper {
 
     public static void trackAbout() {
         AnswersHelper.trackEvent(ABOUT);
+    }
+
+    public static void trackSortByPilot() {
+        AnswersHelper.trackEvent(SORT_BY_PILOT);
+    }
+
+    public static void trackSortByGlider() {
+        AnswersHelper.trackEvent(SORT_BY_GLIDER);
+    }
+
+    public static void trackSortByDate() {
+        AnswersHelper.trackEvent(SORT_BY_DATE);
+    }
+
+    public static void trackSearchSdCard() {
+        AnswersHelper.trackEvent(SEARCH_SD_CARD);
+    }
+
+    public static void trackRefresh() {
+        AnswersHelper.trackEvent(REFRESH);
     }
 }
