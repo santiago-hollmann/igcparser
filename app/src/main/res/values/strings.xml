@@ -6,12 +6,12 @@
     <string name="information_min_altitude">Min Altitude: %1$sm</string>
     <string name="information_max_altitude">Max Altitude: %1$sm</string>
     <string name="information_duration">Duration: %1$s</string>
-    <string name="searching_igc_all_sdcard">Searching for IGC files on other folders</string>
+    <string name="searching_igc_all_sdcard">Searching for IGC files on your phone</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Searching for IGC files on XCSoar\'s logs folder</string>
     <string name="no_files_found_with_explanation">No IGC files found.\nIf you have some, move them into XCSoar logs folder or the sdcard folder.</string>
     <string name="information_glider">Glider: %1$s</string>
     <string name="information_pilot">Pilot: %1$s</string>
-    <string name="search_flights_wait">Searching for files, wait please.</string>
+    <string name="search_flights_wait">Searching for files, please wait.</string>
     <string name="refresh">Refresh</string>
     <string name="scan_complete_sd_card">Scan complete SD Card</string>
     <string name="sort_by_pilot">Sort by pilot</string>

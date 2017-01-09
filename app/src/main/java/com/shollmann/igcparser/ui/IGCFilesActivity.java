@@ -196,6 +196,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                 break;
             case R.id.menu_search_sdcard:
                 TrackerHelper.trackSearchSdCard();
+                txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
                 searchForFiles(Utilities.getSdCardFolder());
                 break;
             case R.id.menu_sort_glider:

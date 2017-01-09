@@ -61,6 +61,7 @@ import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.util.List;
 
@@ -183,7 +184,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     }
 
     private void displayTrack() {
-        PolylineOptions polyline = new PolylineOptions().width(Constants.Map.MAP_TRACK_POLYLINE_WIDTH).color(Color.BLUE);
+        PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.BLUE);
         listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         polyline.addAll(listLatLngPoints);
         googleMap.addPolyline(polyline);
@@ -191,7 +192,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
 
     private void displayWayPoints() {
         if (!igcFile.getWaypoints().isEmpty()) {
-            PolylineOptions polyline = new PolylineOptions().width(Constants.Map.MAP_TRACK_POLYLINE_WIDTH).color(Color.RED);
+            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.RED);
             listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
             polyline.addAll(listLatLngPoints);
             googleMap.addPolyline(polyline);

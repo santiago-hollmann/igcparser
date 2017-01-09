@@ -33,7 +33,6 @@ import com.shollmann.android.igcparser.model.LatLon;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -202,4 +201,5 @@ public class Utilities {
             return Character.toUpperCase(first) + word.substring(1);
         }
     }
+
 }
