@@ -24,4 +24,13 @@
     <string name="about_enjoy">Good flights!</string>
     <string name="version">"Version: "</string>
     <string name="sort">Sort</string>
+    <string name="pilot_in_charge">Pilot</string>
+    <string name="glider">Glider</string>
+    <string name="duration">Duration</string>
+    <string name="distance">Distance</string>
+    <string name="date">Date</string>
+    <string name="take_off">Take Off</string>
+    <string name="landing">Landing</string>
+    <string name="max_altitude">Max Altitude</string>
+    <string name="min_altitude">Min Altitude</string>
 </resources>

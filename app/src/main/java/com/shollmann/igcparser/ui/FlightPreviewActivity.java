@@ -67,7 +67,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 
-public class FlightInformationActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+public class FlightPreviewActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     private boolean isFinishReplay = true;
     private int duration;
     private int replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
@@ -124,6 +124,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
     private void setClickListeners() {
         btnCloseInformation.setOnClickListener(this);
         btnShowInformation.setOnClickListener(this);
+        cardviewInformation.setOnClickListener(this);
     }
 
     private void findViews() {
@@ -250,13 +251,19 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
             case R.id.main_btn_speed_up:
                 speedUpReplay();
                 break;
+            case R.id.main_cardview_information:
+                TrackerHelper.trackOpenMoreInformation();
+                Intent intent = new Intent(this, FlightMoreInformationActivity.class);
+                intent.putExtra(Constants.IGC_FILE, igcFile);
+                startActivity(intent);
+                break;
         }
     }
 
     private class ParseIGCFileAsyncTask extends AsyncTask<Void, Void, Void> {
-        private WeakReference<FlightInformationActivity> activity;
+        private WeakReference<FlightPreviewActivity> activity;
 
-        public ParseIGCFileAsyncTask(FlightInformationActivity activity) {
+        public ParseIGCFileAsyncTask(FlightPreviewActivity activity) {
             this.activity = new WeakReference<>(activity);
         }
 

@@ -30,10 +30,11 @@ import android.text.TextUtils;
 import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.Utilities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IGCFile {
+public class IGCFile implements Serializable {
     private List<ILatLonRecord> listTrackPoints;
     private List<ILatLonRecord> listWayPoints;
     private double distance;

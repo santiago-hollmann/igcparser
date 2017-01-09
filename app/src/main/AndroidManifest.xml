@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.FlightInformationActivity"
+            android:name=".ui.FlightPreviewActivity"
             android:screenOrientation="portrait">
             <intent-filter
                 android:icon="@drawable/ic_launcher"
@@ -70,6 +70,10 @@
         </activity>
         <activity
             android:name=".ui.AboutActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.FlightMoreInformationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 

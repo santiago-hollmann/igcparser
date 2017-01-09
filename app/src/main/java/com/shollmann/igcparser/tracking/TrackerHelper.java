@@ -104,4 +104,8 @@ public class TrackerHelper {
     public static void trackSortDialog() {
         AnswersHelper.trackEvent(SORT_DIALOG);
     }
+
+    public static void trackOpenMoreInformation() {
+
+    }
 }

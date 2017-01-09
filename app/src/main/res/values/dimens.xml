@@ -22,6 +22,7 @@
     <dimen name="material_text_caption">12sp</dimen>
     <dimen name="material_text_bigger_caption">13sp</dimen>
     <dimen name="material_text_subhead">16sp</dimen>
+    <dimen name="more_information_icon_size">24dp</dimen>
     <dimen name="map_line_width">1.5dp</dimen>
 
 </resources>

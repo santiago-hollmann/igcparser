@@ -147,7 +147,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FileClickEvent event) {
         TrackerHelper.trackTapFile();
-        Intent intent = new Intent(this, FlightInformationActivity.class);
+        Intent intent = new Intent(this, FlightPreviewActivity.class);
         intent.putExtra(Constants.FILE_TO_LOAD_PATH, event.getFile().getAbsoluteFile().toString());
         startActivity(intent);
     }

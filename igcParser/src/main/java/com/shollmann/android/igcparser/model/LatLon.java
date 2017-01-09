@@ -24,7 +24,9 @@
 
 package com.shollmann.android.igcparser.model;
 
-public class LatLon {
+import java.io.Serializable;
+
+public class LatLon implements Serializable {
     private double lat;
     private double lon;
 
