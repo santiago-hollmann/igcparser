@@ -63,6 +63,7 @@ import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 
@@ -154,7 +155,7 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
 
-        new ParseIGCFileAsynkTask().execute();
+        new ParseIGCFileAsyncTask(this).execute();
     }
 
     private void displayFlightInformation() {
@@ -243,10 +244,22 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
                 cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
                 TrackerHelper.trackOpenInformation();
                 break;
+            case R.id.main_btn_play:
+                startFlightReplay();
+                break;
+            case R.id.main_btn_speed_up:
+                speedUpReplay();
+                break;
         }
     }
 
-    private class ParseIGCFileAsynkTask extends AsyncTask<Void, Void, Void> implements View.OnClickListener {
+    private class ParseIGCFileAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<FlightInformationActivity> activity;
+
+        public ParseIGCFileAsyncTask(FlightInformationActivity activity) {
+            this.activity = new WeakReference<>(activity);
+        }
+
         protected Void doInBackground(Void... something) {
             igcFile = Parser.parse(Uri.parse(fileToLoadPath));
             return null;
@@ -256,55 +269,44 @@ public class FlightInformationActivity extends AppCompatActivity implements OnMa
         }
 
         protected void onPostExecute(Void result) {
-            handleIGCFileLoaded();
-        }
-
-        private void handleIGCFileLoaded() {
-            displayWayPoints();
-            displayTrack();
-            displayFlightInformation();
-            displayReplayViews();
-            mapView.setVisibility(View.VISIBLE);
-            cardviewInformation.setVisibility(View.VISIBLE);
-            loading.setVisibility(View.GONE);
-        }
-
-        private void displayReplayViews() {
-            if (listLatLngPoints != null && !listLatLngPoints.isEmpty()) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listLatLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, listLatLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
-                markerGlider = googleMap.addMarker(new MarkerOptions()
-                        .position(listLatLngPoints.get(0))
-                        .zIndex(1.0f)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
-                );
-                setReplayButtons();
-                TrackerHelper.trackFlightDisplayed();
+            if (activity.get() != null) {
+                handleIGCFileLoaded();
             }
         }
+    }
 
-        private void setReplayButtons() {
-            btnPlay.setOnClickListener(this);
-            btnFastForward.setOnClickListener(this);
+    private void handleIGCFileLoaded() {
+        displayWayPoints();
+        displayTrack();
+        displayFlightInformation();
+        displayReplayViews();
+        mapView.setVisibility(View.VISIBLE);
+        cardviewInformation.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
+    }
 
-            btnPlay.setImageResource(R.drawable.ic_play_arrow);
-            btnFastForward.setImageResource(R.drawable.ic_fast_forward);
-
-            btnPlay.setVisibility(View.VISIBLE);
-            btnFastForward.setVisibility(View.GONE);
-
+    private void displayReplayViews() {
+        if (listLatLngPoints != null && !listLatLngPoints.isEmpty()) {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listLatLngPoints.get(0).latitude + Constants.Map.FIX_INITIAL_LATITUDE, listLatLngPoints.get(0).longitude), Constants.Map.MAP_DEFAULT_ZOOM));
+            markerGlider = googleMap.addMarker(new MarkerOptions()
+                    .position(listLatLngPoints.get(0))
+                    .zIndex(1.0f)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
+            );
+            setReplayButtons();
+            TrackerHelper.trackFlightDisplayed();
         }
+    }
 
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.main_btn_play:
-                    startFlightReplay();
-                    break;
-                case R.id.main_btn_speed_up:
-                    speedUpReplay();
-                    break;
-            }
-        }
+    private void setReplayButtons() {
+        btnPlay.setOnClickListener(this);
+        btnFastForward.setOnClickListener(this);
+
+        btnPlay.setImageResource(R.drawable.ic_play_arrow);
+        btnFastForward.setImageResource(R.drawable.ic_fast_forward);
+
+        btnPlay.setVisibility(View.VISIBLE);
+        btnFastForward.setVisibility(View.GONE);
 
     }
 
