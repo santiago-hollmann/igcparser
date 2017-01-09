@@ -59,13 +59,19 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
     }
 
     private void showInformation() {
-        insertField(R.drawable.ic_person, R.string.pilot_in_charge, Utilities.capitalizeText(igcFile.getPilotInCharge()));
         insertField(R.drawable.ic_calendar, R.string.date, igcFile.getDate());
-        insertField(R.drawable.ic_depature, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()));
-        insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
+        insertField(R.drawable.ic_person, R.string.pilot_in_charge, Utilities.capitalizeText(igcFile.getPilotInCharge()));
+        insertField(R.drawable.ic_glider_big, R.string.glider, igcFile.getGliderTypeAndId());
+        insertField(R.drawable.ic_time, R.string.duration, igcFile.getFlightTime());
+        insertField(R.drawable.ic_distance, R.string.distance, Utilities.getFormattedNumber((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER), getResources().getConfiguration().locale));
         insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale));
         insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale));
+        insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()));
+        insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
+        if (!igcFile.getTrackPoints().isEmpty()) {
+            insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
 
+        }
 
     }
 

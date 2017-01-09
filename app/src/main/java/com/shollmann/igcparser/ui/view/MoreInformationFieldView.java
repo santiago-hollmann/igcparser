@@ -62,16 +62,6 @@ public class MoreInformationFieldView extends RelativeLayout {
         txtTitle.setText(getResources().getString(titleStringId));
         txtValue.setText(value);
         imgIcon.setImageResource(iconId);
-//        Drawable dr = getResources().getDrawable(iconId);
-//        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-//        final int dimensionPixelSize = ResourcesHelper.getDimensionPixelSize(R.dimen.information_icon_size);
-//        Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dimensionPixelSize, dimensionPixelSize, true));
-
-        //setCompoundDrawablesWithIntrinsicBounds (image to left, top, right, bottom)
-//        imgIcon.setBackgroundDrawable(d);
-//        imgIcon.setColorFilter(getResources().getColor(R.color.colorAccent));
-//        imgIcon.setColorFilter(ContextCompat.getColor(getContext(),R.color.colorAccent));
-
     }
 
 

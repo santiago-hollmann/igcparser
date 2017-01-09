@@ -54,7 +54,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_person" />
+                android:src="@drawable/ic_person"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_pilot"
@@ -81,7 +82,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_glider_big" />
+                android:src="@drawable/ic_glider_big"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_glider"
@@ -104,7 +106,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_time" />
+                android:src="@drawable/ic_time"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_duration"
@@ -126,7 +129,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_distance" />
+                android:src="@drawable/ic_distance"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_distance"
@@ -147,7 +151,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_max" />
+                android:src="@drawable/ic_max"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_max_altitude"
@@ -169,7 +174,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_min" />
+                android:src="@drawable/ic_min"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_start_altitude"
@@ -190,7 +196,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_depature" />
+                android:src="@drawable/ic_departure"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_takeoff"
@@ -212,7 +219,8 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_landing" />
+                android:src="@drawable/ic_landing"
+                android:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/main_txt_landing"
