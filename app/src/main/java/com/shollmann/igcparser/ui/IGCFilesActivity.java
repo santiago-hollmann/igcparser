@@ -59,6 +59,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,7 +88,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         findViews();
 
         setupFilesList();
-        new FindIGCFilesAsynkTask().execute(Utilities.getXCSoarDataFolder());
+        new FindIGCFilesAsyncTask(this).execute(Utilities.getXCSoarDataFolder());
 
     }
 
@@ -196,6 +197,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                 break;
             case R.id.menu_search_sdcard:
                 TrackerHelper.trackSearchSdCard();
+                txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
                 searchForFiles(Utilities.getSdCardFolder());
                 break;
             case R.id.menu_sort_glider:
@@ -223,7 +225,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         listFiles.clear();
         adapter.notifyDataSetChanged();
         layoutLoading.setVisibility(View.VISIBLE);
-        new FindIGCFilesAsynkTask().execute(path);
+        new FindIGCFilesAsyncTask(this).execute(path);
     }
 
     private void sortBy(Comparator<IGCFile> comparator) {
@@ -233,7 +235,12 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         }
     }
 
-    private class FindIGCFilesAsynkTask extends AsyncTask<File, Void, Boolean> {
+    private class FindIGCFilesAsyncTask extends AsyncTask<File, Void, Boolean> {
+        WeakReference<IGCFilesActivity> activity;
+
+        public FindIGCFilesAsyncTask(IGCFilesActivity activity) {
+            this.activity = new WeakReference<>(activity);
+        }
 
         protected Boolean doInBackground(File... file) {
             isSearching = true;
@@ -246,6 +253,12 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         }
 
         protected void onPostExecute(Boolean isEntireFolder) {
+            if (activity.get() != null) {
+                handleFinishFilesLoad(isEntireFolder);
+            }
+        }
+
+        private void handleFinishFilesLoad(Boolean isEntireFolder) {
             if (!listFiles.isEmpty()) {
                 layoutLoading.setVisibility(RecyclerView.GONE);
                 adapter.setDataset(listFiles);
@@ -256,7 +269,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                     Logger.log(message);
                     Crashlytics.log(message);
                     txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
-                    new FindIGCFilesAsynkTask().execute(Utilities.getSdCardFolder());
+                    new FindIGCFilesAsyncTask(activity.get()).execute(Utilities.getSdCardFolder());
                 } else {
                     progress.setVisibility(View.GONE);
                     txtLoading.setText(getString(R.string.no_files_found_with_explanation));

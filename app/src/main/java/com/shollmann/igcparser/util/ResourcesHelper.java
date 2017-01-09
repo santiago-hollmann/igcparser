@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,23 @@
 
 package com.shollmann.igcparser.util;
 
-public class Constants extends com.shollmann.android.igcparser.util.Constants {
-    public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
+import android.content.Context;
+import android.util.TypedValue;
 
-    public class Map {
-        public static final int MAP_DEFAULT_ZOOM = 12;
-        public static final int METERS_IN_ONE_KILOMETER = 1000;
-        public static final double FIX_INITIAL_LATITUDE = 0.0195;
-        public static final int DEFAULT_REPLAY_SPEED = 76;
-        public static final int MAX_REPLAY_SPEED = 2;
-        public static final double REPLAY_SPEED_INCREASER = 1.5;
+import com.shollmann.igcparser.IGCViewerApplication;
+
+public class ResourcesHelper {
+
+    public static int getDimensionPixelSize(int resource) {
+        Context app = IGCViewerApplication.getApplication();
+        TypedValue rawValue = new TypedValue();
+        app.getResources().getValue(resource, rawValue, true);
+        if (rawValue.type == TypedValue.TYPE_FIRST_INT) {
+            //This is the case in which a dimen references an int like this: <dimen name="mydimen">@integer/custom_match_parent</dimen>
+            return app.getResources().getInteger(resource);
+        } else {
+            //This is the standard case of reading a dimen as a dimen like this: <dimen name="mydimen">400dp</dimen>
+            return app.getResources().getDimensionPixelSize(resource);
+        }
     }
 }
