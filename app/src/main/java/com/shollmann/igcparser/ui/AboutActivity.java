@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,22 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.util;
+package com.shollmann.igcparser.ui;
 
-public class Constants extends com.shollmann.android.igcparser.util.Constants {
-    public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
-    public class Map {
-        public static final int MAP_DEFAULT_ZOOM = 12;
-        public static final int METERS_IN_ONE_KILOMETER = 1000;
-        public static final double FIX_INITIAL_LATITUDE = 0.0195;
-        public static final int DEFAULT_REPLAY_SPEED = 76;
-        public static final int MAX_REPLAY_SPEED = 2;
-        public static final double REPLAY_SPEED_INCREASER = 1.5;
+import com.shollmann.igcparser.BuildConfig;
+import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.tracking.TrackerHelper;
+
+public class AboutActivity extends AppCompatActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
+        TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
+        txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
     }
 }

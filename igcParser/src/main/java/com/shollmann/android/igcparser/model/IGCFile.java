@@ -24,6 +24,10 @@
 
 package com.shollmann.android.igcparser.model;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
+import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.Utilities;
 
 import java.util.ArrayList;
@@ -41,6 +45,8 @@ public class IGCFile {
     private String gliderId;
     private String gliderType;
     private String date;
+    private String fileName;
+    private String filePath;
 
     public IGCFile() {
         listWayPoints = new ArrayList<>();
@@ -150,5 +156,43 @@ public class IGCFile {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getGliderTypeAndId() {
+        if (TextUtils.isEmpty(gliderId) && TextUtils.isEmpty(gliderType)) {
+            return Constants.EMPTY_STRING;
+        }
+
+        if (TextUtils.isEmpty(gliderType)) {
+            return gliderId;
+        } else {
+            if (!TextUtils.isEmpty(gliderId)) {
+                String gliderInformationPlaceholder = "%1$s (%2$s)";
+                return String.format(gliderInformationPlaceholder, gliderType, gliderId);
+            } else {
+                return gliderType;
+            }
+        }
+    }
+
+    public void setFileData(Uri filePath) {
+        this.filePath = filePath.toString();
+        this.fileName = filePath.getLastPathSegment();
     }
 }

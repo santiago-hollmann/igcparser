@@ -6,9 +6,22 @@
     <string name="information_min_altitude">Min Altitude: %1$sm</string>
     <string name="information_max_altitude">Max Altitude: %1$sm</string>
     <string name="information_duration">Duration: %1$s</string>
-    <string name="searching_igc_all_sdcard">Searching for IGC files on other folders</string>
+    <string name="searching_igc_all_sdcard">Searching for IGC files on your phone</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Searching for IGC files on XCSoar\'s logs folder</string>
     <string name="no_files_found_with_explanation">No IGC files found.\nIf you have some, move them into XCSoar logs folder or the sdcard folder.</string>
     <string name="information_glider">Glider: %1$s</string>
     <string name="information_pilot">Pilot: %1$s</string>
+    <string name="search_flights_wait">Searching for files, please wait.</string>
+    <string name="refresh">Refresh</string>
+    <string name="scan_complete_sd_card">Scan complete SD Card</string>
+    <string name="sort_by_pilot">Sort by pilot</string>
+    <string name="sort_by_glider">Sort by glider</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="about">About the app</string>
+    <string name="about_developer">Developed by Santiago Hollmann.</string>
+    <string name="about_why">I kindly offer this app to the glider pilots community so they can view and enjoy their flights.\n\nFeel free to contact me for improvements, suggestions or any kind of feedback.</string>
+    <string name="about_contact">You can send me e-mails to santiago.hollmann@gmail or tweet to @santihollmann.</string>
+    <string name="about_enjoy">Have good flights!</string>
+    <string name="version">"Version: "</string>
+    <string name="sort">Sort</string>
 </resources>

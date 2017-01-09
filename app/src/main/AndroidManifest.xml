@@ -33,24 +33,45 @@
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.igc"
-                    android:scheme="file" />
+
+                <data android:host="*" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\.igc" />
+                <data android:pathPattern=".*\.Igc" />
+                <data android:pathPattern=".*\.iGc" />
+                <data android:pathPattern=".*\.igC" />
+                <data android:pathPattern=".*\.IGc" />
+                <data android:pathPattern=".*\.iGC" />
+                <data android:pathPattern=".*\.IgC" />
+                <data android:pathPattern=".*\.IGC" />
             </intent-filter>
             <intent-filter
                 android:icon="@drawable/ic_launcher"
                 android:label="@string/app_name"
                 android:priority="1000">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="file" />
-                <data android:host="*" />
-                <data android:pathPattern=".*\\.igc" />
+                <data
+                    android:mimeType="application/vnd.flight+igc"
+                    android:scheme="file" />
+                <data
+                    android:mimeType="application/vnd.flight+igc"
+                    android:scheme="content" />
+                <data
+                    android:mimeType="application/octet-stream"
+                    android:scheme="file" />
+                <data
+                    android:mimeType="application/octet-stream"
+                    android:scheme="content" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.AboutActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

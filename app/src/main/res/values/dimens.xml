@@ -3,17 +3,25 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_medium_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="textsize_information">14sp</dimen>
     <dimen name="icon_information_size">18dp</dimen>
+    <dimen name="extra_extra_large_margin">32dp</dimen>
+    <dimen name="extra_large_margin">24dp</dimen>
     <dimen name="large_margin">16dp</dimen>
     <dimen name="medium_margin">8dp</dimen>
     <dimen name="small_margin">4dp</dimen>
     <dimen name="extra_small_margin">2dp</dimen>
-    <dimen name="information_margin_top">6dp</dimen>
+    <dimen name="information_margin_top">8dp</dimen>
     <dimen name="information_close_size">24dp</dimen>
     <dimen name="show_information_margin_top">32dp</dimen>
-    <dimen name="replay_button_dimension">40dp</dimen>
+    <dimen name="replay_button_dimension">42dp</dimen>
     <dimen name="minus_one">-1dp</dimen>
     <dimen name="one_dp">1dp</dimen>
     <dimen name="half_dp">0.5dp</dimen>
+    <dimen name="material_text_body">14sp</dimen>
+    <dimen name="material_text_small_caption">11sp</dimen>
+    <dimen name="material_text_caption">12sp</dimen>
+    <dimen name="material_text_bigger_caption">13sp</dimen>
+    <dimen name="material_text_subhead">16sp</dimen>
+    <dimen name="map_line_width">1.5dp</dimen>
+
 </resources>
