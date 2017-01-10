@@ -22,32 +22,47 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.ui;
+package com.shollmann.igcparser.ui.view;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.shollmann.igcparser.BuildConfig;
 import com.shollmann.igcparser.R;
 
-public class AboutActivity extends AppCompatActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+public class MoreInformationFieldView extends RelativeLayout {
+    private TextView txtTitle;
+    private TextView txtValue;
+    private ImageView imgIcon;
 
-        setContentView(R.layout.activity_about);
-        TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
-        txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    public MoreInformationFieldView(Context context) {
+        this(context, null);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
-        return super.onOptionsItemSelected(item);
+    public MoreInformationFieldView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
+
+    public MoreInformationFieldView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    public void init() {
+        inflate(getContext(), R.layout.view_more_info_field, this);
+
+        txtTitle = (TextView) findViewById(R.id.more_info_title);
+        txtValue = (TextView) findViewById(R.id.more_info_value);
+        imgIcon = (ImageView) findViewById(R.id.more_info_icon);
+    }
+
+    public void show(int iconId, int titleStringId, String value) {
+        txtTitle.setText(getResources().getString(titleStringId));
+        txtValue.setText(value);
+        imgIcon.setImageResource(iconId);
+    }
+
+
 }

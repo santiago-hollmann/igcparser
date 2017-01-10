@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">IGC Viewer</string>
-    <string name="information_distance">Distance: %1$skm</string>
-    <string name="information_takeoff">Take Off: %1$s UTC %2$s</string>
-    <string name="information_landing">Landing: %1$s UTC</string>
-    <string name="information_min_altitude">Min Altitude: %1$sm</string>
-    <string name="information_max_altitude">Max Altitude: %1$sm</string>
-    <string name="information_duration">Duration: %1$s</string>
+    <string name="information_distance"><![CDATA[<b>Distance:</b> %1$skm]]></string>
+    <string name="information_takeoff"><![CDATA[<b>Take Off:</b> %1$s %2$s UTC]]></string>
+    <string name="information_landing"><![CDATA[<b>Landing:</b> %1$s UTC]]></string>
+    <string name="information_min_altitude"><![CDATA[<b>Min Altitude:</b> %1$sm]]></string>
+    <string name="information_max_altitude"><![CDATA[<b>Max Altitude:</b> %1$sm]]></string>
+    <string name="information_duration"><![CDATA[<b>Duration:</b> %1$s]]></string>
     <string name="searching_igc_all_sdcard">Searching for IGC files on your phone</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Searching for IGC files on XCSoar\'s logs folder</string>
     <string name="no_files_found_with_explanation">No IGC files found.\nIf you have some, move them into XCSoar logs folder or the sdcard folder.</string>
-    <string name="information_glider">Glider: %1$s</string>
-    <string name="information_pilot">Pilot: %1$s</string>
-    <string name="search_flights_wait">Searching for files, please wait.</string>
+    <string name="information_glider"><![CDATA[<b>Glider:</b> %1$s]]></string>
+    <string name="information_pilot"><![CDATA[<b>Pilot:</b> %1$s]]></string>
+    <string name="search_flights_wait">Searching for files, please wait</string>
     <string name="refresh">Refresh</string>
     <string name="scan_complete_sd_card">Scan complete SD Card</string>
     <string name="sort_by_pilot">Sort by pilot</string>
@@ -24,4 +24,20 @@
     <string name="about_enjoy">Good flights!</string>
     <string name="version">"Version: "</string>
     <string name="sort">Sort</string>
+    <string name="pilot_in_charge">Pilot</string>
+    <string name="glider">Glider</string>
+    <string name="duration">Duration</string>
+    <string name="distance">Distance</string>
+    <string name="task_distance">Distance: %1$skm</string>
+    <string name="date">Date</string>
+    <string name="take_off">Take Off</string>
+    <string name="landing">Landing</string>
+    <string name="max_altitude">Max Altitude</string>
+    <string name="min_altitude">Min Altitude</string>
+    <string name="task">Task</string>
+    <string name="finish">Finish</string>
+    <string name="start">Start</string>
+    <string name="turn">Turn</string>
+    <string name="sorry_error_happen">Sorry, an unexpected error happen</string>
+    <string name="altitude_chart">Historic Altitude (in meters)</string>
 </resources>
