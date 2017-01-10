@@ -39,7 +39,6 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -60,6 +59,7 @@ public class FlightInformationActivity extends AppCompatActivity {
     private LinearLayout layoutFieldsContainer;
     private RelativeLayout layoutTaskContainer;
     private LinearLayout layoutWayPointsContainer;
+    private LinearLayout layoutChartContainer;
     private LineChart chart;
     private IGCFile igcFile;
 
@@ -81,11 +81,12 @@ public class FlightInformationActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        setContentView(R.layout.activity_flight_more_information);
+        setContentView(R.layout.activity_flight_information);
 
         layoutFieldsContainer = (LinearLayout) findViewById(R.id.more_info_field_container);
         layoutTaskContainer = (RelativeLayout) findViewById(R.id.more_info_task_container);
         layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
+        layoutChartContainer = (LinearLayout) findViewById(R.id.more_info_chart_container);
         chart = (LineChart) findViewById(R.id.more_info_chart);
     }
 
@@ -97,13 +98,17 @@ public class FlightInformationActivity extends AppCompatActivity {
         insertField(R.drawable.ic_distance, R.string.distance, Utilities.getDistanceInKm(igcFile.getDistance(), getResources().getConfiguration().locale) + "km");
         insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale) + "m");
         insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale) + "m");
-        insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()));
-        insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
+        insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()) + " UTC");
+        insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()) + " UTC");
         if (!igcFile.getWaypoints().isEmpty() && !Utilities.isZero(igcFile.getTaskDistance())) {
             layoutTaskContainer.setVisibility(View.VISIBLE);
             populateTask();
         }
-        showAltitudeChart();
+        if (!igcFile.getTrackPoints().isEmpty()) {
+            showAltitudeChart();
+        } else {
+            layoutChartContainer.setVisibility(View.GONE);
+        }
 
     }
 
@@ -111,10 +116,16 @@ public class FlightInformationActivity extends AppCompatActivity {
         List<Entry> entries = new ArrayList<>();
 
         final List<ILatLonRecord> trackPoints = igcFile.getTrackPoints();
-        for (int i = 0; i < trackPoints.size(); i++) {
-            BRecord bRecord = (BRecord) trackPoints.get(i);
-            entries.add(new Entry(i, bRecord.getAltitude()));
+        int i = 0;
+        for (i = 0; i < trackPoints.size(); i++) {
+            if (i % Constants.Chart.POINTS_SIMPLIFIER == 0) {
+                BRecord bRecord = (BRecord) trackPoints.get(i);
+                entries.add(new Entry(i, bRecord.getAltitude()));
+            }
         }
+
+        //Hack to always finish the graph where the glider has landed after the graph is simplified
+        entries.add(new Entry(i, ((BRecord) igcFile.getTrackPoints().get(igcFile.getTrackPoints().size() - 1)).getAltitude()));
 
         LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
         dataSet.setDrawCircles(false);
@@ -122,23 +133,27 @@ public class FlightInformationActivity extends AppCompatActivity {
         dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(R.dimen.half_dp));
         dataSet.setFillColor(getResources().getColor(R.color.colorPrimary));
         dataSet.setDrawFilled(true);
-        dataSet.setFillAlpha(Constants.Graphic.ALPHA_FILL);
+        dataSet.setFillAlpha(Constants.Chart.ALPHA_FILL);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSet.setColor(getResources().getColor(R.color.colorPrimary));
+        dataSet.setDrawValues(false);
 
         LineData lineData = new LineData(dataSet);
 
-        Description desc = new Description();
-        desc.setText(Constants.EMPTY_STRING);
-        chart.setDescription(desc);
-
+        chart.getDescription().setEnabled(false);
         chart.setTouchEnabled(false);
-        chart.getXAxis().setDrawLabels(false);
-        chart.getAxisRight().setDrawLabels(false);
-        chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
         chart.getLegend().setEnabled(false);
-        chart.getAxisLeft().setTextSize(Constants.Graphic.LABEL_SIZE);
-        chart.animateX(Constants.Graphic.ANIMATION_DURATION, Easing.EasingOption.EaseInSine);
+        chart.getAxisRight().setEnabled(false);
+
+        chart.getXAxis().setDrawLabels(false);
+        chart.getXAxis().setDrawGridLines(false);
+
+        chart.getAxisLeft().removeAllLimitLines();
+        chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
+        chart.getAxisLeft().setAxisMinimum(igcFile.getMinAltitude());
+        chart.getAxisLeft().setTextSize(Constants.Chart.LABEL_SIZE);
+
+        chart.animateX(Constants.Chart.ANIMATION_DURATION, Easing.EasingOption.EaseInSine);
 
         chart.setData(lineData);
         chart.invalidate();
@@ -147,7 +162,7 @@ public class FlightInformationActivity extends AppCompatActivity {
     private void populateTask() {
         for (ILatLonRecord waypoint : igcFile.getWaypoints()) {
             CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
-            if (!TextUtils.isEmpty(cRecord.getDescription())) {
+            if (!TextUtils.isEmpty(cRecord.getDescription().trim())) {
                 layoutWayPointsContainer.addView(createTaskTextView(cRecord.getDescription()));
             }
         }

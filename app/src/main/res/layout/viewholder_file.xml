@@ -50,6 +50,7 @@
             android:layout_toLeftOf="@+id/view_file_txt_date"
             android:drawableLeft="@drawable/ic_small_file"
             android:drawablePadding="@dimen/large_margin"
+            android:drawableTintMode="src_over"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="2016-9-5-XCS-AAA-01.igc"

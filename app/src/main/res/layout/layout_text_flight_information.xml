@@ -32,7 +32,7 @@
     android:layout_margin="@dimen/activity_horizontal_margin"
     android:clickable="true"
     android:visibility="gone"
-    tools:showIn="@layout/activity_flight_information">
+    tools:showIn="@layout/activity_flight_preview">
 
     <RelativeLayout
         android:layout_width="match_parent"

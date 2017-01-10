@@ -37,9 +37,10 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final double REPLAY_SPEED_INCREASE = 1.5;
     }
 
-    public class Graphic {
+    public class Chart {
         public static final float LABEL_SIZE = 14f;
         public static final int ANIMATION_DURATION = 400;
         public static final int ALPHA_FILL = 60;
+        public static final int POINTS_SIMPLIFIER = 30;
     }
 }
