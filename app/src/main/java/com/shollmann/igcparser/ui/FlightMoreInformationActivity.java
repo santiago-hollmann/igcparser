@@ -36,6 +36,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
@@ -43,11 +49,16 @@ import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.ui.view.MoreInformationFieldView;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.ResourcesHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlightMoreInformationActivity extends AppCompatActivity {
     private LinearLayout layoutFieldsContainer;
     private RelativeLayout layoutTaskContainer;
     private LinearLayout layoutWayPointsContainer;
+    private LineChart chart;
     private IGCFile igcFile;
 
     @Override
@@ -58,6 +69,8 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
         layoutFieldsContainer = (LinearLayout) findViewById(R.id.more_info_field_container);
         layoutTaskContainer = (RelativeLayout) findViewById(R.id.more_info_task_container);
         layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
+        chart = (LineChart) findViewById(R.id.more_info_chart);
+
 
         igcFile = (IGCFile) getIntent().getExtras().getSerializable(Constants.IGC_FILE);
 
@@ -80,11 +93,40 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
         insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale) + "m");
         insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()));
         insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
-        if (!igcFile.getTrackPoints().isEmpty()) {
+        if (!igcFile.getWaypoints().isEmpty() || igcFile.getTaskDistance() != 0) {
             layoutTaskContainer.setVisibility(View.VISIBLE);
             populateTask();
         }
+        showAltitudeChart();
 
+    }
+
+    private void showAltitudeChart() {
+        List<Entry> entries = new ArrayList<>();
+
+        final List<ILatLonRecord> trackPoints = igcFile.getTrackPoints();
+        for (int i = 0; i < trackPoints.size(); i++) {
+            BRecord bRecord = (BRecord) trackPoints.get(i);
+            entries.add(new Entry(i, bRecord.getAltitude()));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
+        dataSet.setDrawCircles(false);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(R.dimen.one_dp));
+        dataSet.setColor(getResources().getColor(R.color.colorPrimary));
+        LineData lineData = new LineData(dataSet);
+        Description desc = new Description();
+        desc.setText(Constants.EMPTY_STRING);
+        chart.setDescription(desc);
+        chart.getXAxis().setDrawLabels(false);
+        chart.getAxisRight().setDrawLabels(false);
+        chart.getLegend().setEnabled(false);
+        chart.getAxisLeft().setTextSize(14f);
+        chart.setTouchEnabled(false);
+        chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
+
+        chart.setData(lineData);
+        chart.invalidate();
     }
 
     private void populateTask() {

@@ -108,6 +108,9 @@ public class BRecord implements ILatLonRecord, Serializable {
     }
 
     public int getAltitude() {
+        if (getAltitudeGps() == 0) {
+            return getAltitudePress();
+        }
         return getAltitudeGps();
     }
 }

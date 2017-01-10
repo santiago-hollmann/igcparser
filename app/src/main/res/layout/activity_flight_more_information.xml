@@ -23,14 +23,14 @@
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/large_margin"
-    android:paddingRight="@dimen/large_margin">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/large_margin"
+        android:paddingRight="@dimen/large_margin">
 
         <LinearLayout
             android:id="@+id/more_info_field_container"
@@ -80,6 +80,36 @@
                 android:layout_marginTop="@dimen/large_margin"
                 android:background="@color/gray" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/more_information_icon_size"
+                android:layout_height="@dimen/more_information_icon_size"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/large_margin"
+                android:src="@drawable/ic_chart"
+                android:tint="@color/gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/altitude_chart"
+                android:textSize="@dimen/material_text_body"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_marginLeft="32dp"
+            android:id="@+id/more_info_chart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/chart_height"
+            android:layout_marginBottom="@dimen/small_margin" />
     </LinearLayout>
 
 </ScrollView>
