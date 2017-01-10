@@ -24,6 +24,7 @@
 
 package com.shollmann.android.igcparser.util;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Utilities {
+    private static final double METERS_IN_ONE_KILOMETER = 1000;
     private static DecimalFormat decimalFormatter = null;
     private static DecimalFormatSymbols symbols = null;
 
@@ -200,6 +202,11 @@ public class Utilities {
         } else {
             return Character.toUpperCase(first) + word.substring(1);
         }
+    }
+
+    @NonNull
+    public static String getDistanceInKm(double distanceInMeters, Locale locale) {
+        return Utilities.getFormattedNumber((int) (distanceInMeters / METERS_IN_ONE_KILOMETER), locale);
     }
 
 }

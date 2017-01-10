@@ -71,6 +71,8 @@ public class CRecordWayPoint implements ILatLonRecord, Serializable {
     }
 
     private CRecordType parseType(String rawRecord) {
+        rawRecord = rawRecord.toUpperCase();
+
         if (rawRecord.contains(Constants.CRecord.TAKEOFF)) {
             return CRecordType.TAKEOFF;
         } else if (rawRecord.contains(Constants.CRecord.START)) {

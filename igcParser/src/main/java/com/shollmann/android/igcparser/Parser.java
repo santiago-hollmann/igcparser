@@ -101,6 +101,10 @@ public class Parser {
 
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
+
+            double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
+            igcFile.setTaskDistance(taskDistance);
+
         } catch (IOException e) {
             Logger.logError(e.getMessage());
         } finally {
@@ -153,6 +157,9 @@ public class Parser {
                     }
                 }
             }
+
+            double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
+            igcFile.setTaskDistance(taskDistance);
 
             igcFile.setFileData(filePath);
 

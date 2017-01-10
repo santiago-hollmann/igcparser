@@ -33,4 +33,9 @@
     <string name="landing">Landing</string>
     <string name="max_altitude">Max Altitude</string>
     <string name="min_altitude">Min Altitude</string>
+    <string name="task">Task</string>
+    <string name="finish">Finish</string>
+    <string name="start">Start</string>
+    <string name="turn">Turn</string>
+    <string name="sorry_error_happen">Sorry, an unexpected error happen</string>
 </resources>

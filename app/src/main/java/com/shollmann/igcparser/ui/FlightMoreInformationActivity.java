@@ -25,13 +25,20 @@
 package com.shollmann.igcparser.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.ui.view.MoreInformationFieldView;
@@ -39,6 +46,8 @@ import com.shollmann.igcparser.util.Constants;
 
 public class FlightMoreInformationActivity extends AppCompatActivity {
     private LinearLayout layoutFieldsContainer;
+    private RelativeLayout layoutTaskContainer;
+    private LinearLayout layoutWayPointsContainer;
     private IGCFile igcFile;
 
     @Override
@@ -47,12 +56,15 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_flight_more_information);
 
         layoutFieldsContainer = (LinearLayout) findViewById(R.id.more_info_field_container);
+        layoutTaskContainer = (RelativeLayout) findViewById(R.id.more_info_task_container);
+        layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
+
         igcFile = (IGCFile) getIntent().getExtras().getSerializable(Constants.IGC_FILE);
 
         if (igcFile != null) {
             showInformation();
         } else {
-            Toast.makeText(getApplication().getBaseContext(), "Sorry, an error ocurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication().getBaseContext(), R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -63,16 +75,64 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
         insertField(R.drawable.ic_person, R.string.pilot_in_charge, Utilities.capitalizeText(igcFile.getPilotInCharge()));
         insertField(R.drawable.ic_glider_big, R.string.glider, igcFile.getGliderTypeAndId());
         insertField(R.drawable.ic_time, R.string.duration, igcFile.getFlightTime());
-        insertField(R.drawable.ic_distance, R.string.distance, Utilities.getFormattedNumber((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER), getResources().getConfiguration().locale));
-        insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale));
-        insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale));
+        insertField(R.drawable.ic_distance, R.string.distance, Utilities.getDistanceInKm(igcFile.getDistance(), getResources().getConfiguration().locale) + "km");
+        insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale) + "m");
+        insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale) + "m");
         insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()));
         insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
         if (!igcFile.getTrackPoints().isEmpty()) {
-            insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
-
+            layoutTaskContainer.setVisibility(View.VISIBLE);
+            populateTask();
         }
 
+    }
+
+    private void populateTask() {
+        for (ILatLonRecord waypoint : igcFile.getWaypoints()) {
+            CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
+            if (!TextUtils.isEmpty(cRecord.getDescription())) {
+                layoutWayPointsContainer.addView(createTaskTextView(cRecord.getDescription()));
+            }
+        }
+        if (igcFile.getTaskDistance() != 0) {
+            final String taskDistanceText = String.format(getResources().getString(R.string.information_distance), Utilities.getDistanceInKm(igcFile.getTaskDistance(), getResources().getConfiguration().locale));
+            layoutWayPointsContainer.addView(createTaskTextView(taskDistanceText));
+        }
+    }
+
+    @NonNull
+    private TextView createTaskTextView(String value) {
+        TextView txtWaypoint = new TextView(this);
+        txtWaypoint.setEllipsize(TextUtils.TruncateAt.END);
+        txtWaypoint.setMaxLines(2);
+        txtWaypoint.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.material_text_subhead));
+        txtWaypoint.setText(value);
+        return txtWaypoint;
+    }
+
+    private String getReadableCRecordType(CRecordWayPoint cRecord) {
+        int stringId;
+        switch (cRecord.getType()) {
+            case FINISH:
+                stringId = R.string.finish;
+                break;
+            case START:
+                stringId = R.string.start;
+                break;
+            case TAKEOFF:
+                stringId = R.string.take_off;
+                break;
+            case LANDING:
+                stringId = R.string.landing;
+                break;
+            case TURN:
+                stringId = R.string.turn;
+                break;
+            default:
+                stringId = R.string.turn;
+                break;
+        }
+        return getResources().getString(stringId);
     }
 
     public void insertField(int iconId, int titleStringId, String value) {

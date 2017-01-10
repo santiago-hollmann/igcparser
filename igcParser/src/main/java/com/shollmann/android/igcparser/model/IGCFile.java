@@ -38,6 +38,7 @@ public class IGCFile implements Serializable {
     private List<ILatLonRecord> listTrackPoints;
     private List<ILatLonRecord> listWayPoints;
     private double distance;
+    private double taskDistance;
     private int maxAltitude;
     private int minAltitude;
     private String takeOffTime;
@@ -195,5 +196,13 @@ public class IGCFile implements Serializable {
     public void setFileData(Uri filePath) {
         this.filePath = filePath.toString();
         this.fileName = filePath.getLastPathSegment();
+    }
+
+    public void setTaskDistance(double taskDistance) {
+        this.taskDistance = taskDistance;
+    }
+
+    public double getTaskDistance() {
+        return taskDistance;
     }
 }
