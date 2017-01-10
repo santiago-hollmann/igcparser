@@ -53,6 +53,7 @@ public class IGCFile implements Serializable {
     public IGCFile() {
         listWayPoints = new ArrayList<>();
         listTrackPoints = new ArrayList<>();
+        taskDistance = 0;
     }
 
     public void appendTrackPoint(BRecord bRecord) {

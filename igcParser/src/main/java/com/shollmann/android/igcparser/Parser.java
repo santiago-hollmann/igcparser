@@ -102,8 +102,10 @@ public class Parser {
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
 
-            double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
-            igcFile.setTaskDistance(taskDistance);
+            if (!igcFile.getWaypoints().isEmpty()) {
+                double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
+                igcFile.setTaskDistance(taskDistance);
+            }
 
         } catch (IOException e) {
             Logger.logError(e.getMessage());
@@ -158,8 +160,10 @@ public class Parser {
                 }
             }
 
-            double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
-            igcFile.setTaskDistance(taskDistance);
+            if (!igcFile.getWaypoints().isEmpty()) {
+                double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
+                igcFile.setTaskDistance(taskDistance);
+            }
 
             igcFile.setFileData(filePath);
 

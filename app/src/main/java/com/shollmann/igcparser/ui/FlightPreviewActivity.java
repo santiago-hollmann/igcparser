@@ -35,6 +35,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
@@ -88,6 +89,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private TextView txtGlider;
     private LinearLayout layoutPilot;
     private LinearLayout layoutGlider;
+    private TextView txtMoreInfo;
     private View btnCloseInformation;
     private View btnShowInformation;
     private ImageView btnPlay;
@@ -102,6 +104,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         handleIntent();
         setClickListeners();
         initMap(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void handleIntent() {
@@ -125,7 +128,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void setClickListeners() {
         btnCloseInformation.setOnClickListener(this);
         btnShowInformation.setOnClickListener(this);
-        cardviewInformation.setOnClickListener(this);
+        txtMoreInfo.setOnClickListener(this);
     }
 
     private void findViews() {
@@ -141,6 +144,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         txtPilot = (TextView) findViewById(R.id.main_txt_pilot);
         layoutGlider = (LinearLayout) findViewById(R.id.main_layout_glider);
         layoutPilot = (LinearLayout) findViewById(R.id.main_layout_pilot);
+        txtMoreInfo = (TextView) findViewById(R.id.main_information_btn_viewmore);
         cardviewInformation = (CardView) findViewById(R.id.main_cardview_information);
         loading = (ProgressBar) findViewById(R.id.main_loading);
         btnCloseInformation = findViewById(R.id.main_cardview_close);
@@ -175,14 +179,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         final String gliderTypeAndId = igcFile.getGliderTypeAndId();
         if (!TextUtils.isEmpty(gliderTypeAndId)) {
             layoutGlider.setVisibility(View.VISIBLE);
-            txtGlider.setText(String.format(getResources().getString(R.string.information_glider), gliderTypeAndId));
+            txtGlider.setText(Html.fromHtml(String.format(getResources().getString(R.string.information_glider), gliderTypeAndId)));
         }
     }
 
     private void displayPilot() {
         if (!TextUtils.isEmpty(igcFile.getPilotInCharge())) {
             layoutPilot.setVisibility(View.VISIBLE);
-            txtPilot.setText(String.format(getResources().getString(R.string.information_pilot), Utilities.capitalizeText(igcFile.getPilotInCharge())));
+            txtPilot.setText(Html.fromHtml(String.format(getResources().getString(R.string.information_pilot), Utilities.capitalizeText(igcFile.getPilotInCharge()))));
         }
     }
 
@@ -252,7 +256,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             case R.id.main_btn_speed_up:
                 speedUpReplay();
                 break;
-            case R.id.main_cardview_information:
+            case R.id.main_information_btn_viewmore:
                 TrackerHelper.trackOpenMoreInformation();
                 Intent intent = new Intent(this, FlightInformationActivity.class);
                 intent.putExtra(Constants.IGC_FILE, igcFile);
@@ -320,7 +324,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
     private void speedUpReplay() {
         if (replaySpeed >= Constants.Map.MAX_REPLAY_SPEED) {
-            replaySpeed = (int) (replaySpeed / Constants.Map.REPLAY_SPEED_INCREASER);
+            replaySpeed = (int) (replaySpeed / Constants.Map.REPLAY_SPEED_INCREASE);
             TrackerHelper.trackFastForwardFlight();
         }
     }
@@ -385,5 +389,11 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     protected void onStop() {
         isFinishReplay = true;
         super.onStop();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 }

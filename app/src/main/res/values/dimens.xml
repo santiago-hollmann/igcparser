@@ -17,10 +17,10 @@
     <dimen name="minus_one">-1dp</dimen>
     <dimen name="one_dp">1dp</dimen>
     <dimen name="half_dp">0.5dp</dimen>
-    <dimen name="material_text_body">14sp</dimen>
     <dimen name="material_text_small_caption">11sp</dimen>
     <dimen name="material_text_caption">12sp</dimen>
     <dimen name="material_text_bigger_caption">13sp</dimen>
+    <dimen name="material_text_body">14sp</dimen>
     <dimen name="material_text_subhead">16sp</dimen>
     <dimen name="more_information_icon_size">24dp</dimen>
     <dimen name="map_line_width">1.5dp</dimen>

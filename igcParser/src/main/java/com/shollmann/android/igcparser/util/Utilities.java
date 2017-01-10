@@ -209,4 +209,8 @@ public class Utilities {
         return Utilities.getFormattedNumber((int) (distanceInMeters / METERS_IN_ONE_KILOMETER), locale);
     }
 
+    public static boolean isZero(double value) {
+        return value >= -1 && value <= 0.1;
+    }
+
 }

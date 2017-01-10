@@ -24,17 +24,17 @@
 
 <resources>
     <string name="app_name">IGC Viewer</string>
-    <string name="information_distance"><b>Distancia:</b> %1$skm</string>
-    <string name="information_duration"><b>Duración:</b> %1$s</string>
-    <string name="information_landing"><b>Aterrizaje:</b> %1$s UTC</string>
-    <string name="information_max_altitude"><b>Altitud Máx:</b> %1$sm</string>
-    <string name="information_min_altitude"><b>Altitud Mín:</b> %1$sm</string>
-    <string name="information_takeoff"><b>Decolaje:</b> %1$s %2$s UTC</string>
+    <string name="information_distance"><![CDATA[<b>Distancia:</b> %1$skm]]></string>
+    <string name="information_duration"><![CDATA[<b>Duración:</b> %1$s]]></string>
+    <string name="information_landing"><![CDATA[<b>Aterrizaje:</b> %1$s UTC]]></string>
+    <string name="information_max_altitude"><![CDATA[<b>Altitud Máx:</b> %1$sm]]></string>
+    <string name="information_min_altitude"><![CDATA[<b>Altitud Mín:</b> %1$sm]]></string>
+    <string name="information_takeoff"><![CDATA[<b>Decolaje:</b> %1$s %2$s UTC]]></string>
     <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\nSi tienes algunos muévelos al directorio logs de XCSoar o al directorio sdcard.</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Buscando archivos IGC en el directorio logs de XCSoar</string>
     <string name="searching_igc_all_sdcard">Buscando archivos IGC en tu teléfono</string>
-    <string name="information_glider"><b>Planeador:</b> %1$s</string>
-    <string name="information_pilot"><b>Piloto:</b> %1$s</string>
+    <string name="information_glider"><![CDATA[<b>Planeador:</b> %1$s]]></string>
+    <string name="information_pilot"><![CDATA[<b>Piloto:</b> %1$s]]></string>
     <string name="search_flights_wait">Buscando archivos, espere por favor.</string>
     <string name="refresh">Actualizar</string>
     <string name="scan_complete_sd_card">Buscar en toda la tarjeta SD</string>
@@ -55,6 +55,7 @@
     <string name="date">Fecha</string>
     <string name="take_off">Decolaje</string>
     <string name="landing">Aterrizaje</string>
+    <string name="task_distance">Distancia: %1$skm</string>
     <string name="altitude_chart">Altura Histórica (en metros)</string>
     <string name="max_altitude">Altura Máxima</string>
     <string name="min_altitude">Altura Mínima</string>

@@ -34,10 +34,12 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final double FIX_INITIAL_LATITUDE = 0.0195;
         public static final int DEFAULT_REPLAY_SPEED = 76;
         public static final int MAX_REPLAY_SPEED = 2;
-        public static final double REPLAY_SPEED_INCREASER = 1.5;
+        public static final double REPLAY_SPEED_INCREASE = 1.5;
     }
 
     public class Graphic {
         public static final float LABEL_SIZE = 14f;
+        public static final int ANIMATION_DURATION = 400;
+        public static final int ALPHA_FILL = 60;
     }
 }

@@ -30,6 +30,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -65,12 +66,7 @@ public class FlightInformationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flight_more_information);
-
-        layoutFieldsContainer = (LinearLayout) findViewById(R.id.more_info_field_container);
-        layoutTaskContainer = (RelativeLayout) findViewById(R.id.more_info_task_container);
-        layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
-        chart = (LineChart) findViewById(R.id.more_info_chart);
+        findViews();
 
         igcFile = (IGCFile) getIntent().getExtras().getSerializable(Constants.IGC_FILE);
 
@@ -81,6 +77,16 @@ public class FlightInformationActivity extends AppCompatActivity {
             finish();
         }
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void findViews() {
+        setContentView(R.layout.activity_flight_more_information);
+
+        layoutFieldsContainer = (LinearLayout) findViewById(R.id.more_info_field_container);
+        layoutTaskContainer = (RelativeLayout) findViewById(R.id.more_info_task_container);
+        layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
+        chart = (LineChart) findViewById(R.id.more_info_chart);
     }
 
     private void showInformation() {
@@ -93,7 +99,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale) + "m");
         insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()));
         insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()));
-        if (!igcFile.getWaypoints().isEmpty() || igcFile.getTaskDistance() != 0) {
+        if (!igcFile.getWaypoints().isEmpty() && !Utilities.isZero(igcFile.getTaskDistance())) {
             layoutTaskContainer.setVisibility(View.VISIBLE);
             populateTask();
         }
@@ -109,13 +115,14 @@ public class FlightInformationActivity extends AppCompatActivity {
             BRecord bRecord = (BRecord) trackPoints.get(i);
             entries.add(new Entry(i, bRecord.getAltitude()));
         }
+
         LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
         dataSet.setDrawCircles(false);
         dataSet.setDrawCircleHole(false);
         dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(R.dimen.half_dp));
         dataSet.setFillColor(getResources().getColor(R.color.colorPrimary));
         dataSet.setDrawFilled(true);
-        dataSet.setFillAlpha(60);
+        dataSet.setFillAlpha(Constants.Graphic.ALPHA_FILL);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSet.setColor(getResources().getColor(R.color.colorPrimary));
 
@@ -131,7 +138,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
         chart.getLegend().setEnabled(false);
         chart.getAxisLeft().setTextSize(Constants.Graphic.LABEL_SIZE);
-        chart.animateX(400, Easing.EasingOption.EaseInSine);
+        chart.animateX(Constants.Graphic.ANIMATION_DURATION, Easing.EasingOption.EaseInSine);
 
         chart.setData(lineData);
         chart.invalidate();
@@ -144,9 +151,11 @@ public class FlightInformationActivity extends AppCompatActivity {
                 layoutWayPointsContainer.addView(createTaskTextView(cRecord.getDescription()));
             }
         }
-        if (igcFile.getTaskDistance() != 0) {
-            final String taskDistanceText = String.format(getResources().getString(R.string.information_distance), Utilities.getDistanceInKm(igcFile.getTaskDistance(), getResources().getConfiguration().locale));
+        if (!Utilities.isZero(igcFile.getTaskDistance())) {
+            final String taskDistanceText = String.format(getResources().getString(R.string.task_distance), Utilities.getDistanceInKm(igcFile.getTaskDistance(), getResources().getConfiguration().locale));
             layoutWayPointsContainer.addView(createTaskTextView(taskDistanceText));
+        } else {
+            layoutWayPointsContainer.setVisibility(View.GONE);
         }
     }
 
@@ -193,4 +202,9 @@ public class FlightInformationActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 }
