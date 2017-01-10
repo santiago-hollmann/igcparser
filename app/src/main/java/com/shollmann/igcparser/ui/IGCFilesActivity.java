@@ -114,7 +114,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             files.addAll(Arrays.asList(parentDir.listFiles()));
             while (!files.isEmpty()) {
                 File file = files.remove();
-                if (file != null && file.isDirectory()) {
+                if (file != null && file.isDirectory() && !Utilities.isUnlikelyIGCFolder(file)) {
                     files.addAll(Arrays.asList(file.listFiles()));
                 } else if (file != null && (file.getName().toLowerCase().endsWith(".igc"))) {
                     inFiles.add(Parser.quickParse(Uri.parse(file.getAbsolutePath())));
