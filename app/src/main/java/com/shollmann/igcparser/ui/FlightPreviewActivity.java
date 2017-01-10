@@ -33,6 +33,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -160,12 +161,12 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayFlightInformation() {
-        txtDistance.setText(String.format(getString(R.string.information_distance), String.valueOf(Utilities.getFormattedNumber((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER), getResources().getConfiguration().locale))));
-        txtMaxAltitude.setText(String.format(getString(R.string.information_max_altitude), Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale)));
-        txtMinAltitude.setText(String.format(getString(R.string.information_min_altitude), Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale)));
-        txtLandingTime.setText(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime())));
-        txtTakeOffTime.setText(String.format(getString(R.string.information_takeoff), Utilities.getTimeHHMM(igcFile.getTakeOffTime()), igcFile.getDate()));
-        txtFlightTime.setText(String.format(getString(R.string.information_duration), igcFile.getFlightTime()));
+        txtDistance.setText(Html.fromHtml(String.format(getString(R.string.information_distance), String.valueOf(Utilities.getFormattedNumber((int) (igcFile.getDistance() / Constants.Map.METERS_IN_ONE_KILOMETER), getResources().getConfiguration().locale)))));
+        txtMaxAltitude.setText(Html.fromHtml(String.format(getString(R.string.information_max_altitude), Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale))));
+        txtMinAltitude.setText(Html.fromHtml(String.format(getString(R.string.information_min_altitude), Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale))));
+        txtLandingTime.setText(Html.fromHtml(String.format(getString(R.string.information_landing), Utilities.getTimeHHMM(igcFile.getLandingTime()))));
+        txtTakeOffTime.setText(Html.fromHtml(String.format(getString(R.string.information_takeoff), igcFile.getDate(), Utilities.getTimeHHMM(igcFile.getTakeOffTime()))));
+        txtFlightTime.setText(Html.fromHtml(String.format(getString(R.string.information_duration), igcFile.getFlightTime())));
         displayPilot();
         displayGliderInformation();
     }
@@ -253,7 +254,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 break;
             case R.id.main_cardview_information:
                 TrackerHelper.trackOpenMoreInformation();
-                Intent intent = new Intent(this, FlightMoreInformationActivity.class);
+                Intent intent = new Intent(this, FlightInformationActivity.class);
                 intent.putExtra(Constants.IGC_FILE, igcFile);
                 startActivity(intent);
                 break;

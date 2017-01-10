@@ -41,6 +41,7 @@ public class TrackerHelper {
     private static final String SEARCH_SD_CARD = "Search SD Card";
     private static final String REFRESH = "Refresh";
     private static final String SORT_DIALOG = "Sort Dialog Open";
+    private static final String SHOW_MORE_INFORMATION = "Show More Information";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -106,6 +107,6 @@ public class TrackerHelper {
     }
 
     public static void trackOpenMoreInformation() {
-
+        AnswersHelper.trackEvent(SHOW_MORE_INFORMATION);
     }
 }

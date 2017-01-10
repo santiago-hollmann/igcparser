@@ -82,7 +82,7 @@
                 android:layout_height="@dimen/icon_information_size"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/large_margin"
-                android:src="@drawable/ic_glider_big"
+                android:src="@drawable/ic_plane"
                 android:tint="@color/gray" />
 
             <TextView

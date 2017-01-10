@@ -73,7 +73,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.FlightMoreInformationActivity"
+            android:name=".ui.FlightInformationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 

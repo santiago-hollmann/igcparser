@@ -24,17 +24,17 @@
 
 <resources>
     <string name="app_name">IGC Viewer</string>
-    <string name="information_distance">Distancia: %1$skm</string>
-    <string name="information_duration">Duración: %1$s</string>
-    <string name="information_landing">Aterrizaje: %1$s UTC</string>
-    <string name="information_max_altitude">Altitud Máx: %1$sm</string>
-    <string name="information_min_altitude">Altitud Mín: %1$sm</string>
-    <string name="information_takeoff">Decolaje: %1$s UTC %2$s</string>
+    <string name="information_distance"><b>Distancia:</b> %1$skm</string>
+    <string name="information_duration"><b>Duración:</b> %1$s</string>
+    <string name="information_landing"><b>Aterrizaje:</b> %1$s UTC</string>
+    <string name="information_max_altitude"><b>Altitud Máx:</b> %1$sm</string>
+    <string name="information_min_altitude"><b>Altitud Mín:</b> %1$sm</string>
+    <string name="information_takeoff"><b>Decolaje:</b> %1$s %2$s UTC</string>
     <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\nSi tienes algunos muévelos al directorio logs de XCSoar o al directorio sdcard.</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Buscando archivos IGC en el directorio logs de XCSoar</string>
     <string name="searching_igc_all_sdcard">Buscando archivos IGC en tu teléfono</string>
-    <string name="information_glider">Planeador: %1$s</string>
-    <string name="information_pilot">Piloto: %1$s</string>
+    <string name="information_glider"><b>Planeador:</b> %1$s</string>
+    <string name="information_pilot"><b>Piloto:</b> %1$s</string>
     <string name="search_flights_wait">Buscando archivos, espere por favor.</string>
     <string name="refresh">Actualizar</string>
     <string name="scan_complete_sd_card">Buscar en toda la tarjeta SD</string>
@@ -47,5 +47,20 @@
     <string name="about_contact">Podés mandarme e-mail a santiago.hollmann@gmail.com o twittearme a @santihollmann.</string>
     <string name="about_why">Creé esta aplicación para que la comunidad de pilotos de planeador puedan ver y disfrutar sus vuelos.\n\nSentite libre contactarme por mejoras, sugerencias, problemas o cualquier tipo de feedback.</string>
     <string name="version">"Versión: "</string>
-    <string name="sort">Sort</string>
+    <string name="sort">Ordenar</string>
+    <string name="pilot_in_charge">Piloto</string>
+    <string name="glider">Planeador</string>
+    <string name="duration">Duración</string>
+    <string name="distance">Distancia</string>
+    <string name="date">Fecha</string>
+    <string name="take_off">Decolaje</string>
+    <string name="landing">Aterrizaje</string>
+    <string name="altitude_chart">Altura Histórica (en metros)</string>
+    <string name="max_altitude">Altura Máxima</string>
+    <string name="min_altitude">Altura Mínima</string>
+    <string name="task">Prueba</string>
+    <string name="finish">Final</string>
+    <string name="start">Partida</string>
+    <string name="turn">Turn</string>
+    <string name="sorry_error_happen">Ocurrió un error inesperado</string>
 </resources>

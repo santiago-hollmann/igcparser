@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -54,7 +55,7 @@ import com.shollmann.igcparser.util.ResourcesHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightMoreInformationActivity extends AppCompatActivity {
+public class FlightInformationActivity extends AppCompatActivity {
     private LinearLayout layoutFieldsContainer;
     private RelativeLayout layoutTaskContainer;
     private LinearLayout layoutWayPointsContainer;
@@ -71,7 +72,6 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
         layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
         chart = (LineChart) findViewById(R.id.more_info_chart);
 
-
         igcFile = (IGCFile) getIntent().getExtras().getSerializable(Constants.IGC_FILE);
 
         if (igcFile != null) {
@@ -86,7 +86,7 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
     private void showInformation() {
         insertField(R.drawable.ic_calendar, R.string.date, igcFile.getDate());
         insertField(R.drawable.ic_person, R.string.pilot_in_charge, Utilities.capitalizeText(igcFile.getPilotInCharge()));
-        insertField(R.drawable.ic_glider_big, R.string.glider, igcFile.getGliderTypeAndId());
+        insertField(R.drawable.ic_plane, R.string.glider, igcFile.getGliderTypeAndId());
         insertField(R.drawable.ic_time, R.string.duration, igcFile.getFlightTime());
         insertField(R.drawable.ic_distance, R.string.distance, Utilities.getDistanceInKm(igcFile.getDistance(), getResources().getConfiguration().locale) + "km");
         insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale) + "m");
@@ -112,18 +112,26 @@ public class FlightMoreInformationActivity extends AppCompatActivity {
         LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
         dataSet.setDrawCircles(false);
         dataSet.setDrawCircleHole(false);
-        dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(R.dimen.one_dp));
+        dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(R.dimen.half_dp));
+        dataSet.setFillColor(getResources().getColor(R.color.colorPrimary));
+        dataSet.setDrawFilled(true);
+        dataSet.setFillAlpha(60);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSet.setColor(getResources().getColor(R.color.colorPrimary));
+
         LineData lineData = new LineData(dataSet);
+
         Description desc = new Description();
         desc.setText(Constants.EMPTY_STRING);
         chart.setDescription(desc);
+
+        chart.setTouchEnabled(false);
         chart.getXAxis().setDrawLabels(false);
         chart.getAxisRight().setDrawLabels(false);
-        chart.getLegend().setEnabled(false);
-        chart.getAxisLeft().setTextSize(14f);
-        chart.setTouchEnabled(false);
         chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
+        chart.getLegend().setEnabled(false);
+        chart.getAxisLeft().setTextSize(Constants.Graphic.LABEL_SIZE);
+        chart.animateX(400, Easing.EasingOption.EaseInSine);
 
         chart.setData(lineData);
         chart.invalidate();
