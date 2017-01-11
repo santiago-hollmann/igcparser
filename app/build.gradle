@@ -28,6 +28,11 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -50,6 +55,8 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }

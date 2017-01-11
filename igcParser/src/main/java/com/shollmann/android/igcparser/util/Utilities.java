@@ -24,6 +24,7 @@
 
 package com.shollmann.android.igcparser.util;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Utilities {
+    private static final double METERS_IN_ONE_KILOMETER = 1000;
     private static DecimalFormat decimalFormatter = null;
     private static DecimalFormatSymbols symbols = null;
 
@@ -202,4 +204,63 @@ public class Utilities {
         }
     }
 
+    @NonNull
+    public static String getDistanceInKm(double distanceInMeters, Locale locale) {
+        return Utilities.getFormattedNumber((int) (distanceInMeters / METERS_IN_ONE_KILOMETER), locale);
+    }
+
+    public static boolean isZero(double value) {
+        return value >= -1 && value <= 0.1;
+    }
+
+    public static boolean isUnlikelyIGCFolder(File file) {
+        final File[] files = file.listFiles();
+        if (file != null && files != null && files.length >= 1) {
+            for (int i = 0; i < files.length; i++) {
+                return isUnlikelyIGCPath(files[i].getAbsolutePath());
+            }
+        }
+        return false;
+
+    }
+
+    public static boolean isUnlikelyIGCPath(String path) {
+
+        String pathUpperCase = path.toUpperCase();
+        if (pathUpperCase.contains(Constants.Path.CAMERA)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.WHATSAPP)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.FACEBOOK)) {
+            return true;
+        }
+
+        if (pathUpperCase.contains(Constants.Path.INSTAGRAM)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.SNAPCHAT)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.GOOGLE)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.PHOTOS)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.PICTURES)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.AUDIO)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.MOVIES)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.MUSIC)) {
+            return true;
+        }
+        return false;
+    }
 }

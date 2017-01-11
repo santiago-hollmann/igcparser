@@ -48,7 +48,7 @@
             android:id="@+id/files_loading_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_medium_horizontal_margin" />
+            android:layout_marginRight="@dimen/large_margin" />
 
         <TextView
             android:id="@+id/files_loading_text"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/searching_for_igc_files_on_xcsoar_s_logs_folder"
-            android:textSize="@dimen/material_text_body" />
+            android:textSize="@dimen/material_text_subhead" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -26,18 +26,28 @@ package com.shollmann.igcparser.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.shollmann.igcparser.BuildConfig;
 import com.shollmann.igcparser.R;
-import com.shollmann.igcparser.tracking.TrackerHelper;
 
 public class AboutActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_about);
         TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
         txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 }

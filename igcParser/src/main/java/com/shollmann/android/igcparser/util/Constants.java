@@ -44,6 +44,17 @@ public class Constants {
         public static String SAMSUNG_SDCARD = "/sdcard/external_sd";
         public static String STORAGE_SDCARD = "/storage/emulated/0";
         public static String STORAGE_LEGACY_SDCARD = "/storage/emulated/legacy";
+        public static String WHATSAPP = "WHATSAPP";
+        public static String SNAPCHAT = "SNAPCHAT";
+        public static String GOOGLE = "GOOGLE";
+        public static String FACEBOOK = "FACEBOOK";
+        public static String INSTAGRAM = "INSTAGRAM";
+        public static String CAMERA = "CAMERA";
+        public static String PICTURES = "PICTURES";
+        public static String MOVIES = "MOVIES";
+        public static String PHOTOS = "PHOTOS";
+        public static String MUSIC = "MUSIC";
+        public static String AUDIO = "AUDIO";
     }
 
     public class CRecord {

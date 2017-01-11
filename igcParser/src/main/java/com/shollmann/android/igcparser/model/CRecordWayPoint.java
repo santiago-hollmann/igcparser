@@ -28,7 +28,9 @@ import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
-public class CRecordWayPoint implements ILatLonRecord {
+import java.io.Serializable;
+
+public class CRecordWayPoint implements ILatLonRecord, Serializable {
 
     private CRecordType type;
     private LatLon latLon;
@@ -69,6 +71,8 @@ public class CRecordWayPoint implements ILatLonRecord {
     }
 
     private CRecordType parseType(String rawRecord) {
+        rawRecord = rawRecord.toUpperCase();
+
         if (rawRecord.contains(Constants.CRecord.TAKEOFF)) {
             return CRecordType.TAKEOFF;
         } else if (rawRecord.contains(Constants.CRecord.START)) {
