@@ -40,4 +40,8 @@
     <string name="turn">Turn</string>
     <string name="sorry_error_happen">Sorry, an unexpected error happen</string>
     <string name="altitude_chart">Historic Altitude (in meters)</string>
+    <string name="replay_speed_indicator">x%1$d</string>
+    <string name="replay_speed_minimum">Lowest speed reached</string>
+    <string name="replay_speed_maximum">Fastest speed reached</string>
+    <string name="empty" />
 </resources>

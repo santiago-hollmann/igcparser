@@ -64,4 +64,7 @@
     <string name="start">Partida</string>
     <string name="turn">Turn</string>
     <string name="sorry_error_happen">Ocurrió un error inesperado</string>
+    <string name="replay_speed_indicator">x%1$d</string>
+    <string name="replay_speed_minimum">Velocidad mínima alcanzada</string>
+    <string name="replay_speed_maximum">Velocidad máxima alcanzada</string>
 </resources>

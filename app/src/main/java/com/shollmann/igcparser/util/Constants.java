@@ -33,8 +33,9 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final int METERS_IN_ONE_KILOMETER = 1000;
         public static final double FIX_INITIAL_LATITUDE = 0.0195;
         public static final int DEFAULT_REPLAY_SPEED = 76;
-        public static final int MAX_REPLAY_SPEED = 2;
         public static final double REPLAY_SPEED_INCREASE = 1.5;
+        public static final int REPLAY_MIN_MULTIPLIER = 1;
+        public static final int REPLAY_MAX_MULTIPLIER = 8;
     }
 
     public class Chart {
