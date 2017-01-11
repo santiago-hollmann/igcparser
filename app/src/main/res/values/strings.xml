@@ -6,9 +6,9 @@
     <string name="information_min_altitude"><![CDATA[<b>Min Altitude:</b> %1$sm]]></string>
     <string name="information_max_altitude"><![CDATA[<b>Max Altitude:</b> %1$sm]]></string>
     <string name="information_duration"><![CDATA[<b>Duration:</b> %1$s]]></string>
-    <string name="searching_igc_all_sdcard">Searching for IGC files on your phone</string>
+    <string name="searching_igc_all_sdcard">Searching for IGC files</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Searching for IGC files on XCSoar\'s logs folder</string>
-    <string name="no_files_found_with_explanation">No IGC files found.\nIf you have some, move them into XCSoar logs folder or the sdcard folder.</string>
+    <string name="no_files_found_with_explanation">No IGC files found.\n\nIf you have some, move them into any SD Card\'s folder or to the XCSoar\'s logs folder.</string>
     <string name="information_glider"><![CDATA[<b>Glider:</b> %1$s]]></string>
     <string name="information_pilot"><![CDATA[<b>Pilot:</b> %1$s]]></string>
     <string name="search_flights_wait">Searching for files, please wait</string>
@@ -40,4 +40,8 @@
     <string name="turn">Turn</string>
     <string name="sorry_error_happen">Sorry, an unexpected error happen</string>
     <string name="altitude_chart">Historic Altitude (in meters)</string>
+    <string name="replay_speed_indicator">x%1$d</string>
+    <string name="replay_speed_minimum">Lowest speed reached</string>
+    <string name="replay_speed_maximum">Fastest speed reached</string>
+    <string name="empty" />
 </resources>

@@ -27,12 +27,9 @@ package com.shollmann.igcparser.util;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.google.gson.Gson;
 import com.shollmann.igcparser.IGCViewerApplication;
 
 public class PreferencesHelper {
-
-    private final static Gson gson = new Gson();
 
     static {
         prefs = PreferenceManager.getDefaultSharedPreferences(IGCViewerApplication.getApplication());

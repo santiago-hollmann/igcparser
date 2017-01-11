@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -93,9 +94,13 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private View btnCloseInformation;
     private View btnShowInformation;
     private ImageView btnPlay;
-    private ImageView btnFastForward;
+    private ImageView btnSpeedUp;
     private CardView cardviewInformation;
     private ProgressBar loading;
+    private ImageView btnSpeedDown;
+    private int speedCounter = Constants.Map.REPLAY_MIN_MULTIPLIER;
+    private Toast toast;
+    private Object lock = new Object();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +155,8 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         btnCloseInformation = findViewById(R.id.main_cardview_close);
         btnShowInformation = findViewById(R.id.main_information_btn);
         btnPlay = (ImageView) findViewById(R.id.main_btn_play);
-        btnFastForward = (ImageView) findViewById(R.id.main_btn_speed_up);
+        btnSpeedUp = (ImageView) findViewById(R.id.main_btn_speed_up);
+        btnSpeedDown = (ImageView) findViewById(R.id.main_btn_speed_down);
     }
 
     @Override
@@ -256,6 +262,9 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             case R.id.main_btn_speed_up:
                 speedUpReplay();
                 break;
+            case R.id.main_btn_speed_down:
+                speedDownReplay();
+                break;
             case R.id.main_information_btn_viewmore:
                 TrackerHelper.trackOpenMoreInformation();
                 Intent intent = new Intent(this, FlightInformationActivity.class);
@@ -312,20 +321,57 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
     private void setReplayButtons() {
         btnPlay.setOnClickListener(this);
-        btnFastForward.setOnClickListener(this);
+        btnSpeedUp.setOnClickListener(this);
+        btnSpeedDown.setOnClickListener(this);
+
 
         btnPlay.setImageResource(R.drawable.ic_play_arrow);
-        btnFastForward.setImageResource(R.drawable.ic_fast_forward);
+        btnSpeedUp.setImageResource(R.drawable.ic_rabbit);
+        btnSpeedDown.setImageResource(R.drawable.ic_turtle);
 
         btnPlay.setVisibility(View.VISIBLE);
-        btnFastForward.setVisibility(View.GONE);
+        btnSpeedUp.setVisibility(View.GONE);
+        btnSpeedDown.setVisibility(View.GONE);
+
+    }
+
+
+    private void showSpeedToast(int stringId, int speed) {
+        if (toast == null) {
+            toast = Toast.makeText(this, Constants.EMPTY_STRING, Toast.LENGTH_SHORT);
+        }
+        if (speed != 0) {
+            toast.setText(String.format(getString(R.string.replay_speed_indicator), speed));
+        } else {
+            toast.setText(stringId);
+        }
+        toast.show();
 
     }
 
     private void speedUpReplay() {
-        if (replaySpeed >= Constants.Map.MAX_REPLAY_SPEED) {
+        if (speedCounter < Constants.Map.REPLAY_MAX_MULTIPLIER) {
             replaySpeed = (int) (replaySpeed / Constants.Map.REPLAY_SPEED_INCREASE);
+            synchronized (lock) {
+                speedCounter++;
+            }
+            showSpeedToast(R.string.replay_speed_indicator, speedCounter);
             TrackerHelper.trackFastForwardFlight();
+        } else {
+            showSpeedToast(R.string.replay_speed_maximum, Constants.ZERO);
+        }
+    }
+
+    private void speedDownReplay() {
+        if (speedCounter > Constants.Map.REPLAY_MIN_MULTIPLIER) {
+            replaySpeed = (int) (replaySpeed * Constants.Map.REPLAY_SPEED_INCREASE);
+            synchronized (lock) {
+                speedCounter--;
+            }
+            showSpeedToast(R.string.replay_speed_indicator, speedCounter);
+            TrackerHelper.trackSpeedDownFlight();
+        } else {
+            showSpeedToast(R.string.replay_speed_minimum, Constants.ZERO);
         }
     }
 
@@ -339,7 +385,8 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             btnPlay.setImageResource(R.drawable.ic_stop);
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerGlider.getPosition(), googleMap.getCameraPosition().zoom));
             animateMarker();
-            btnFastForward.setVisibility(View.VISIBLE);
+            btnSpeedUp.setVisibility(View.VISIBLE);
+            btnSpeedDown.setVisibility(View.VISIBLE);
         } else {
             TrackerHelper.trackStopFlight();
         }
@@ -379,10 +426,15 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void finishReplay() {
         markerGlider.setPosition(listLatLngPoints.get(0));
         markerGlider.setRotation(0);
-        btnFastForward.setVisibility(View.GONE);
+        btnSpeedUp.setVisibility(View.GONE);
+        btnSpeedDown.setVisibility(View.GONE);
         replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
         btnPlay.setImageResource(R.drawable.ic_play_arrow);
+        speedCounter = Constants.Map.REPLAY_MIN_MULTIPLIER;
         isFinishReplay = true;
+        if (toast != null) {
+            toast.cancel();
+        }
     }
 
     @Override
