@@ -132,7 +132,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void findViews() {
-        setContentView(R.layout.activity_flight_information);
+        setContentView(R.layout.activity_flight_preview);
         mapView = (MapView) findViewById(R.id.main_map);
         txtDistance = (TextView) findViewById(R.id.main_txt_distance);
         txtMaxAltitude = (TextView) findViewById(R.id.main_txt_max_altitude);

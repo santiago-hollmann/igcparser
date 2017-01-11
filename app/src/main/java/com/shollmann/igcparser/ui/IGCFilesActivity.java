@@ -114,7 +114,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             files.addAll(Arrays.asList(parentDir.listFiles()));
             while (!files.isEmpty()) {
                 File file = files.remove();
-                if (file != null && file.isDirectory()) {
+                if (file != null && file.isDirectory() && !Utilities.isUnlikelyIGCFolder(file)) {
                     files.addAll(Arrays.asList(file.listFiles()));
                 } else if (file != null && (file.getName().toLowerCase().endsWith(".igc"))) {
                     inFiles.add(Parser.quickParse(Uri.parse(file.getAbsolutePath())));
@@ -193,7 +193,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         switch (menuItem.getItemId()) {
             case R.id.menu_refresh:
                 TrackerHelper.trackRefresh();
-                searchForFiles(lastSearchedPath);
+                searchForFiles(listFiles.isEmpty() ? Utilities.getXCSoarDataFolder() : lastSearchedPath);
                 break;
             case R.id.menu_search_sdcard:
                 TrackerHelper.trackSearchSdCard();
@@ -224,8 +224,13 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     private void searchForFiles(File path) {
         listFiles.clear();
         adapter.notifyDataSetChanged();
-        layoutLoading.setVisibility(View.VISIBLE);
+        showProgressViews();
         new FindIGCFilesAsyncTask(this).execute(path);
+    }
+
+    private void showProgressViews() {
+        layoutLoading.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.VISIBLE);
     }
 
     private void sortBy(Comparator<IGCFile> comparator) {
