@@ -214,19 +214,17 @@ public class Utilities {
     }
 
     public static boolean isUnlikelyIGCFolder(File file) {
-        final File[] files = file.listFiles();
-        if (file != null && files != null && files.length >= 1) {
-            for (int i = 0; i < files.length; i++) {
-                return isUnlikelyIGCPath(files[i].getAbsolutePath());
-            }
+        if (file.isHidden()) {
+            return true;
         }
-        return false;
 
-    }
-
-    public static boolean isUnlikelyIGCPath(String path) {
-
-        String pathUpperCase = path.toUpperCase();
+        String pathUpperCase = file.getAbsolutePath().toUpperCase();
+        if (pathUpperCase.contains(Constants.Path.DCIM)) {
+            return true;
+        }
+        if (pathUpperCase.contains(Constants.Path.ANDROID)) {
+            return true;
+        }
         if (pathUpperCase.contains(Constants.Path.CAMERA)) {
             return true;
         }

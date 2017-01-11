@@ -54,7 +54,9 @@ public class Constants {
         public static String MOVIES = "MOVIES";
         public static String PHOTOS = "PHOTOS";
         public static String MUSIC = "MUSIC";
+        public static String ANDROID = "ANDROID";
         public static String AUDIO = "AUDIO";
+        public static String DCIM = "DCIM";
     }
 
     public class CRecord {
