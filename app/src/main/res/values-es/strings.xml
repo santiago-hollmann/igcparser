@@ -67,4 +67,5 @@
     <string name="replay_speed_indicator">x%1$d</string>
     <string name="replay_speed_minimum">Velocidad mínima alcanzada</string>
     <string name="replay_speed_maximum">Velocidad máxima alcanzada</string>
+    <string name="view_more">Ver Más</string>
 </resources>

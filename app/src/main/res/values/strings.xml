@@ -44,4 +44,5 @@
     <string name="replay_speed_minimum">Lowest speed reached</string>
     <string name="replay_speed_maximum">Fastest speed reached</string>
     <string name="empty" />
+    <string name="view_more">View More</string>
 </resources>

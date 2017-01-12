@@ -251,7 +251,7 @@
             android:clickable="true"
             android:maxLines="2"
             android:padding="@dimen/large_margin"
-            android:text="View More"
+            android:text="@string/view_more"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/material_text_body" />
