@@ -24,10 +24,14 @@
 
 package com.shollmann.igcparser.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -70,6 +74,7 @@ import java.util.Queue;
 
 public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
 
+    private static final int EXTERNAL_STORAGE_PERMISSION_REQUEST = 1001;
     private LinearLayout layoutLoading;
     private RecyclerView recyclerView;
     private TextView txtLoading;
@@ -86,10 +91,8 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
 
         setContentView(R.layout.activity_igc_files);
         findViews();
-
         setupFilesList();
-        new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
-
+        checkForStoragePemrission();
     }
 
     private void setupFilesList() {
@@ -199,7 +202,6 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                 break;
             case R.id.menu_search_sdcard:
                 TrackerHelper.trackSearchSdCard();
-                txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
                 searchForFiles(Utilities.getSdCardFolder());
                 break;
             case R.id.menu_sort_glider:
@@ -226,6 +228,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     private void searchForFiles(File path) {
         listFiles.clear();
         adapter.notifyDataSetChanged();
+        txtLoading.setText(getString(R.string.searching_igc_files));
         showProgressViews();
         new FindIGCFilesAsyncTask(this).execute(path);
     }
@@ -275,7 +278,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                     final String message = "No IGC files found on XCSoar folder. Searching on other folders";
                     Logger.log(message);
                     Crashlytics.log(message);
-                    txtLoading.setText(getString(R.string.searching_igc_all_sdcard));
+                    txtLoading.setText(getString(R.string.searching_igc_files));
                     new FindIGCFilesAsyncTask(activity.get()).execute(Utilities.getSdCardFolder());
                 } else {
                     progress.setVisibility(View.GONE);
@@ -286,4 +289,43 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             isSearching = false;
         }
     }
+
+    private void checkForStoragePemrission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            txtLoading.setClickable(false);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    EXTERNAL_STORAGE_PERMISSION_REQUEST);
+
+        } else {
+            new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case EXTERNAL_STORAGE_PERMISSION_REQUEST: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
+                } else {
+                    progress.setVisibility(View.GONE);
+                    txtLoading.setClickable(true);
+                    txtLoading.setText(R.string.need_storage_access);
+                    txtLoading.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkForStoragePemrission();
+                        }
+                    });
+                }
+                return;
+            }
+        }
+    }
+
 }
