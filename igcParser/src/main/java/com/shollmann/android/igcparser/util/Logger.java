@@ -26,17 +26,19 @@ package com.shollmann.android.igcparser.util;
 
 import android.util.Log;
 
+import com.shollmann.android.igcparser.BuildConfig;
+
 public class Logger {
     private static final boolean IS_ENABLED = true;
 
     public static void log(String s) {
-        if (IS_ENABLED) {
+        if (BuildConfig.DEBUG) {
             Log.d("IGCParser :: ", s);
         }
     }
 
     public static void logError(String s) {
-        if (IS_ENABLED) {
+        if (BuildConfig.DEBUG) {
             Log.e("IGCParser :: ", s);
         }
     }

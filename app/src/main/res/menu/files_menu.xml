@@ -35,6 +35,7 @@
         android:title="@string/refresh" />
     <item
         android:id="@+id/menu_search_sdcard"
+        android:visible="false"
         android:title="@string/scan_complete_sd_card" />
     <item
         android:id="@+id/menu_about"
