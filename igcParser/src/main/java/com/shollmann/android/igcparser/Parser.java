@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Parser {
+
     public static IGCFile parse(Uri filePath) {
         IGCFile igcFile = new IGCFile();
         int maxAltitude = -10000;
@@ -93,6 +94,8 @@ public class Parser {
                     }
                 }
             }
+
+            igcFile.setStartAltitude(firstBRecord.getAltitude());
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
             igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);

@@ -48,7 +48,7 @@ public class MapUtilities {
         ArrayList<AltitudeTrackSegment> listTrackSegment = new ArrayList<>();
 
         for (ILatLonRecord record : igcFile.getTrackPoints()) {
-            altitude = ((BRecord) record).getAltitude();
+            altitude = ((BRecord) record).getAltitude() - igcFile.getStartAltitude();
 
             if (altitude < 100) {
                 currentSegment = AltitudeSegment.ALTITUDE_0_100;
