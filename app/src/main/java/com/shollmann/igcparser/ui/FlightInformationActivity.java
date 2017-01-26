@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -47,6 +48,7 @@ import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.ui.view.MoreInformationFieldView;
 import com.shollmann.igcparser.util.Constants;
@@ -68,11 +70,12 @@ public class FlightInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         findViews();
 
-        igcFile = (IGCFile) getIntent().getExtras().getSerializable(Constants.IGC_FILE);
+        igcFile = IGCViewerApplication.getCurrentIGCFile();
 
         if (igcFile != null) {
             showInformation();
         } else {
+            Crashlytics.log("FlightInformationActivity :: IGC File is null");
             Toast.makeText(getApplication().getBaseContext(), R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -116,7 +119,8 @@ public class FlightInformationActivity extends AppCompatActivity {
         List<Entry> entries = new ArrayList<>();
 
         final List<ILatLonRecord> trackPoints = igcFile.getTrackPoints();
-        int i = 0;
+        int i;
+
         for (i = 0; i < trackPoints.size(); i++) {
             if (i % Constants.Chart.POINTS_SIMPLIFIER == 0) {
                 BRecord bRecord = (BRecord) trackPoints.get(i);
@@ -221,5 +225,11 @@ public class FlightInformationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onStop();
+        IGCViewerApplication.setCurrentIGCFile(null);
     }
 }

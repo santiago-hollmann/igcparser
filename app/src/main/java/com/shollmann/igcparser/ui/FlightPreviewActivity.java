@@ -61,6 +61,7 @@ import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
@@ -267,8 +268,8 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 break;
             case R.id.main_information_btn_viewmore:
                 TrackerHelper.trackOpenMoreInformation();
+                IGCViewerApplication.setCurrentIGCFile(igcFile);
                 Intent intent = new Intent(this, FlightInformationActivity.class);
-                intent.putExtra(Constants.IGC_FILE, igcFile);
                 startActivity(intent);
                 break;
         }
