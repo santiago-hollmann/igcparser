@@ -10,13 +10,13 @@
     <color name="replay_icon_color">@color/gray</color>
 
     <!--Altitude-->
-    <color name="altitude_0_100">#ff0000</color>
-    <color name="altitude_100_300">#ffaa00</color>
-    <color name="altitude_300_500">#ffff00</color>
+    <color name="altitude_0_100">#ff2600</color>
+    <color name="altitude_100_300">#ff8800</color>
+    <color name="altitude_300_500">#ffcc00</color>
     <color name="altitude_500_1000">#ccff00</color>
-    <color name="altitude_1000_1500">#00ff00</color>
-    <color name="altitude_1500_2000">#00ffaa</color>
-    <color name="altitude_2000_2500">#00ffff</color>
+    <color name="altitude_1000_1500">#55ff00</color>
+    <color name="altitude_1500_2000">#00ffee</color>
+    <color name="altitude_2000_2500">#00a6ff</color>
     <color name="altitude_more_than_2500">#0000ff</color>
 
 </resources>

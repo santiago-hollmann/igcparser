@@ -33,7 +33,7 @@ public class AltitudeTrackSegment {
     private AltitudeSegment segment;
     private List<ILatLonRecord> listRecords = new ArrayList<>();
 
-    public AltitudeSegment getSegment() {
+    public AltitudeSegment getSegmentType() {
         return segment;
     }
 

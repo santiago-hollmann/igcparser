@@ -57,17 +57,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.Parser;
-import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
-import com.shollmann.igcparser.model.AltitudeSegment;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.MapUtilities;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.lang.ref.WeakReference;
@@ -202,57 +201,55 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayTrack() {
-        int altitude = 0;
-        AltitudeSegment lastSegment = AltitudeSegment.UNDEFINED;
-        AltitudeSegment currentSegment = AltitudeSegment.UNDEFINED;
-        ArrayList<AltitudeTrackSegment> listTrackSegment = new ArrayList<>();
-        AltitudeTrackSegment trackSegment = new AltitudeTrackSegment();
-        ILatLonRecord lastRecord = null;
-        for (ILatLonRecord record : igcFile.getTrackPoints()) {
-            altitude = ((BRecord) record).getAltitude();
+        ArrayList<AltitudeTrackSegment> listTrackSegment = MapUtilities.getAltitudeTrackSegments(igcFile);
 
-            if (altitude < 1000) {
-                currentSegment = AltitudeSegment.ALTITUDE_0_100;
-            } else {
-                currentSegment = AltitudeSegment.ALTITUDE_100_300;
-            }
-
-            if (lastSegment == currentSegment) {
-                trackSegment.addRecord(record);
-                lastRecord = record;
-            } else {
-                trackSegment = new AltitudeTrackSegment();
-                trackSegment.setSegment(currentSegment);
-                if (lastRecord != null) {
-                    trackSegment.addRecord(lastRecord);
-                }
-                trackSegment.addRecord(record);
-                listTrackSegment.add(trackSegment);
-                lastSegment = currentSegment;
-            }
-        }
-        for (AltitudeTrackSegment trackSegment1 : listTrackSegment) {
-            PolylineOptions polyline;
-            if (trackSegment1.getSegment() == AltitudeSegment.ALTITUDE_0_100) {
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.GREEN);
-            } else {
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.YELLOW);
-            }
-            polyline.addAll(Utilities.getLatLngPoints(trackSegment1.getListRecords()));
+        for (AltitudeTrackSegment trackSegment : listTrackSegment) {
+            PolylineOptions polyline = getAltitudeTrackPolyline(trackSegment);
+            polyline.addAll(Utilities.getLatLngPoints(trackSegment.getListRecords()));
             googleMap.addPolyline(polyline);
 
         }
 
-//        PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.BLUE);-34.5694754,-58.4641385
-//        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
-//        polyline.addAll(listLatLngPoints);
-//        googleMap.addPolyline(polyline);
+    }
 
+    private PolylineOptions getAltitudeTrackPolyline(AltitudeTrackSegment trackSegment1) {
+        PolylineOptions polyline;
+        switch (trackSegment1.getSegmentType()) {
+            case ALTITUDE_0_100:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_0_100));
+                break;
+            case ALTITUDE_100_300:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_100_300));
+                break;
+            case ALTITUDE_300_500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_300_500));
+                break;
+            case ALTITUDE_500_1000:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_500_1000));
+                break;
+            case ALTITUDE_1000_1500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_1000_1500));
+                break;
+            case ALTITUDE_1500_2000:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_1500_2000));
+                break;
+            case ALTITUDE_2000_2500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_2000_2500));
+                break;
+            case ALTITUDE_MORE_THAN_2500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(getResources().getColor(R.color.altitude_more_than_2500));
+                break;
+            default:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.BLACK);
+
+        }
+
+        return polyline;
     }
 
     private void displayWayPoints() {
         if (!igcFile.getWaypoints().isEmpty()) {
-            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.RED);
+            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.MAGENTA);
             listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
             polyline.addAll(listLatLngPoints);
             googleMap.addPolyline(polyline);
