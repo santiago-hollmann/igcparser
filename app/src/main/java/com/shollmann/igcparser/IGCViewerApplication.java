@@ -28,11 +28,13 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+import com.shollmann.android.igcparser.model.IGCFile;
 
 import io.fabric.sdk.android.Fabric;
 
 public class IGCViewerApplication extends Application {
     private static Context instance;
+    private static IGCFile currentIGCFile;
 
     @Override
     public void onCreate() {
@@ -44,5 +46,13 @@ public class IGCViewerApplication extends Application {
 
     public static Context getApplication() {
         return instance;
+    }
+
+    public static IGCFile getCurrentIGCFile() {
+        return currentIGCFile;
+    }
+
+    public static void setCurrentIGCFile(IGCFile currentIGCFile) {
+        IGCViewerApplication.currentIGCFile = currentIGCFile;
     }
 }
