@@ -57,17 +57,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.Parser;
+import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.model.AltitudeSegment;
+import com.shollmann.igcparser.model.AltitudeTrackSegment;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -198,10 +202,52 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayTrack() {
-        PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.BLUE);
-        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
-        polyline.addAll(listLatLngPoints);
-        googleMap.addPolyline(polyline);
+        int altitude = 0;
+        AltitudeSegment lastSegment = AltitudeSegment.UNDEFINED;
+        AltitudeSegment currentSegment = AltitudeSegment.UNDEFINED;
+        ArrayList<AltitudeTrackSegment> listTrackSegment = new ArrayList<>();
+        AltitudeTrackSegment trackSegment = new AltitudeTrackSegment();
+        ILatLonRecord lastRecord = null;
+        for (ILatLonRecord record : igcFile.getTrackPoints()) {
+            altitude = ((BRecord) record).getAltitude();
+
+            if (altitude < 1000) {
+                currentSegment = AltitudeSegment.ALTITUDE_0_100;
+            } else {
+                currentSegment = AltitudeSegment.ALTITUDE_100_300;
+            }
+
+            if (lastSegment == currentSegment) {
+                trackSegment.addRecord(record);
+                lastRecord = record;
+            } else {
+                trackSegment = new AltitudeTrackSegment();
+                trackSegment.setSegment(currentSegment);
+                if (lastRecord != null) {
+                    trackSegment.addRecord(lastRecord);
+                }
+                trackSegment.addRecord(record);
+                listTrackSegment.add(trackSegment);
+                lastSegment = currentSegment;
+            }
+        }
+        for (AltitudeTrackSegment trackSegment1 : listTrackSegment) {
+            PolylineOptions polyline;
+            if (trackSegment1.getSegment() == AltitudeSegment.ALTITUDE_0_100) {
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.GREEN);
+            } else {
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.YELLOW);
+            }
+            polyline.addAll(Utilities.getLatLngPoints(trackSegment1.getListRecords()));
+            googleMap.addPolyline(polyline);
+
+        }
+
+//        PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.BLUE);-34.5694754,-58.4641385
+//        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
+//        polyline.addAll(listLatLngPoints);
+//        googleMap.addPolyline(polyline);
+
     }
 
     private void displayWayPoints() {
