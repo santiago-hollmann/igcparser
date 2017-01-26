@@ -250,8 +250,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayWayPoints() {
         if (!igcFile.getWaypoints().isEmpty()) {
             PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.MAGENTA);
-            listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
-            polyline.addAll(listLatLngPoints);
+            polyline.addAll(Utilities.getLatLngPoints(igcFile.getWaypoints()));
             googleMap.addPolyline(polyline);
         }
 
@@ -341,6 +340,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void handleIGCFileLoaded() {
+        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         displayWayPoints();
         displayTrack();
         displayFlightInformation();
