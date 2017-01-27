@@ -23,7 +23,12 @@
     <dimen name="material_text_body">14sp</dimen>
     <dimen name="material_text_subhead">16sp</dimen>
     <dimen name="more_information_icon_size">24dp</dimen>
-    <dimen name="map_line_width">1.3dp</dimen>
+    <dimen name="track_line_width">1.4dp</dimen>
+    <dimen name="task_line_width">1.2dp</dimen>
     <dimen name="chart_height">200dp</dimen>
+    <dimen name="altitude_reference_width">8dp</dimen>
+    <dimen name="altitude_reference_height">64dp</dimen>
+    <dimen name="altitude_reference_margin">32dp</dimen>
+    <dimen name="altitude_margin_correction">-3dp</dimen>
 
 </resources>

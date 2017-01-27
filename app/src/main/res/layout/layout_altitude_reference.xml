@@ -27,38 +27,39 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/altitude_reference_layout"
     android:layout_width="wrap_content"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
-    android:layout_marginBottom="24dp"
-    android:padding="@dimen/small_margin"
+    android:layout_marginBottom="@dimen/altitude_reference_margin"
+    android:paddingLeft="@dimen/medium_margin"
+    android:visibility="gone"
     tools:showIn="@layout/activity_flight_preview">
 
     <TextView
-        android:id="@+id/test"
-        android:layout_width="250dp"
-        android:layout_height="8dp"
+        android:id="@+id/altitude_reference_bar"
+        android:layout_width="@dimen/altitude_reference_width"
+        android:layout_height="@dimen/altitude_reference_height"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="-118dp"
-        android:layout_marginRight="-114dp"
-        android:background="@color/altitude_100_300"
-        android:rotation="-90" />
+        android:layout_marginRight="@dimen/medium_margin" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/test"
-        android:text="0m"
+        android:layout_alignBottom="@id/altitude_reference_bar"
+        android:layout_marginBottom="@dimen/altitude_margin_correction"
+        android:layout_toRightOf="@+id/altitude_reference_bar"
+        android:text="@string/altitude_reference_0m"
         android:textSize="@dimen/material_text_caption" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="-2dp"
-        android:layout_toRightOf="@+id/test"
-        android:text=">2500m"
+        android:layout_marginTop="@dimen/altitude_margin_correction"
+        android:layout_toRightOf="@+id/altitude_reference_bar"
+        android:gravity="top"
+        android:text="@string/altitude_reference_2500m"
         android:textSize="@dimen/material_text_caption" />
 </RelativeLayout>
