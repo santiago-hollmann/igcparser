@@ -26,6 +26,11 @@ package com.shollmann.igcparser.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -114,6 +119,9 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         setClickListeners();
         initMap(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        View view = findViewById(R.id.test);
+        view.setBackground(getColorScala());
     }
 
     private void handleIntent() {
@@ -491,5 +499,33 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    public static PaintDrawable getColorScala() {
+        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
+                        new int[]{
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_0_100),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_100_300),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_300_500),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_500_1000),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_1000_1500),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_1500_2000),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_2000_2500),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_more_than_2500)},
+                        new float[]{
+                                0, 0.07f, 0.14f, 0.28f, 0.42f, 0.56f, 0.7f, 0.84f},
+                        Shader.TileMode.REPEAT);
+                return linearGradient;
+            }
+        };
+
+        PaintDrawable paint = new PaintDrawable();
+        paint.setShape(new RectShape());
+        paint.setShaderFactory(shaderFactory);
+
+        return paint;
     }
 }
