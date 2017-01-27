@@ -45,7 +45,6 @@ public class BRecord implements ILatLonRecord, Serializable {
     private int altitudePress;
     private int altitudeGps;
 
-
     public BRecord(String rawRecord) {
         try {
             time = Utilities.generateTime(rawRecord.substring(TIME_START_INDEX, TIME_END_INDEX));
