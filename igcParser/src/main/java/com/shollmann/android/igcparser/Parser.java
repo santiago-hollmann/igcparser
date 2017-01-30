@@ -95,7 +95,7 @@ public class Parser {
                 }
             }
 
-            igcFile.setStartAltitude(firstBRecord.getAltitude());
+            igcFile.setStartAltitude(firstBRecord != null ? firstBRecord.getAltitude() : 0);
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
             igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);

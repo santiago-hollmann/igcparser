@@ -72,11 +72,15 @@ public class Utilities {
 
     public static List<LatLng> getLatLngPoints(List<ILatLonRecord> listRecord) {
         ArrayList<LatLng> listLatLng = new ArrayList<>();
-        for (ILatLonRecord record : listRecord) {
-            final double lat = record.getLatLon().getLat();
-            final double lon = record.getLatLon().getLon();
-            if (lat != 0 && lon != 0) {
-                listLatLng.add(new LatLng(lat, lon));
+        if (listRecord != null) {
+            for (ILatLonRecord record : listRecord) {
+                if (record != null && record.getLatLon() != null) {
+                    final double lat = record.getLatLon().getLat();
+                    final double lon = record.getLatLon().getLon();
+                    if (lat != 0 && lon != 0) {
+                        listLatLng.add(new LatLng(lat, lon));
+                    }
+                }
             }
         }
         return listLatLng;
