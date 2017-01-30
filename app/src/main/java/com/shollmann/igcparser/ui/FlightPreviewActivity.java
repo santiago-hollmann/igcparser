@@ -26,6 +26,11 @@ package com.shollmann.igcparser.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +48,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,12 +67,16 @@ import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.model.AltitudeTrackSegment;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.MapUtilities;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,6 +84,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private boolean isFinishReplay = true;
     private int duration;
     private int replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
+    private int speedCounter = Constants.Map.REPLAY_MIN_MULTIPLIER;
     private String fileToLoadPath;
     private IGCFile igcFile;
     private List<LatLng> listLatLngPoints;
@@ -90,6 +101,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private TextView txtGlider;
     private LinearLayout layoutPilot;
     private LinearLayout layoutGlider;
+    private RelativeLayout layoutAltitudeReference;
     private TextView txtMoreInfo;
     private View btnCloseInformation;
     private View btnShowInformation;
@@ -98,7 +110,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private CardView cardviewInformation;
     private ProgressBar loading;
     private ImageView btnSpeedDown;
-    private int speedCounter = Constants.Map.REPLAY_MIN_MULTIPLIER;
+    private View viewAltitudeReferenceBar;
     private Toast toast;
     private Object lock = new Object();
 
@@ -157,6 +169,9 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         btnPlay = (ImageView) findViewById(R.id.main_btn_play);
         btnSpeedUp = (ImageView) findViewById(R.id.main_btn_speed_up);
         btnSpeedDown = (ImageView) findViewById(R.id.main_btn_speed_down);
+        viewAltitudeReferenceBar = findViewById(R.id.altitude_reference_bar);
+        layoutAltitudeReference =  (RelativeLayout) findViewById(R.id.altitude_reference_layout);
+
     }
 
     @Override
@@ -197,17 +212,56 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayTrack() {
-        PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.BLUE);
-        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
-        polyline.addAll(listLatLngPoints);
-        googleMap.addPolyline(polyline);
+        ArrayList<AltitudeTrackSegment> listTrackSegment = MapUtilities.getAltitudeTrackSegments(igcFile);
+
+        for (AltitudeTrackSegment trackSegment : listTrackSegment) {
+            PolylineOptions polyline = getAltitudeTrackPolyline(trackSegment);
+            polyline.addAll(Utilities.getLatLngPoints(trackSegment.getListRecords()));
+            googleMap.addPolyline(polyline);
+
+        }
+
+    }
+
+    private PolylineOptions getAltitudeTrackPolyline(AltitudeTrackSegment trackSegment1) {
+        PolylineOptions polyline;
+        switch (trackSegment1.getSegmentType()) {
+            case ALTITUDE_0_100:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_0_100));
+                break;
+            case ALTITUDE_100_300:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_100_300));
+                break;
+            case ALTITUDE_300_500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_300_500));
+                break;
+            case ALTITUDE_500_1000:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_500_1000));
+                break;
+            case ALTITUDE_1000_1500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1000_1500));
+                break;
+            case ALTITUDE_1500_2000:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1500_2000));
+                break;
+            case ALTITUDE_2000_2500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_2000_2500));
+                break;
+            case ALTITUDE_MORE_THAN_2500:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_more_than_2500));
+                break;
+            default:
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(Color.BLACK);
+
+        }
+
+        return polyline;
     }
 
     private void displayWayPoints() {
         if (!igcFile.getWaypoints().isEmpty()) {
-            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.map_line_width)).color(Color.RED);
-            listLatLngPoints = Utilities.getLatLngPoints(igcFile.getWaypoints());
-            polyline.addAll(listLatLngPoints);
+            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
+            polyline.addAll(Utilities.getLatLngPoints(igcFile.getWaypoints()));
             googleMap.addPolyline(polyline);
         }
 
@@ -267,8 +321,8 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 break;
             case R.id.main_information_btn_viewmore:
                 TrackerHelper.trackOpenMoreInformation();
+                IGCViewerApplication.setCurrentIGCFile(igcFile);
                 Intent intent = new Intent(this, FlightInformationActivity.class);
-                intent.putExtra(Constants.IGC_FILE, igcFile);
                 startActivity(intent);
                 break;
         }
@@ -297,10 +351,13 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void handleIGCFileLoaded() {
+        listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         displayWayPoints();
         displayTrack();
         displayFlightInformation();
         displayReplayViews();
+        layoutAltitudeReference.setVisibility(View.VISIBLE);
+        viewAltitudeReferenceBar.setBackground(getColorScala());
         mapView.setVisibility(View.VISIBLE);
         cardviewInformation.setVisibility(View.VISIBLE);
         loading.setVisibility(View.GONE);
@@ -447,5 +504,33 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    public static PaintDrawable getColorScala() {
+        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                LinearGradient linearGradient = new LinearGradient(width, height, 0, 0,
+                        new int[]{
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_0_100),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_100_300),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_300_500),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_500_1000),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_1000_1500),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_1500_2000),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_2000_2500),
+                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_more_than_2500)},
+                        new float[]{
+                                0, 0.07f, 0.14f, 0.28f, 0.42f, 0.56f, 0.7f, 0.84f},
+                        Shader.TileMode.REPEAT);
+                return linearGradient;
+            }
+        };
+
+        PaintDrawable paint = new PaintDrawable();
+        paint.setShape(new RectShape());
+        paint.setShaderFactory(shaderFactory);
+
+        return paint;
     }
 }

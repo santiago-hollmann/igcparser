@@ -22,37 +22,10 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser;
+package com.shollmann.igcparser.model;
 
-import android.app.Application;
-import android.content.Context;
-
-import com.crashlytics.android.Crashlytics;
-import com.shollmann.android.igcparser.model.IGCFile;
-
-import io.fabric.sdk.android.Fabric;
-
-public class IGCViewerApplication extends Application {
-    private static Context instance;
-    private static IGCFile currentIGCFile;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-
-        Fabric.with(this, new Crashlytics());
-    }
-
-    public static Context getApplication() {
-        return instance;
-    }
-
-    public static IGCFile getCurrentIGCFile() {
-        return currentIGCFile;
-    }
-
-    public static void setCurrentIGCFile(IGCFile currentIGCFile) {
-        IGCViewerApplication.currentIGCFile = currentIGCFile;
-    }
+public enum AltitudeSegment {
+    ALTITUDE_0_100, ALTITUDE_100_300, ALTITUDE_300_500,
+    ALTITUDE_500_1000, ALTITUDE_1000_1500, ALTITUDE_1500_2000,
+    ALTITUDE_2000_2500, ALTITUDE_MORE_THAN_2500, UNDEFINED
 }

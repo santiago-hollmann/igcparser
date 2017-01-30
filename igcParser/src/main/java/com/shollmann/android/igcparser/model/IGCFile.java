@@ -41,6 +41,7 @@ public class IGCFile implements Serializable {
     private double taskDistance;
     private int maxAltitude;
     private int minAltitude;
+    private int startAltitude;
     private String takeOffTime;
     private String landingTime;
     private String pilotInCharge;
@@ -205,5 +206,13 @@ public class IGCFile implements Serializable {
 
     public double getTaskDistance() {
         return taskDistance;
+    }
+
+    public int getStartAltitude() {
+        return startAltitude;
+    }
+
+    public void setStartAltitude(int startAltitude) {
+        this.startAltitude = startAltitude;
     }
 }

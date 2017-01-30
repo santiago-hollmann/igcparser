@@ -30,7 +30,7 @@
     <string name="information_max_altitude"><![CDATA[<b>Altitud Máx.:</b> %1$sm]]></string>
     <string name="information_min_altitude"><![CDATA[<b>Altitud Mín.:</b> %1$sm]]></string>
     <string name="information_takeoff"><![CDATA[<b>Decolaje:</b> %1$s %2$s UTC]]></string>
-    <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\n\nSi tienes algunos muévelos a algún directorio de la tarjeta SD o al directorio de logs de XCSoar.</string>
+    <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\n¿Utilizó este dispositivo para grabar vuelos?\n\nPrueba moviendo tus archivos IGC al directorio de la tarjeta SD, grabando vuelos con el XCSoar o descargando algún vuelo de sitios Web como Soaring Spot.</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Buscando archivos IGC en el directorio logs de XCSoar</string>
     <string name="searching_igc_files">Buscando archivos IGC</string>
     <string name="information_glider"><![CDATA[<b>Planeador:</b> %1$s]]></string>
@@ -69,4 +69,7 @@
     <string name="replay_speed_maximum">Velocidad máxima alcanzada</string>
     <string name="view_more">Ver Más</string>
     <string name="need_storage_access">Se necesita acceso al almacenamiento externo para encontrar los archivos IGC. Por favor acepte la petición del permiso luego de tocar aquí</string>
+    <string name="altitude_reference_0m">0m</string>
+    <string name="altitude_reference_2500m">>2.500m</string>
+
 </resources>

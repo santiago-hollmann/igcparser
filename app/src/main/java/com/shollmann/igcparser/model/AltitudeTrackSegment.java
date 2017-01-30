@@ -22,37 +22,34 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser;
+package com.shollmann.igcparser.model;
 
-import android.app.Application;
-import android.content.Context;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 
-import com.crashlytics.android.Crashlytics;
-import com.shollmann.android.igcparser.model.IGCFile;
+import java.util.ArrayList;
+import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
+public class AltitudeTrackSegment {
+    private AltitudeSegment segment;
+    private List<ILatLonRecord> listRecords = new ArrayList<>();
 
-public class IGCViewerApplication extends Application {
-    private static Context instance;
-    private static IGCFile currentIGCFile;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-
-        Fabric.with(this, new Crashlytics());
+    public AltitudeSegment getSegmentType() {
+        return segment;
     }
 
-    public static Context getApplication() {
-        return instance;
+    public void setSegment(AltitudeSegment segment) {
+        this.segment = segment;
     }
 
-    public static IGCFile getCurrentIGCFile() {
-        return currentIGCFile;
+    public List<ILatLonRecord> getListRecords() {
+        return listRecords;
     }
 
-    public static void setCurrentIGCFile(IGCFile currentIGCFile) {
-        IGCViewerApplication.currentIGCFile = currentIGCFile;
+    public void setListRecords(List<ILatLonRecord> listRecords) {
+        this.listRecords = listRecords;
+    }
+
+    public void addRecord(ILatLonRecord record) {
+        listRecords.add(record);
     }
 }

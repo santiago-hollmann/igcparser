@@ -8,7 +8,7 @@
     <string name="information_duration"><![CDATA[<b>Duration:</b> %1$s]]></string>
     <string name="searching_igc_files">Searching for IGC files</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Searching for IGC files on XCSoar\'s logs folder</string>
-    <string name="no_files_found_with_explanation">No IGC files found.\n\nIf you have some, move them into any SD Card\'s folder or to the XCSoar\'s logs folder.</string>
+    <string name="no_files_found_with_explanation">No IGC files found.\nHave you used this device to record flights before?\n\nTry moving your IGC files into your SD card folder, recording flights with XCSoar or downloading some tracks from websites like Soaring Spot.</string>
     <string name="information_glider"><![CDATA[<b>Glider:</b> %1$s]]></string>
     <string name="information_pilot"><![CDATA[<b>Pilot:</b> %1$s]]></string>
     <string name="search_flights_wait">Searching for files, please wait</string>
@@ -46,4 +46,6 @@
     <string name="empty" />
     <string name="view_more">View More</string>
     <string name="need_storage_access">Access to external storage is required to find the IGC files, accept the permission request after tapping here.</string>
+    <string name="altitude_reference_0m">0m</string>
+    <string name="altitude_reference_2500m">>2,500m</string>
 </resources>
