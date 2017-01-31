@@ -38,6 +38,9 @@
         android:visible="false"
         android:title="@string/scan_complete_sd_card" />
     <item
+        android:id="@+id/menu_share"
+        android:title="@string/share_app" />
+    <item
         android:id="@+id/menu_about"
         android:title="@string/about" />
 </menu>

@@ -181,6 +181,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         MenuItem menuSearchEntireSdCard = menu.findItem(R.id.menu_search_sdcard);
         MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
         MenuItem menuAbout = menu.findItem(R.id.menu_about);
+        MenuItem menuShare = menu.findItem(R.id.menu_share);
 
         ImageView viewAttach = (ImageView) menu.findItem(R.id.menu_sort).getActionView();
         viewAttach.setBackgroundResource(R.drawable.drawable_sort_icon);
@@ -195,6 +196,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         menuSearchEntireSdCard.setOnMenuItemClickListener(this);
         menuRefresh.setOnMenuItemClickListener(this);
         menuAbout.setOnMenuItemClickListener(this);
+        menuShare.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -221,6 +223,10 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             case R.id.menu_search_sdcard:
                 TrackerHelper.trackSearchSdCard();
                 searchForFiles(Utilities.getSdCardFolder());
+                break;
+            case R.id.menu_share:
+                TrackerHelper.trackShareApp();
+                shareApp();
                 break;
             case R.id.menu_sort_glider:
                 TrackerHelper.trackSortByGlider();
@@ -343,6 +349,18 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                 }
                 return;
             }
+        }
+    }
+
+    private void shareApp() {
+        try {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_app_link));
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        } catch (Throwable t) {
+            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
         }
     }
 

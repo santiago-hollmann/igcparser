@@ -46,6 +46,7 @@ public class TrackerHelper {
     private static final String RATE_US_SHOW = "Rate Us: Show";
     private static final String RATE_US_YES = "Rate Us: Yes";
     private static final String RATE_US_NO = "Rate Us: No";
+    private static final String SHARE_APP = "Share app";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -128,5 +129,9 @@ public class TrackerHelper {
 
     public static void trackRateUsNo() {
         AnswersHelper.trackEvent(RATE_US_NO);
+    }
+
+    public static void trackShareApp() {
+        AnswersHelper.trackEvent(SHARE_APP);
     }
 }

@@ -75,4 +75,6 @@
     <string name="rate_us_text"><![CDATA[<b>Você gostou desse aplicativo?</b><br/>Avalie na Play Store para ver quanto você gosta dele :)]]></string>
     <string name="yes_sure">Sim, claro!</string>
     <string name="not_now">Agora não</string>
+    <string name="share_app">Compartilhar este app</string>
+    <string name="share_app_link">Oi! Faça o download desta aplicação! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
 </resources>
