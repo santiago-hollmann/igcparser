@@ -22,47 +22,7 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser;
+package com.shollmann.igcparser.events;
 
-import android.app.Application;
-import android.content.Context;
-
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
-import com.shollmann.android.igcparser.model.IGCFile;
-
-import io.fabric.sdk.android.Fabric;
-
-public class IGCViewerApplication extends Application {
-    private static Context instance;
-    private static IGCFile currentIGCFile;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        setupCrashlytics();
-
-
-    }
-
-    private void setupCrashlytics() {
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
-
-        Fabric.with(this, crashlyticsKit);
-    }
-
-    public static Context getApplication() {
-        return instance;
-    }
-
-    public static IGCFile getCurrentIGCFile() {
-        return currentIGCFile;
-    }
-
-    public static void setCurrentIGCFile(IGCFile currentIGCFile) {
-        IGCViewerApplication.currentIGCFile = currentIGCFile;
-    }
+public class RateUsClickedEvent {
 }

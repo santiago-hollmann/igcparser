@@ -43,6 +43,9 @@ public class TrackerHelper {
     private static final String REFRESH = "Refresh";
     private static final String SORT_DIALOG = "Sort Dialog Open";
     private static final String SHOW_MORE_INFORMATION = "Show More Information";
+    private static final String RATE_US_SHOW = "Rate Us: Show";
+    private static final String RATE_US_YES = "Rate Us: Yes";
+    private static final String RATE_US_NO = "Rate Us: No";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -115,4 +118,15 @@ public class TrackerHelper {
         AnswersHelper.trackEvent(SHOW_MORE_INFORMATION);
     }
 
+    public static void trackRateUsShow() {
+        AnswersHelper.trackEvent(RATE_US_SHOW);
+    }
+
+    public static void trackRateUsYes() {
+        AnswersHelper.trackEvent(RATE_US_YES);
+    }
+
+    public static void trackRateUsNo() {
+        AnswersHelper.trackEvent(RATE_US_NO);
+    }
 }

@@ -72,4 +72,7 @@
     <string name="need_storage_access">O acesso ao armazenamento externo é necessário para encontrar os arquivos IGC, aceite a solicitação de permissão depois de tocar aqui.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2.500m</string>
+    <string name="rate_us_text"><![CDATA[<b>Você gostou desse aplicativo?</b><br/>Avalie na Play Store para ver quanto você gosta dele :)]]></string>
+    <string name="yes_sure">Sim, claro!</string>
+    <string name="not_now">Agora não</string>
 </resources>

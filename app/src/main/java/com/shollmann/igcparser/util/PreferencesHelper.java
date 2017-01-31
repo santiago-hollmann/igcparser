@@ -31,6 +31,10 @@ import com.shollmann.igcparser.IGCViewerApplication;
 
 public class PreferencesHelper {
 
+    private static final String IS_RATED = "is_rated";
+    private static final String FLIGHT_VIEWED = "flight_viewed";
+    private static final String MIN_FLIGHTS_TO_RATE = "min_flights_to_rate";
+
     static {
         prefs = PreferenceManager.getDefaultSharedPreferences(IGCViewerApplication.getApplication());
     }
@@ -86,4 +90,36 @@ public class PreferencesHelper {
         prefs.edit().remove(key).commit();
     }
 
+    public static void setIsRated() {
+        set(IS_RATED, true);
+    }
+
+    public static boolean isRated() {
+        return get(IS_RATED, false);
+    }
+
+    public static void resetViewedFlightsForRate() {
+        set(FLIGHT_VIEWED, 0);
+    }
+
+    public static void setViewedFlightsForRate() {
+        int flightViewed = getViewedFlightCountForRate();
+        flightViewed++;
+        set(FLIGHT_VIEWED, flightViewed);
+    }
+
+    public static int getViewedFlightCountForRate() {
+        return get(FLIGHT_VIEWED, 0);
+    }
+
+
+    public static int getMinFlightsViewedToRate() {
+        return get(MIN_FLIGHTS_TO_RATE, Constants.App.MIN_FLIGHTS_TO_RATE_APP);
+    }
+
+    public static void setMinFlightsViewedToRate() {
+        int flightViewed = getMinFlightsViewedToRate();
+        flightViewed = (int) (flightViewed * 1.5);
+        set(MIN_FLIGHTS_TO_RATE, flightViewed);
+    }
 }

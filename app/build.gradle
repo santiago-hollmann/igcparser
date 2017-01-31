@@ -41,6 +41,7 @@ android {
         }
 
         debug {
+            ext.enableCrashlytics = false
             resValue "string", "MAPS_KEY", MAPS_KEY
         }
 
