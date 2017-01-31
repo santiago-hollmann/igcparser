@@ -73,6 +73,7 @@ import com.shollmann.igcparser.model.AltitudeTrackSegment;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.MapUtilities;
+import com.shollmann.igcparser.util.PreferencesHelper;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.lang.ref.WeakReference;
@@ -170,7 +171,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         btnSpeedUp = (ImageView) findViewById(R.id.main_btn_speed_up);
         btnSpeedDown = (ImageView) findViewById(R.id.main_btn_speed_down);
         viewAltitudeReferenceBar = findViewById(R.id.altitude_reference_bar);
-        layoutAltitudeReference =  (RelativeLayout) findViewById(R.id.altitude_reference_layout);
+        layoutAltitudeReference = (RelativeLayout) findViewById(R.id.altitude_reference_layout);
 
     }
 
@@ -360,6 +361,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         viewAltitudeReferenceBar.setBackground(getColorScala());
         mapView.setVisibility(View.VISIBLE);
         cardviewInformation.setVisibility(View.VISIBLE);
+        PreferencesHelper.setViewedFlightsForRate();
         loading.setVisibility(View.GONE);
     }
 

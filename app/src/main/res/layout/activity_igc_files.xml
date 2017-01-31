@@ -27,10 +27,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.shollmann.igcparser.ui.view.RateUsView
+        android:id="@+id/view_rate_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/files_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/view_rate_us"
         android:paddingBottom="@dimen/medium_margin"
         android:paddingTop="@dimen/medium_margin" />
 

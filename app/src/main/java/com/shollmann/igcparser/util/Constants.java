@@ -28,6 +28,13 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
     public static final String FILE_TO_LOAD_PATH = "file_to_load_path";
     public static final String IGC_FILE = "igc_file";
 
+    public static class App {
+        public static final String APP_PKG_NAME = "com.shollmann.igcparser";
+        public static final String PLAYSTORE_APP_URL = "market://details?id=";
+        public static final String PLAYSTORE_WEB_URL = "https://play.google.com/store/apps/details?id=";
+        public static final int MIN_FLIGHTS_TO_RATE_APP = 7;
+    }
+
     public class Map {
         public static final int MAP_DEFAULT_ZOOM = 12;
         public static final int METERS_IN_ONE_KILOMETER = 1000;

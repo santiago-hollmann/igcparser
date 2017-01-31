@@ -35,7 +35,6 @@ public class Constants {
     public static final String FLIGHT_DURATION_ERROR = "EE:EE";
     public static final int MARKER_TAKE_OFF_HEIGHT = 10;
 
-
     public static class Path {
         public static String XCSOARDATA = "/sdcard/XCSoarData/logs";
         public static String SAMSUNG_XCSOARDATA = "/sdcard/external_sd/XCSoarData/logs";
