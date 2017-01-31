@@ -53,10 +53,13 @@ import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
+import com.shollmann.igcparser.events.RateUsClickedEvent;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
+import com.shollmann.igcparser.ui.view.RateUsView;
 import com.shollmann.igcparser.util.Comparators;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.PreferencesHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,6 +78,7 @@ import java.util.Queue;
 public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
 
     private static final int EXTERNAL_STORAGE_PERMISSION_REQUEST = 1001;
+    private RateUsView viewRateUs;
     private LinearLayout layoutLoading;
     private RecyclerView recyclerView;
     private TextView txtLoading;
@@ -95,6 +99,14 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         checkForStoragePemrission();
     }
 
+    private void setupRateUsView() {
+        if (!PreferencesHelper.isRated() && PreferencesHelper.getViewedFlightCountForRate() >= PreferencesHelper.getMinFlightsViewedToRate()) {
+            viewRateUs.setVisibility(View.VISIBLE);
+        } else {
+            viewRateUs.setVisibility(View.GONE);
+        }
+    }
+
     private void setupFilesList() {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -108,6 +120,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         layoutLoading = (LinearLayout) findViewById(R.id.files_layout_loading);
         txtLoading = (TextView) findViewById(R.id.files_loading_text);
         progress = (ProgressBar) findViewById(R.id.files_loading_progress);
+        viewRateUs = (RateUsView) findViewById(R.id.view_rate_us);
     }
 
     private List<IGCFile> getListIGCFiles(File parentDir) {
@@ -157,12 +170,18 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         startActivity(intent);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RateUsClickedEvent event) {
+        viewRateUs.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.files_menu, menu);
         MenuItem menuSearchEntireSdCard = menu.findItem(R.id.menu_search_sdcard);
         MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
         MenuItem menuAbout = menu.findItem(R.id.menu_about);
+        MenuItem menuShare = menu.findItem(R.id.menu_share);
 
         ImageView viewAttach = (ImageView) menu.findItem(R.id.menu_sort).getActionView();
         viewAttach.setBackgroundResource(R.drawable.drawable_sort_icon);
@@ -177,6 +196,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         menuSearchEntireSdCard.setOnMenuItemClickListener(this);
         menuRefresh.setOnMenuItemClickListener(this);
         menuAbout.setOnMenuItemClickListener(this);
+        menuShare.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -203,6 +223,10 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             case R.id.menu_search_sdcard:
                 TrackerHelper.trackSearchSdCard();
                 searchForFiles(Utilities.getSdCardFolder());
+                break;
+            case R.id.menu_share:
+                TrackerHelper.trackShareApp();
+                shareApp();
                 break;
             case R.id.menu_sort_glider:
                 TrackerHelper.trackSortByGlider();
@@ -328,4 +352,21 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         }
     }
 
+    private void shareApp() {
+        try {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_app_link));
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        } catch (Throwable t) {
+            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupRateUsView();
+    }
 }

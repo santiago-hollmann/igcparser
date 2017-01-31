@@ -17,7 +17,7 @@
     <string name="sort_by_pilot">Sort by pilot</string>
     <string name="sort_by_glider">Sort by glider</string>
     <string name="sort_by_date">Sort by date</string>
-    <string name="about">About the app</string>
+    <string name="about">About this app</string>
     <string name="about_developer">Developed by Santiago Hollmann</string>
     <string name="about_why">I kindly offer this app to the glider pilots community so they can view and enjoy their flights.\n\nFeel free to contact me for improvements, suggestions or any kind of feedback.</string>
     <string name="about_contact">You can send me e-mails to santiago.hollmann@gmail or tweet to @santihollmann.</string>
@@ -48,4 +48,9 @@
     <string name="need_storage_access">Access to external storage is required to find the IGC files, accept the permission request after tapping here.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2,500m</string>
+    <string name="rate_us_text"><![CDATA[<b>Did you like this app?</b><br/>I hope so! Rate it on Play Store to see much you like it :)]]></string>
+    <string name="yes_sure">Yes, sure!</string>
+    <string name="not_now">Not now</string>
+    <string name="share_app">Share this app</string>
+    <string name="share_app_link">Hey check this app! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
 </resources>
