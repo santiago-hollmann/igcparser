@@ -9,7 +9,7 @@ You are more than welcome to contribute to the project. Below you can find some 
 <b>Disclosure</b>: the project is not approbed by the <a href="http://www.fai.org/">FAI</a> so, don't use it to get offical FAI statistics and records.
 
 ##IGC Viewer Screenshots
-<img src="http://i.imgur.com/FDMGH7Q.png" height="32%" width="32%">
+<img src="http://i.imgur.com/79wxbFS.png" height="32%" width="32%">
 <img src="http://i.imgur.com/q6lTaZc.png" height="32%" width="32%">
 <img src="http://i.imgur.com/6oeLqBM.png" height="32%" width="32%">
 
