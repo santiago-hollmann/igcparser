@@ -66,6 +66,7 @@ import com.shollmann.android.igcparser.Parser;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
+import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
@@ -76,6 +77,10 @@ import com.shollmann.igcparser.util.MapUtilities;
 import com.shollmann.igcparser.util.PreferencesHelper;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +124,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViews();
-        handleIntent();
         setClickListeners();
         initMap(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -133,8 +137,13 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         String action = intent.getAction();
         if (Intent.ACTION_VIEW.equals(action)) {
-            Uri uri = intent.getData();
-            fileToLoadPath = uri.getPath();
+            if (intent.getData() != null && Constants.App.CONTENT_URI.equalsIgnoreCase(intent.getData().getScheme())) {
+                TrackerHelper.trackOpenGmailFlight();
+                new handleGmailTrack(this).execute(intent.getDataString());
+            } else {
+                Uri uri = intent.getData();
+                fileToLoadPath = uri.getPath();
+            }
         }
     }
 
@@ -183,7 +192,9 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
 
-        new ParseIGCFileAsyncTask(this).execute();
+        if (!TextUtils.isEmpty(fileToLoadPath)) {
+            new ParseIGCFileAsyncTask(this).execute();
+        }
     }
 
     private void displayFlightInformation() {
@@ -280,6 +291,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        handleIntent();
     }
 
     @Override
@@ -534,5 +546,63 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         paint.setShaderFactory(shaderFactory);
 
         return paint;
+    }
+
+    private class handleGmailTrack extends AsyncTask<String, Void, String> {
+        WeakReference<FlightPreviewActivity> referenceActivity;
+
+        public handleGmailTrack(FlightPreviewActivity activity) {
+            this.referenceActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Uri uri = Uri.parse(params[0]);
+            InputStream is = null;
+            File file = null;
+            try {
+                is = getApplicationContext().getContentResolver().openInputStream(uri);
+
+                try {
+                    file = new File(getCacheDir(), Constants.App.TEMP_TRACK_NAME);
+                    OutputStream output = new FileOutputStream(file);
+                    try {
+                        byte[] buffer = new byte[4 * 1024]; // or other buffer size
+                        int read;
+
+                        while ((read = is.read(buffer)) != -1) {
+                            output.write(buffer, 0, read);
+                        }
+                        output.flush();
+                    } finally {
+                        output.close();
+                    }
+
+                } finally {
+                    is.close();
+                }
+            } catch (Throwable t) {
+                Logger.logError("FlightPreviewActivity :: Error trying to open flight track from Gmail");
+            } finally {
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (Throwable t) {
+                    Logger.logError("FlightPreviewActivity :: Error trying to close input stream");
+                }
+            }
+
+            return file != null ? file.getPath() : Constants.EMPTY_STRING;
+        }
+
+        @Override
+        protected void onPostExecute(String tempIgcFilePath) {
+            if (referenceActivity.get() != null) {
+                fileToLoadPath = tempIgcFilePath;
+                new ParseIGCFileAsyncTask(FlightPreviewActivity.this).execute();
+            }
+            super.onPostExecute(tempIgcFilePath);
+        }
     }
 }
