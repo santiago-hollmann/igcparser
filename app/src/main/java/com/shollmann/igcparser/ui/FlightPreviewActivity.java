@@ -40,6 +40,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -516,7 +517,21 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.menu_share:
+                if (!TextUtils.isEmpty(fileToLoadPath)) {
+                    Intent intentEmail = new Intent(Intent.ACTION_SEND);
+                    intentEmail.setType(Constants.App.TEXT_HTML);
+                    intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileToLoadPath));
+
+                    startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
+                }
+                break;
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -604,5 +619,12 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             }
             super.onPostExecute(tempIgcFilePath);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.flight_preview_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
