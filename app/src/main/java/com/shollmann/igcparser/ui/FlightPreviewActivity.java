@@ -36,10 +36,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -72,10 +74,12 @@ import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.FileUtilities;
 import com.shollmann.igcparser.util.MapUtilities;
 import com.shollmann.igcparser.util.PreferencesHelper;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +123,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViews();
-        handleIntent();
         setClickListeners();
         initMap(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -133,8 +136,13 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         String action = intent.getAction();
         if (Intent.ACTION_VIEW.equals(action)) {
-            Uri uri = intent.getData();
-            fileToLoadPath = uri.getPath();
+            if (intent.getData() != null && Constants.App.CONTENT_URI.equalsIgnoreCase(intent.getData().getScheme())) {
+                TrackerHelper.trackOpenGmailFlight();
+                new GetGmailAttachmentAsyncTask(this).execute(intent.getDataString());
+            } else {
+                Uri uri = intent.getData();
+                fileToLoadPath = uri.getPath();
+            }
         }
     }
 
@@ -183,7 +191,9 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
         this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
 
-        new ParseIGCFileAsyncTask(this).execute();
+        if (!TextUtils.isEmpty(fileToLoadPath)) {
+            new ParseIGCFileAsyncTask(this).execute();
+        }
     }
 
     private void displayFlightInformation() {
@@ -280,12 +290,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        handleIntent();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        FileUtilities.deleteCache(this);
     }
 
     @Override
@@ -504,7 +516,15 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.menu_share:
+                new CopyFileToCacheAndShareAsyncTask(this).execute(fileToLoadPath);
+                break;
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -534,5 +554,68 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         paint.setShaderFactory(shaderFactory);
 
         return paint;
+    }
+
+    private class GetGmailAttachmentAsyncTask extends AsyncTask<String, Void, String> {
+        WeakReference<FlightPreviewActivity> referenceActivity;
+
+        public GetGmailAttachmentAsyncTask(FlightPreviewActivity activity) {
+            this.referenceActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            File file = FileUtilities.copyFileToCacheFolder(FlightPreviewActivity.this, params[0], Constants.App.TEMP_TRACK_NAME);
+            return file != null ? file.getPath() : Constants.EMPTY_STRING;
+        }
+
+        @Override
+        protected void onPostExecute(String tempIgcFilePath) {
+            if (referenceActivity.get() != null) {
+                fileToLoadPath = tempIgcFilePath;
+                new ParseIGCFileAsyncTask(FlightPreviewActivity.this).execute();
+            }
+            super.onPostExecute(tempIgcFilePath);
+        }
+    }
+
+    private class CopyFileToCacheAndShareAsyncTask extends AsyncTask<String, Void, String> {
+        WeakReference<FlightPreviewActivity> referenceActivity;
+
+        public CopyFileToCacheAndShareAsyncTask(FlightPreviewActivity activity) {
+            this.referenceActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            File file = FileUtilities.copyFileToCacheFolder(FlightPreviewActivity.this, fileToLoadPath, Uri.parse(fileToLoadPath).getLastPathSegment());
+            return file != null ? file.getPath() : Constants.EMPTY_STRING;
+        }
+
+        @Override
+        protected void onPostExecute(String tempIgcFilePath) {
+            launchShareFile(tempIgcFilePath);
+            super.onPostExecute(tempIgcFilePath);
+        }
+    }
+
+    private void launchShareFile(String tempIgcFilePath) {
+        try {
+            TrackerHelper.trackShareFlight();
+            Intent intentEmail = new Intent(Intent.ACTION_SEND);
+            intentEmail.setType(Constants.App.TEXT_HTML);
+            intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, Constants.App.FILE_PROVIDER, new File(tempIgcFilePath)));
+            intentEmail.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.share_email_subject), Uri.parse(tempIgcFilePath).getLastPathSegment()));
+            startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
+        } catch (Throwable t) {
+            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.flight_preview_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
