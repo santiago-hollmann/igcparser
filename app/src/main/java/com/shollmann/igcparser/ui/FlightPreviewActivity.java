@@ -36,6 +36,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
@@ -79,6 +80,7 @@ import com.shollmann.igcparser.util.PreferencesHelper;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -140,7 +142,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         if (Intent.ACTION_VIEW.equals(action)) {
             if (intent.getData() != null && Constants.App.CONTENT_URI.equalsIgnoreCase(intent.getData().getScheme())) {
                 TrackerHelper.trackOpenGmailFlight();
-                new handleGmailTrack(this).execute(intent.getDataString());
+                new GetGmailAttachmentAsyncTask(this).execute(intent.getDataString());
             } else {
                 Uri uri = intent.getData();
                 fileToLoadPath = uri.getPath();
@@ -522,13 +524,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 finish();
                 break;
             case R.id.menu_share:
-                if (!TextUtils.isEmpty(fileToLoadPath)) {
-                    Intent intentEmail = new Intent(Intent.ACTION_SEND);
-                    intentEmail.setType(Constants.App.TEXT_HTML);
-                    intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileToLoadPath));
-
-                    startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
-                }
+//                if (!TextUtils.isEmpty(fileToLoadPath)) {
+//                    Intent intentEmail = new Intent(Intent.ACTION_SEND);
+//                    intentEmail.setType(Constants.App.TEXT_HTML);
+//                    intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileToLoadPath));
+//
+//                    startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
+//                }
+                new CopyFileToCacheAsyncTask(this).execute(fileToLoadPath);
                 break;
 
         }
@@ -563,10 +566,10 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         return paint;
     }
 
-    private class handleGmailTrack extends AsyncTask<String, Void, String> {
+    private class GetGmailAttachmentAsyncTask extends AsyncTask<String, Void, String> {
         WeakReference<FlightPreviewActivity> referenceActivity;
 
-        public handleGmailTrack(FlightPreviewActivity activity) {
+        public GetGmailAttachmentAsyncTask(FlightPreviewActivity activity) {
             this.referenceActivity = new WeakReference<>(activity);
         }
 
@@ -617,6 +620,64 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 fileToLoadPath = tempIgcFilePath;
                 new ParseIGCFileAsyncTask(FlightPreviewActivity.this).execute();
             }
+            super.onPostExecute(tempIgcFilePath);
+        }
+    }
+
+    private class CopyFileToCacheAsyncTask extends AsyncTask<String, Void, String> {
+        WeakReference<FlightPreviewActivity> referenceActivity;
+
+        public CopyFileToCacheAsyncTask(FlightPreviewActivity activity) {
+            this.referenceActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            FileInputStream is = null;
+            File file = null;
+            try {
+                is = new FileInputStream(fileToLoadPath);
+
+                try {
+                    file = new File(getCacheDir(), Constants.App.TEMP_TRACK_NAME);
+                    OutputStream output = new FileOutputStream(file);
+                    try {
+                        byte[] buffer = new byte[4 * 1024]; // or other buffer size
+                        int read;
+
+                        while ((read = is.read(buffer)) != -1) {
+                            output.write(buffer, 0, read);
+                        }
+                        output.flush();
+                    } finally {
+                        output.close();
+                    }
+
+                } finally {
+                    is.close();
+                }
+            } catch (Throwable t) {
+                Logger.logError("FlightPreviewActivity :: Error trying copy flight to temp folder");
+            } finally {
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (Throwable t) {
+                    Logger.logError("FlightPreviewActivity :: Error trying to close input stream during temp copy");
+                }
+            }
+            return file != null ? file.getPath() : Constants.EMPTY_STRING;
+        }
+
+        @Override
+        protected void onPostExecute(String tempIgcFilePath) {
+            Intent intentEmail = new Intent(Intent.ACTION_SEND);
+            intentEmail.setType(Constants.App.TEXT_HTML);
+            intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.parse(tempIgcFilePath));
+            intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, "com.shollmann.fileprovider", new File(tempIgcFilePath)));
+
+            startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
             super.onPostExecute(tempIgcFilePath);
         }
     }
