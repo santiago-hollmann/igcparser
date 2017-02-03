@@ -68,22 +68,18 @@ import com.shollmann.android.igcparser.Parser;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
-import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
+import com.shollmann.igcparser.util.FileUtilities;
 import com.shollmann.igcparser.util.MapUtilities;
 import com.shollmann.igcparser.util.PreferencesHelper;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -301,6 +297,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        FileUtilities.deleteCache(this);
     }
 
     @Override
@@ -575,42 +572,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         protected String doInBackground(String... params) {
-            Uri uri = Uri.parse(params[0]);
-            InputStream is = null;
-            File file = null;
-            try {
-                is = getApplicationContext().getContentResolver().openInputStream(uri);
-
-                try {
-                    file = new File(getCacheDir(), Constants.App.TEMP_TRACK_NAME);
-                    OutputStream output = new FileOutputStream(file);
-                    try {
-                        byte[] buffer = new byte[4 * 1024]; // or other buffer size
-                        int read;
-
-                        while ((read = is.read(buffer)) != -1) {
-                            output.write(buffer, 0, read);
-                        }
-                        output.flush();
-                    } finally {
-                        output.close();
-                    }
-
-                } finally {
-                    is.close();
-                }
-            } catch (Throwable t) {
-                Logger.logError("FlightPreviewActivity :: Error trying to open flight track from Gmail");
-            } finally {
-                try {
-                    if (is != null) {
-                        is.close();
-                    }
-                } catch (Throwable t) {
-                    Logger.logError("FlightPreviewActivity :: Error trying to close input stream");
-                }
-            }
-
+            File file = FileUtilities.copyFileToCacheFolder(FlightPreviewActivity.this, fileToLoadPath, Constants.App.TEMP_TRACK_NAME);
             return file != null ? file.getPath() : Constants.EMPTY_STRING;
         }
 
@@ -633,40 +595,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         protected String doInBackground(String... params) {
-            FileInputStream is = null;
-            File file = null;
-            try {
-                is = new FileInputStream(fileToLoadPath);
-
-                try {
-                    file = new File(getCacheDir(), Constants.App.TEMP_TRACK_NAME);
-                    OutputStream output = new FileOutputStream(file);
-                    try {
-                        byte[] buffer = new byte[4 * 1024]; // or other buffer size
-                        int read;
-
-                        while ((read = is.read(buffer)) != -1) {
-                            output.write(buffer, 0, read);
-                        }
-                        output.flush();
-                    } finally {
-                        output.close();
-                    }
-
-                } finally {
-                    is.close();
-                }
-            } catch (Throwable t) {
-                Logger.logError("FlightPreviewActivity :: Error trying copy flight to temp folder");
-            } finally {
-                try {
-                    if (is != null) {
-                        is.close();
-                    }
-                } catch (Throwable t) {
-                    Logger.logError("FlightPreviewActivity :: Error trying to close input stream during temp copy");
-                }
-            }
+            File file = FileUtilities.copyFileToCacheFolder(FlightPreviewActivity.this, fileToLoadPath, Uri.parse(fileToLoadPath).getLastPathSegment());
             return file != null ? file.getPath() : Constants.EMPTY_STRING;
         }
 
@@ -674,8 +603,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         protected void onPostExecute(String tempIgcFilePath) {
             Intent intentEmail = new Intent(Intent.ACTION_SEND);
             intentEmail.setType(Constants.App.TEXT_HTML);
-            intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.parse(tempIgcFilePath));
-            intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, "com.shollmann.fileprovider", new File(tempIgcFilePath)));
+            intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, Constants.App.FILE_PROVIDER, new File(tempIgcFilePath)));
 
             startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
             super.onPostExecute(tempIgcFilePath);
