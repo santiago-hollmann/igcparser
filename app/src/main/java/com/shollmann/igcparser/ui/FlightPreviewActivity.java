@@ -521,14 +521,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 finish();
                 break;
             case R.id.menu_share:
-//                if (!TextUtils.isEmpty(fileToLoadPath)) {
-//                    Intent intentEmail = new Intent(Intent.ACTION_SEND);
-//                    intentEmail.setType(Constants.App.TEXT_HTML);
-//                    intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileToLoadPath));
-//
-//                    startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
-//                }
-                new CopyFileToCacheAsyncTask(this).execute(fileToLoadPath);
+                new CopyFileToCacheAndShareAsyncTask(this).execute(fileToLoadPath);
                 break;
 
         }
@@ -572,7 +565,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         protected String doInBackground(String... params) {
-            File file = FileUtilities.copyFileToCacheFolder(FlightPreviewActivity.this, fileToLoadPath, Constants.App.TEMP_TRACK_NAME);
+            File file = FileUtilities.copyFileToCacheFolder(FlightPreviewActivity.this, params[0], Constants.App.TEMP_TRACK_NAME);
             return file != null ? file.getPath() : Constants.EMPTY_STRING;
         }
 
@@ -586,10 +579,10 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
-    private class CopyFileToCacheAsyncTask extends AsyncTask<String, Void, String> {
+    private class CopyFileToCacheAndShareAsyncTask extends AsyncTask<String, Void, String> {
         WeakReference<FlightPreviewActivity> referenceActivity;
 
-        public CopyFileToCacheAsyncTask(FlightPreviewActivity activity) {
+        public CopyFileToCacheAndShareAsyncTask(FlightPreviewActivity activity) {
             this.referenceActivity = new WeakReference<>(activity);
         }
 
@@ -601,12 +594,21 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         protected void onPostExecute(String tempIgcFilePath) {
+            launchShareFile(tempIgcFilePath);
+            super.onPostExecute(tempIgcFilePath);
+        }
+    }
+
+    private void launchShareFile(String tempIgcFilePath) {
+        try {
+            TrackerHelper.trackShareFlight();
             Intent intentEmail = new Intent(Intent.ACTION_SEND);
             intentEmail.setType(Constants.App.TEXT_HTML);
             intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, Constants.App.FILE_PROVIDER, new File(tempIgcFilePath)));
-
+            intentEmail.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.share_email_subject), Uri.parse(tempIgcFilePath).getLastPathSegment()));
             startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
-            super.onPostExecute(tempIgcFilePath);
+        } catch (Throwable t) {
+            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
         }
     }
 

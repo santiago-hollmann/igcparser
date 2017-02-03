@@ -25,6 +25,7 @@
 package com.shollmann.igcparser.util;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.shollmann.android.igcparser.util.Logger;
@@ -32,15 +33,20 @@ import com.shollmann.android.igcparser.util.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class FileUtilities {
     @Nullable
     public static File copyFileToCacheFolder(Context context, String fileToCopyPath, String tempFileName) {
-        FileInputStream is = null;
+        InputStream is = null;
         File file = null;
         try {
-            is = new FileInputStream(fileToCopyPath);
+            if (fileToCopyPath.contains(Constants.App.CONTENT_URI)) {
+                is = context.getContentResolver().openInputStream(Uri.parse(fileToCopyPath));
+            } else {
+                is = new FileInputStream(fileToCopyPath);
+            }
 
             try {
                 file = new File(context.getCacheDir(), tempFileName);
