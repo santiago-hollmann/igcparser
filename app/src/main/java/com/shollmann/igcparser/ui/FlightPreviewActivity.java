@@ -229,7 +229,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             PolylineOptions polyline = getAltitudeTrackPolyline(trackSegment);
             polyline.addAll(Utilities.getLatLngPoints(trackSegment.getListRecords()));
             googleMap.addPolyline(polyline);
-
         }
 
     }
@@ -270,20 +269,29 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayWayPoints() {
-        if (!igcFile.getWaypoints().isEmpty()) {
+        final List<ILatLonRecord> waypoints = igcFile.getWaypoints();
+        if (!waypoints.isEmpty()) {
             PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
-            polyline.addAll(Utilities.getLatLngPoints(igcFile.getWaypoints()));
+            polyline.addAll(Utilities.getLatLngPoints(waypoints));
             googleMap.addPolyline(polyline);
-        }
 
-        for (ILatLonRecord wayPoint : igcFile.getWaypoints()) {
-            if (wayPoint.getLatLon().getLat() != 0 && wayPoint.getLatLon().getLat() != 0) {
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
-                        .draggable(false)
-                        .title(((CRecordWayPoint) wayPoint).getDescription()));
+            for (ILatLonRecord wayPoint : waypoints) {
+                if (MapUtilities.isZeroCoordinate(wayPoint)) {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
+                            .draggable(false)
+                            .title(((CRecordWayPoint) wayPoint).getDescription()));
+                }
+            }
+            if (waypoints.size() >= 3 && igcFile.getTrackPoints() != null && !igcFile.getTrackPoints().isEmpty()) {
+//                0.0625
+                final ILatLonRecord firstWayPoint = !MapUtilities.isZeroCoordinate(waypoints.get(0)) ? waypoints.get(0) : waypoints.get(1);
+                final ILatLonRecord secondWayPoint = !MapUtilities.isZeroCoordinate(waypoints.get(0)) ? waypoints.get(1) : waypoints.get(2);
+                googleMap.addPolyline(MapUtilities.getStartPolyline(firstWayPoint, secondWayPoint, igcFile.getTrackPoints().get(0)));
             }
         }
+
+
     }
 
     @Override
