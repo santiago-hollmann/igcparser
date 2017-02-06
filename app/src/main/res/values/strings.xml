@@ -48,7 +48,7 @@
     <string name="need_storage_access">Access to external storage is required to find the IGC files, accept the permission request after tapping here.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2,500m</string>
-    <string name="rate_us_text"><![CDATA[<b>Did you like this app?</b><br/>I hope so! Rate it on Play Store to see much you like it :)]]></string>
+    <string name="rate_us_text"><![CDATA[<b>Did you like this app?</b><br/>I hope so! Rate it on Play Store and give your feedback]]></string>
     <string name="yes_sure">Yes, sure!</string>
     <string name="not_now">Not now</string>
     <string name="share_app">Share this app</string>

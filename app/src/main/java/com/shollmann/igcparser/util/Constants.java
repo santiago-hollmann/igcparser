@@ -47,6 +47,8 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final double REPLAY_SPEED_INCREASE = 1.5;
         public static final int REPLAY_MIN_MULTIPLIER = 1;
         public static final int REPLAY_MAX_MULTIPLIER = 8;
+        public static final int START_RADIUS = 5;
+        public static final int FINISH_RADIUS = 1;
     }
 
     public class Chart {
