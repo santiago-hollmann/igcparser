@@ -272,11 +272,16 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayWayPoints() {
         final List<ILatLonRecord> waypoints = igcFile.getWaypoints();
         if (!waypoints.isEmpty()) {
-            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
-            for (int i = 1; i < waypoints.size() - 1; i++) {
-                polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
+            try {
+                PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
+
+                for (int i = 1; i < waypoints.size() - 1; i++) {
+                    polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
+                }
+                googleMap.addPolyline(polyline);
+            } catch (Throwable t) {
+                Logger.logError("Error trying to draw waypoint lines: " + t.getMessage());
             }
-            googleMap.addPolyline(polyline);
 
             for (ILatLonRecord wayPoint : waypoints) {
                 if (!MapUtilities.isZeroCoordinate(wayPoint)) {
