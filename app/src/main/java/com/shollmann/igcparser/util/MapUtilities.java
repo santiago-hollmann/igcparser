@@ -24,7 +24,6 @@
 
 package com.shollmann.igcparser.util;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,6 +32,8 @@ import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.igcparser.IGCViewerApplication;
+import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.model.AltitudeSegment;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
 
@@ -96,54 +97,42 @@ public class MapUtilities {
         return min < value && value <= max;
     }
 
-    public static PolylineOptions getStartPolyline(ILatLonRecord aCoordinate, ILatLonRecord bCoordinate, ILatLonRecord startCoordinate) {
-        double perpendicularLeftX = (aCoordinate.getLatLon().getLat() + bCoordinate.getLatLon().getLat()) / 2;
-        double perpendicularLeftY = (aCoordinate.getLatLon().getLon() + bCoordinate.getLatLon().getLon()) / 2;
-        double perpendicularRightX = (bCoordinate.getLatLon().getLat() - aCoordinate.getLatLon().getLat()) / 2;
-        double perpendicularRightY = (bCoordinate.getLatLon().getLon() - aCoordinate.getLatLon().getLon()) / 2;
-
-//        LatLon startPointStartCoordinate =new LatLon(startCoordinate.getLat(), perpendicularLon);
-//        LatLon startPointEndCoordinate =new LatLon(startCoordinate.getLon(), perpendicularLon);
-        final LatLng perpendicularLeftCoordinate = new LatLng(perpendicularLeftX + perpendicularRightY, perpendicularLeftY - perpendicularRightX);
-        final LatLng perpendicularRightCoordinate = new LatLng(perpendicularLeftX - perpendicularRightY, perpendicularLeftY + perpendicularRightX);
-        PolylineOptions polyline = new PolylineOptions().color(Color.BLUE).width(5)
-                .add(new LatLng(startCoordinate.getLatLon().getLat() + (startCoordinate.getLatLon().getLat() - perpendicularLeftCoordinate.latitude) , perpendicularLeftCoordinate.longitude))
-                .add(new LatLng(startCoordinate.getLatLon().getLat() + (perpendicularRightCoordinate.latitude - startCoordinate.getLatLon().getLat()) , perpendicularRightCoordinate.longitude));
-//                .add(new LatLng(startCoordinate.getLatLon().getLat(), perpendicularRightCoordinate.longitude));
-//                .add(new LatLng(perpendicularLeftCoordinate.latitude, startCoordinate.getLatLon().getLon()-0.0625))
-//                .add(new LatLng(perpendicularRightCoordinate.latitude, startCoordinate.getLatLon().getLon() ));
-//                .add(perpendicularRightCoordinate);
-//                .add(new LatLng(perpendicularRightCoordinate.latitude, startCoordinate.getLatLon().getLon() - 0.0625))
-//                .add(new LatLng(startCoordinate.getLatLon().getLat() - (startCoordinate.getLatLon().getLat() - perpendicularLeftCoordinate.latitude), startCoordinate.getLatLon().getLon() + (startCoordinate.getLatLon().getLon() - perpendicularLeftCoordinate.longitude)));
-        return polyline;
-    }
-
     public static boolean isZeroCoordinate(ILatLonRecord wayPoint) {
         return Utilities.isZero(wayPoint.getLatLon().getLat()) && Utilities.isZero(wayPoint.getLatLon().getLon());
     }
 
     /**
-     * So you have two points with coordinates (x1,y1) and (x2, y2) and you want to draw a line segment
-     * whose length is the distance between them, which is the perpendicular bisector of the segment connecting them,
-     * and which is bisected by said segment?
-
-     Probably the simplest way is to set
-     cx = (x1 + x2)/2
-     cy = (y1+y2)/2)
-     dx = (x2-x1)/2
-     dy = (y2-y1)/2
-     and then draw a line from
-     (cx-dy, cy+dx) to (cx+dy, cy-dx).
-
-     perpLeftX = (x1 + x2)/2
-     perpLeftY = (y1+y2)/2)
-     perpRightX = (x2-x1)/2
-     perpRightY = (y2-y1)/2
-     and then draw a line from
-     (perpLeftX - perpRightY, perpLefty + perpRightX) to (cx+dy, cy-dx).
-
-     This works because (cx, cy) is the midpoint of the segment you want, and then you're just taking
-     the vector from that midpoint to (x2,y2) and rotating it by plus and minus 90 degrees to find the
-     endpoints of the segment you want to draw.
+     * Returns line through pt1, at right angles to line between pt1 and pt2, length lineRadius.
+     *
+     * @param point1
+     * @param point2
+     * @param lineRadius
+     * @return
      */
+    public static PolylineOptions getPerpendicularPolyline(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
+        //returns line through pt1, at right angles to line between pt1 and pt2, length lineRadius.
+
+        //Use Pythogoras- accurate enough on this scale
+        double latDiff = point2.getLatLon().getLat() - point1.getLatLon().getLat();
+
+        //need radians for cosine function
+        double northMean = (point1.getLatLon().getLat() + point2.getLatLon().getLat()) * Math.PI / 360;
+        double startRads = point1.getLatLon().getLat() * Math.PI / 180;
+        double longDiff = (point1.getLatLon().getLon() - point2.getLatLon().getLon()) * Math.cos(northMean);
+        double hypotenuse = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
+
+        //assume earth is a sphere circumference 40030 Km
+        double latDelta = lineRadius * longDiff / hypotenuse / 111.1949269;
+        double longDelta = lineRadius * latDiff / hypotenuse / 111.1949269 / Math.cos(startRads);
+        LatLng lineStart = new LatLng(point1.getLatLon().getLat() - latDelta, point1.getLatLon().getLon() - longDelta);
+        LatLng lineEnd = new LatLng(point1.getLatLon().getLat() + latDelta, longDelta + point1.getLatLon().getLon());
+
+        PolylineOptions polyline = new PolylineOptions().color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color)).width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width))
+                .zIndex(16)
+                .add(lineStart)
+                .add(lineEnd);
+
+        return polyline;
+
+    }
 }
