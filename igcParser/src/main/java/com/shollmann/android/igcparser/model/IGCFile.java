@@ -42,6 +42,7 @@ public class IGCFile implements Serializable {
     private int maxAltitude;
     private int minAltitude;
     private int startAltitude;
+    private int averageSpeed;
     private String takeOffTime;
     private String landingTime;
     private String pilotInCharge;
@@ -214,5 +215,13 @@ public class IGCFile implements Serializable {
 
     public void setStartAltitude(int startAltitude) {
         this.startAltitude = startAltitude;
+    }
+
+    public int getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(int averageSpeed) {
+        this.averageSpeed = averageSpeed;
     }
 }

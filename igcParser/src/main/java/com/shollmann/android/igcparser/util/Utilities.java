@@ -115,6 +115,23 @@ public class Utilities {
         return Constants.FLIGHT_DURATION_ERROR;
     }
 
+    public static long getDiffTimeInSeconds(String departureTime, String landingTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        try {
+            Date departureDate = sdf.parse(departureTime);
+            Date landingDate = sdf.parse(landingTime);
+
+            long diff = landingDate.getTime() - departureDate.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000);
+
+            return (diffHours * 3600) + (diffMinutes * 60);
+        } catch (Throwable e) {
+            Logger.logError(e.getMessage());
+        }
+        return 3600;
+    }
+
     public static String getTimeHHMM(String timeHHMMSS) {
         try {
             return timeHHMMSS.substring(0, timeHHMMSS.length() - 3);

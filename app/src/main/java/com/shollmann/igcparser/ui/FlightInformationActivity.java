@@ -97,6 +97,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         insertField(R.drawable.ic_calendar, R.string.date, igcFile.getDate());
         insertField(R.drawable.ic_person, R.string.pilot_in_charge, Utilities.capitalizeText(igcFile.getPilotInCharge()));
         insertField(R.drawable.ic_plane, R.string.glider, igcFile.getGliderTypeAndId());
+        insertField(R.drawable.ic_speed, R.string.avg_speed, igcFile.getAverageSpeed() + "km/h");
         insertField(R.drawable.ic_time, R.string.duration, igcFile.getFlightTime());
         insertField(R.drawable.ic_distance, R.string.distance, Utilities.getDistanceInKm(igcFile.getDistance(), getResources().getConfiguration().locale) + "km");
         insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale) + "m");
