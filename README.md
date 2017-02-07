@@ -15,13 +15,14 @@ You are more than welcome to contribute to the project. Below you can find some 
 
 ##Contact
 Feel free to contact me with requests, ideas, issues or any kind of feedback.
-* <a href="http://www.twitter.com/santihollmann">Twitter</a> and <a href="https://www.instagram.com/santihollmann">Instagram</a>: @santihollmann
+* Twitter: <a href="http://www.twitter.com/santihollmann">@santihollmann</a>
+* Instagram: <a href="https://www.instagram.com/santihollmann">@santihollmann</a>
 * Email: santiago.hollmann@gmail.com
 
 ##Ways of Contribution
 Here you can find some ways for contribution. If you are insterested in, please contact me.
 
-* Translate the app to your language (it's super easy and quick if you know the language).
+* Translate the app to your language (it's super easy and quick).
 * Add more flight data and statistics.
 * Include new features to the app.
 * Improve algorithms.
