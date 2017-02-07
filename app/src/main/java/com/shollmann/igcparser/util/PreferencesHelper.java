@@ -119,7 +119,7 @@ public class PreferencesHelper {
 
     public static void setMinFlightsViewedToRate() {
         int flightViewed = getMinFlightsViewedToRate();
-        flightViewed = (int) (flightViewed * 1.5);
+        flightViewed = (int) (flightViewed * 1.7);
         set(MIN_FLIGHTS_TO_RATE, flightViewed);
     }
 }

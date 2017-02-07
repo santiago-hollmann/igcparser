@@ -23,6 +23,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -40,6 +41,30 @@
         android:layout_below="@id/view_rate_us"
         android:paddingBottom="@dimen/medium_margin"
         android:paddingTop="@dimen/medium_margin" />
+
+    <LinearLayout
+        android:id="@+id/files_layout_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/large_margin"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/img_sad_cloud" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:text="@string/no_files_found_with_explanation"
+            android:textSize="@dimen/material_text_subhead" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/files_layout_loading"

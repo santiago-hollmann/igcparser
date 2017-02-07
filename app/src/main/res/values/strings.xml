@@ -8,7 +8,7 @@
     <string name="information_duration"><![CDATA[<b>Duration:</b> %1$s]]></string>
     <string name="searching_igc_files">Searching for IGC files</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Searching for IGC files on XCSoar\'s logs folder</string>
-    <string name="no_files_found_with_explanation">No IGC files found.\nHave you used this device to record flights before?\n\nTry moving your IGC files into your SD card folder, recording flights with XCSoar or downloading some tracks from websites like Soaring Spot.</string>
+    <string name="no_files_found_with_explanation">No IGC files found.\nHave you used this device to record flights before?\n\nTry moving your IGC files into your SD card folder, recording flights with XCSoar or downloading some tracks from websites like SkyLines (http://skylines.aero).</string>
     <string name="information_glider"><![CDATA[<b>Glider:</b> %1$s]]></string>
     <string name="information_pilot"><![CDATA[<b>Pilot:</b> %1$s]]></string>
     <string name="search_flights_wait">Searching for files, please wait</string>
@@ -48,9 +48,12 @@
     <string name="need_storage_access">Access to external storage is required to find the IGC files, accept the permission request after tapping here.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2,500m</string>
-    <string name="rate_us_text"><![CDATA[<b>Did you like this app?</b><br/>I hope so! Rate it on Play Store to see much you like it :)]]></string>
+    <string name="rate_us_text"><![CDATA[<b>Did you like this app?</b><br/>I hope so! Rate it on Play Store and give your feedback]]></string>
     <string name="yes_sure">Yes, sure!</string>
     <string name="not_now">Not now</string>
     <string name="share_app">Share this app</string>
     <string name="share_app_link">Hey check this app! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
+    <string name="share">Share flight:</string>
+    <string name="share_email_subject">Flight %1$s</string>
+    <string name="avg_speed">Average Speed</string>
 </resources>

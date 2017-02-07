@@ -101,9 +101,9 @@ public class Parser {
             igcFile.setTakeOffTime(TextUtils.isEmpty(takeOffTime) && firstBRecord != null ? firstBRecord.getTime() : takeOffTime);
             igcFile.setLandingTime(landingTime);
             igcFile.setFileData(filePath);
-
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
+            igcFile.setAverageSpeed(calculateAverageSpeed(distance, Utilities.getDiffTimeInSeconds(takeOffTime, landingTime)));
 
             if (!igcFile.getWaypoints().isEmpty()) {
                 double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
@@ -123,6 +123,11 @@ public class Parser {
         }
         Logger.log(igcFile.toString());
         return igcFile;
+    }
+
+    private static int calculateAverageSpeed(double distance, long flightTimeSeconds) {
+        double metersPerSeconds = distance / (flightTimeSeconds - 4 * 60); // We discount the 4 minutes of a 500m tow
+        return (int) (metersPerSeconds * Constants.M_SECOND_KM_HOUR);
     }
 
     public static IGCFile quickParse(Uri filePath) {

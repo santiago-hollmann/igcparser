@@ -32,7 +32,11 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final String APP_PKG_NAME = "com.shollmann.igcparser";
         public static final String PLAYSTORE_APP_URL = "market://details?id=";
         public static final String PLAYSTORE_WEB_URL = "https://play.google.com/store/apps/details?id=";
-        public static final int MIN_FLIGHTS_TO_RATE_APP = 7;
+        public static final String CONTENT_URI = "content";
+        public static final String TEMP_TRACK_NAME = "tmp_record.igc";
+        public static final String TEXT_HTML = "text/html";
+        public static final String FILE_PROVIDER = "com.shollmann.fileprovider";
+        public static final int MIN_FLIGHTS_TO_RATE_APP = 10;
     }
 
     public class Map {
@@ -43,6 +47,9 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final double REPLAY_SPEED_INCREASE = 1.5;
         public static final int REPLAY_MIN_MULTIPLIER = 1;
         public static final int REPLAY_MAX_MULTIPLIER = 8;
+        public static final int START_RADIUS = 5;
+        public static final int FINISH_RADIUS = 1;
+        public static final double TASK_RADIUS = 2500;
     }
 
     public class Chart {
