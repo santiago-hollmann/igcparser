@@ -59,6 +59,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -272,32 +273,45 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayWayPoints() {
         final List<ILatLonRecord> waypoints = igcFile.getWaypoints();
         if (!waypoints.isEmpty()) {
-            try {
-                PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
+            displayLinesAndAreas(waypoints);
+            displayMarkers(waypoints);
+            displayFinishStartLines(waypoints);
+        }
+    }
 
-                for (int i = 1; i < waypoints.size() - 1; i++) {
-                    polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
-                }
-                googleMap.addPolyline(polyline);
-            } catch (Throwable t) {
-                Logger.logError("Error trying to draw waypoint lines: " + t.getMessage());
-            }
+    private void displayFinishStartLines(List<ILatLonRecord> waypoints) {
+        try {
+            googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), Constants.Map.START_RADIUS));
+            googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Constants.Map.FINISH_RADIUS));
+        } catch (Throwable t) {
+            Logger.logError("Error trying to draw task lines: " + t.getMessage());
+        }
+    }
 
-            for (ILatLonRecord wayPoint : waypoints) {
-                if (!MapUtilities.isZeroCoordinate(wayPoint)) {
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
-                            .draggable(false)
-                            .title(((CRecordWayPoint) wayPoint).getDescription()));
-                }
+    private void displayMarkers(List<ILatLonRecord> waypoints) {
+        for (ILatLonRecord wayPoint : waypoints) {
+            if (!MapUtilities.isZeroCoordinate(wayPoint)) {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
+                        .draggable(false)
+                        .title(((CRecordWayPoint) wayPoint).getDescription()));
             }
+        }
+    }
 
-            try {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), Constants.Map.START_RADIUS));
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Constants.Map.FINISH_RADIUS));
-            } catch (Throwable t) {
-                Logger.logError("Error trying to draw task lines: " + t.getMessage());
+    private void displayLinesAndAreas(List<ILatLonRecord> waypoints) {
+        try {
+            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
+
+            for (int i = 1; i < waypoints.size() - 1; i++) {
+                polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
+                googleMap.addCircle(new CircleOptions().center(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()))
+                        .radius(Constants.Map.TASK_RADIUS).strokeColor(Color.TRANSPARENT).strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
+                        .fillColor(getResources().getColor(R.color.task_fill_color)));
             }
+            googleMap.addPolyline(polyline);
+        } catch (Throwable t) {
+            Logger.logError("Error trying to draw waypoints: " + t.getMessage());
         }
     }
 
