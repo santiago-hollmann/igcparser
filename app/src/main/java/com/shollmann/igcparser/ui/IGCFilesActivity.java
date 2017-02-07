@@ -80,6 +80,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     private static final int EXTERNAL_STORAGE_PERMISSION_REQUEST = 1001;
     private RateUsView viewRateUs;
     private LinearLayout layoutLoading;
+    private LinearLayout layoutEmpty;
     private RecyclerView recyclerView;
     private TextView txtLoading;
     private ProgressBar progress;
@@ -118,6 +119,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     private void findViews() {
         recyclerView = (RecyclerView) findViewById(R.id.files_recyclerview);
         layoutLoading = (LinearLayout) findViewById(R.id.files_layout_loading);
+        layoutEmpty = (LinearLayout) findViewById(R.id.files_layout_empty_state);
         txtLoading = (TextView) findViewById(R.id.files_loading_text);
         progress = (ProgressBar) findViewById(R.id.files_loading_progress);
         viewRateUs = (RateUsView) findViewById(R.id.view_rate_us);
@@ -258,6 +260,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     }
 
     private void showProgressViews() {
+        layoutEmpty.setVisibility(View.GONE);
         layoutLoading.setVisibility(View.VISIBLE);
         progress.setVisibility(View.VISIBLE);
     }
@@ -305,8 +308,9 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                     txtLoading.setText(getString(R.string.searching_igc_files));
                     new FindIGCFilesAsyncTask(activity.get()).execute(Utilities.getSdCardFolder());
                 } else {
-                    progress.setVisibility(View.GONE);
-                    txtLoading.setText(getString(R.string.no_files_found_with_explanation));
+                    viewRateUs.setVisibility(View.GONE);
+                    layoutLoading.setVisibility(View.GONE);
+                    layoutEmpty.setVisibility(View.VISIBLE);
                     TrackerHelper.trackNoFilesFound();
                 }
             }
@@ -337,6 +341,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
                 } else {
+                    layoutEmpty.setVisibility(View.GONE);
                     progress.setVisibility(View.GONE);
                     txtLoading.setClickable(true);
                     txtLoading.setText(R.string.need_storage_access);

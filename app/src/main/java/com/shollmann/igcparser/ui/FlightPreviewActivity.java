@@ -289,25 +289,32 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayMarkers(List<ILatLonRecord> waypoints) {
-        for (ILatLonRecord wayPoint : waypoints) {
-            if (!MapUtilities.isZeroCoordinate(wayPoint)) {
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
-                        .draggable(false)
-                        .title(((CRecordWayPoint) wayPoint).getDescription()));
+        try {
+            for (int i = 1; i < waypoints.size() - 2; i++) {
+                final ILatLonRecord wayPoint = waypoints.get(i);
+                if (!MapUtilities.isZeroCoordinate(wayPoint)) {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
+                            .draggable(false)
+                            .title(((CRecordWayPoint) wayPoint).getDescription()));
+                }
             }
+        } catch (Throwable t) {
+            Logger.logError("Error trying to show markers: " + t.getMessage());
         }
     }
 
     private void displayLinesAndAreas(List<ILatLonRecord> waypoints) {
         try {
-            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(Color.MAGENTA);
+            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(getResources().getColor(R.color.task_line));
 
             for (int i = 1; i < waypoints.size() - 1; i++) {
                 polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
-                googleMap.addCircle(new CircleOptions().center(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()))
-                        .radius(Constants.Map.TASK_RADIUS).strokeColor(Color.TRANSPARENT).strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
-                        .fillColor(getResources().getColor(R.color.task_fill_color)));
+                if (i > 1 && i < waypoints.size() - 2) {
+                    googleMap.addCircle(new CircleOptions().center(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()))
+                            .radius(Constants.Map.TASK_RADIUS).strokeColor(Color.TRANSPARENT).strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
+                            .fillColor(getResources().getColor(R.color.task_fill_color)));
+                }
             }
             googleMap.addPolyline(polyline);
         } catch (Throwable t) {

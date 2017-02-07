@@ -30,7 +30,7 @@
     <string name="information_max_altitude"><![CDATA[<b>Altitud Máx.:</b> %1$sm]]></string>
     <string name="information_min_altitude"><![CDATA[<b>Altitud Mín.:</b> %1$sm]]></string>
     <string name="information_takeoff"><![CDATA[<b>Decolaje:</b> %1$s %2$s UTC]]></string>
-    <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\n¿Utilizó este dispositivo para grabar vuelos?\n\nPrueba moviendo tus archivos IGC al directorio de la tarjeta SD, grabando vuelos con el XCSoar o descargando algún vuelo de sitios Web como Soaring Spot.</string>
+    <string name="no_files_found_with_explanation">No se encontraron archivos IGC.\n¿Utilizó este dispositivo para grabar vuelos?\n\nPrueba moviendo tus archivos IGC al directorio de la tarjeta SD, grabando vuelos con el XCSoar o descargando vuelos de sitios Web como SkyLines (http://skylines.aero).</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Buscando archivos IGC en el directorio logs de XCSoar</string>
     <string name="searching_igc_files">Buscando archivos IGC</string>
     <string name="information_glider"><![CDATA[<b>Planeador:</b> %1$s]]></string>
