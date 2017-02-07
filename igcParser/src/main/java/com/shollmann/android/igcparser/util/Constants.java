@@ -38,7 +38,7 @@ public class Constants {
 
     public static class Path {
         public static String XCSOARDATA = "/sdcard/XCSoarData/logs";
-        public static String SAMSUNG_XCSOARDATA = "/Csdcard/external_sd/XCSoarData/logs";
+        public static String SAMSUNG_XCSOARDATA = "/sdcard/external_sd/XCSoarData/logs";
         public static String STORAGE_XCSOARDATA = "/storage/emulated/0/XCSoarData/logs";
         public static String STORAGE_LEGACY_XCSOARDATA = "/storage/emulated/legacy/XCSoarData/logs";
         public static String SDCARD = "/sdcard";

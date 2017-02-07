@@ -32,7 +32,7 @@
     <string name="information_duration"><![CDATA[<b>Duração:</b> %1$s]]></string>
     <string name="searching_igc_files">Pesquisando arquivos IGC</string>
     <string name="searching_for_igc_files_on_xcsoar_s_logs_folder">Pesquisando arquivos IGC na pasta de log do XCSoar</string>
-    <string name="no_files_found_with_explanation"> Nenhum arquivo IGC encontrado.\nVocê usou este dispositivo para gravar vôos antes?\n\nExperimente mover seus arquivos IGC para a pasta do cartão SD, gravar vôos com o XCSoar ou fazer o download de algumas faixas de sites como o SkyLines (http://skylines.aero).</string>
+    <string name="no_files_found_with_explanation">Nenhum arquivo IGC encontrado.\nVocê usou este dispositivo para gravar vôos antes?\n\nExperimente mover seus arquivos IGC para a pasta do cartão SD, gravar vôos com o XCSoar ou fazer o download de algumas faixas de sites como o SkyLines (http://skylines.aero).</string>
     <string name="information_glider"><![CDATA[<b>Planador:</b> %1$s]]></string>
     <string name="information_pilot"><![CDATA[<b>Piloto:</b> %1$s]]></string>
     <string name="search_flights_wait">Procurando por arquivos, aguarde</string>
