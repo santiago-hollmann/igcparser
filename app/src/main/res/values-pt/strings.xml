@@ -79,6 +79,6 @@
     <string name="share_app_link">Oi! Faça o download desta aplicação! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
     <string name="share">Compartilhar voo:</string>
     <string name="share_email_subject">Voo %1$s</string>
-    <string name="avg_speed">Velocidade Média</string>
+    <string name="avg_speed">Vel. Média de Voo</string>
 
 </resources>

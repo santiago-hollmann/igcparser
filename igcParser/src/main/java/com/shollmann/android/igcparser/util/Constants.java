@@ -33,8 +33,14 @@ public class Constants {
 
     public static final String FLIGHT_DURATION_FORMAT = "%1$dh %2$dm";
     public static final String FLIGHT_DURATION_ERROR = "EE:EE";
-    public static final int MARKER_TAKE_OFF_HEIGHT = 10;
-    public static final double M_SECOND_KM_HOUR = 3.6;
+
+    public static class Calculation {
+        public static final int MARKER_TAKE_OFF_HEIGHT = 10;
+        public static final int TUG_DEFAULT_DISTANCE_METERS = 8000;
+        public static final int TUG_DEFAULT_DURATION_SECONDS = 240;
+        public static final double M_SECOND_KM_HOUR = 3.6;
+
+    }
 
     public static class Path {
         public static String XCSOARDATA = "/sdcard/XCSoarData/logs";
