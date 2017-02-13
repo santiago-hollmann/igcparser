@@ -78,7 +78,7 @@
     <string name="share_app_link">Hola, ¡descarga esta app! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
     <string name="share">Compartir vuelo:</string>
     <string name="share_email_subject">Vuelo %1$s</string>
-    <string name="avg_speed">Velocidad Promedio</string>
+    <string name="avg_speed">Vel. Promedio del Vuelo</string>
 
 
 </resources>
