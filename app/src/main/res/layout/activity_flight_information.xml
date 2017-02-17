@@ -23,8 +23,8 @@
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -63,7 +63,48 @@
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/more_info_chart"
+                android:id="@+id/more_info_altitude_line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/chart_height" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/half_dp"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="@color/gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/more_info_speed_chart_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_margin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/more_information_icon_size"
+                    android:layout_height="@dimen/more_information_icon_size"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/large_margin"
+                    android:src="@drawable/ic_speed"
+                    android:tint="@color/gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Historic Speed"
+                    android:textSize="@dimen/material_text_body"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/more_info_speed_line_chart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/chart_height" />
 

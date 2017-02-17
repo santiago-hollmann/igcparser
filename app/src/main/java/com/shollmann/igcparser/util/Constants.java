@@ -57,5 +57,6 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final int ANIMATION_DURATION = 400;
         public static final int ALPHA_FILL = 60;
         public static final int POINTS_SIMPLIFIER = 30;
+        public static final int SPEED_POINTS_SIMPLIFIER = 30;
     }
 }

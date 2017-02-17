@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Utilities {
     private static final double METERS_IN_ONE_KILOMETER = 1000;
@@ -115,21 +116,23 @@ public class Utilities {
         return Constants.FLIGHT_DURATION_ERROR;
     }
 
-    public static long getDiffTimeInSeconds(String departureTime, String landingTime) {
+    public static long getDiffTimeInSeconds(String startTime, String finishTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         try {
-            Date departureDate = sdf.parse(departureTime);
-            Date landingDate = sdf.parse(landingTime);
+            Date departureDate = sdf.parse(startTime);
+            Date landingDate = sdf.parse(finishTime);
 
             long diff = landingDate.getTime() - departureDate.getTime();
-            long diffMinutes = diff / (60 * 1000) % 60;
-            long diffHours = diff / (60 * 60 * 1000);
-
-            return (diffHours * 3600) + (diffMinutes * 60);
+            return TimeUnit.MILLISECONDS.toSeconds(diff);
         } catch (Throwable e) {
             Logger.logError(e.getMessage());
         }
         return 3600;
+    }
+
+    public static int calculateAverageSpeed(double distance, long flightTimeSeconds) {
+        double metersPerSeconds = distance / flightTimeSeconds;
+        return (int) (metersPerSeconds * Constants.Calculation.M_SECOND_KM_HOUR);
     }
 
     public static String getTimeHHMM(String timeHHMMSS) {
