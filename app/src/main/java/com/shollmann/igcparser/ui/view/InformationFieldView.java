@@ -32,20 +32,20 @@ import android.widget.TextView;
 
 import com.shollmann.igcparser.R;
 
-public class MoreInformationFieldView extends RelativeLayout {
+public class InformationFieldView extends RelativeLayout {
     private TextView txtTitle;
     private TextView txtValue;
     private ImageView imgIcon;
 
-    public MoreInformationFieldView(Context context) {
+    public InformationFieldView(Context context) {
         this(context, null);
     }
 
-    public MoreInformationFieldView(Context context, AttributeSet attrs) {
+    public InformationFieldView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public MoreInformationFieldView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public InformationFieldView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

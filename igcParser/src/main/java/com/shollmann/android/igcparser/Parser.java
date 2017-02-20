@@ -103,7 +103,9 @@ public class Parser {
             igcFile.setFileData(filePath);
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
-            igcFile.setAverageSpeed(calculateAverageSpeed(distance, Utilities.getDiffTimeInSeconds(takeOffTime, landingTime)));
+            // By default we discount a 500 meters tug which means 8000 meters lengths and 240 seconds
+            igcFile.setAverageSpeed(Utilities.calculateAverageSpeed(distance - Constants.Calculation.TUG_DEFAULT_DISTANCE_METERS,
+                    Utilities.getDiffTimeInSeconds(takeOffTime, landingTime) - Constants.Calculation.TUG_DEFAULT_DURATION_SECONDS));
 
             if (!igcFile.getWaypoints().isEmpty()) {
                 double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
@@ -123,12 +125,6 @@ public class Parser {
         }
         Logger.log(igcFile.toString());
         return igcFile;
-    }
-
-    private static int calculateAverageSpeed(double distance, long flightTimeSeconds) {
-        // By default we discount a ~500 meters tug which means 8000 meters lengths and 240 seconds
-        double metersPerSeconds = (distance - Constants.Calculation.TUG_DEFAULT_DISTANCE_METERS) / (flightTimeSeconds - Constants.Calculation.TUG_DEFAULT_DURATION_SECONDS);
-        return (int) (metersPerSeconds * Constants.Calculation.M_SECOND_KM_HOUR);
     }
 
     public static IGCFile quickParse(Uri filePath) {

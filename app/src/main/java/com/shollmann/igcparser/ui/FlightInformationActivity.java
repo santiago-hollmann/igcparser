@@ -43,6 +43,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
@@ -50,7 +51,7 @@ import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
-import com.shollmann.igcparser.ui.view.MoreInformationFieldView;
+import com.shollmann.igcparser.ui.view.InformationFieldView;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
@@ -62,7 +63,8 @@ public class FlightInformationActivity extends AppCompatActivity {
     private RelativeLayout layoutTaskContainer;
     private LinearLayout layoutWayPointsContainer;
     private LinearLayout layoutChartContainer;
-    private LineChart chart;
+    private LineChart altitudeLineChart;
+    private LineChart speedLineChart;
     private IGCFile igcFile;
 
     @Override
@@ -90,7 +92,8 @@ public class FlightInformationActivity extends AppCompatActivity {
         layoutTaskContainer = (RelativeLayout) findViewById(R.id.more_info_task_container);
         layoutWayPointsContainer = (LinearLayout) findViewById(R.id.more_info_waypoints_container);
         layoutChartContainer = (LinearLayout) findViewById(R.id.more_info_chart_container);
-        chart = (LineChart) findViewById(R.id.more_info_chart);
+        altitudeLineChart = (LineChart) findViewById(R.id.more_info_altitude_line_chart);
+        speedLineChart = (LineChart) findViewById(R.id.more_info_speed_line_chart);
     }
 
     private void showInformation() {
@@ -109,29 +112,52 @@ public class FlightInformationActivity extends AppCompatActivity {
             populateTask();
         }
         if (!igcFile.getTrackPoints().isEmpty()) {
-            showAltitudeChart();
+            showLineCharts();
         } else {
             layoutChartContainer.setVisibility(View.GONE);
         }
 
     }
 
-    private void showAltitudeChart() {
-        List<Entry> entries = new ArrayList<>();
+    private void showLineCharts() {
+        List<Entry> altitudeEntries = new ArrayList<>();
+        List<Entry> speedEntries = new ArrayList<>();
+        BRecord lastRecord = null;
 
         final List<ILatLonRecord> trackPoints = igcFile.getTrackPoints();
-        int i;
+        int index;
+        int lastIndexShown = 0;
 
-        for (i = 0; i < trackPoints.size(); i++) {
-            if (i % Constants.Chart.POINTS_SIMPLIFIER == 0) {
-                BRecord bRecord = (BRecord) trackPoints.get(i);
-                entries.add(new Entry(i, bRecord.getAltitude()));
+        for (index = 0; index < trackPoints.size(); index++) {
+            BRecord bRecord = (BRecord) trackPoints.get(index);
+
+            if (index % Constants.Chart.POINTS_SIMPLIFIER == 0) {
+                altitudeEntries.add(new Entry(index, bRecord.getAltitude()));
+            }
+
+            if (index % Constants.Chart.POINTS_SIMPLIFIER == 0) {
+                if (lastRecord == null) {
+                    lastRecord = (BRecord) trackPoints.get(0);
+                }
+                double distanceBetween = SphericalUtil.computeLength(Utilities.getLatLngPoints(trackPoints.subList(lastIndexShown, index)));
+                long timeBetween = Utilities.getDiffTimeInSeconds(lastRecord.getTime(), bRecord.getTime());
+                int averageSpeed = Utilities.calculateAverageSpeed(distanceBetween, timeBetween);
+
+                speedEntries.add(new Entry(index, averageSpeed));
+                lastRecord = bRecord;
+                lastIndexShown = index;
             }
         }
 
-        //Hack to always finish the graph where the glider has landed after the graph is simplified
-        entries.add(new Entry(i, ((BRecord) igcFile.getTrackPoints().get(igcFile.getTrackPoints().size() - 1)).getAltitude()));
+        //Hack to always graph at altitude and speed where the glider has landed after the graph is simplified
+        altitudeEntries.add(new Entry(index + 1, ((BRecord) igcFile.getTrackPoints().get(igcFile.getTrackPoints().size() - 1)).getAltitude()));
+        speedEntries.add(new Entry(index + 1, 0));
 
+        setupGraphic(altitudeLineChart, altitudeEntries, igcFile.getMinAltitude());
+        setupGraphic(speedLineChart, speedEntries, 0);
+    }
+
+    private void setupGraphic(LineChart chart, List<Entry> entries, float axisMinimum) {
         LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
         dataSet.setDrawCircles(false);
         dataSet.setDrawCircleHole(false);
@@ -155,7 +181,7 @@ public class FlightInformationActivity extends AppCompatActivity {
 
         chart.getAxisLeft().removeAllLimitLines();
         chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
-        chart.getAxisLeft().setAxisMinimum(igcFile.getMinAltitude());
+        chart.getAxisLeft().setAxisMinimum(axisMinimum);
         chart.getAxisLeft().setTextSize(Constants.Chart.LABEL_SIZE);
 
         chart.animateX(Constants.Chart.ANIMATION_DURATION, Easing.EasingOption.EaseInSine);
@@ -216,7 +242,7 @@ public class FlightInformationActivity extends AppCompatActivity {
 
     public void insertField(int iconId, int titleStringId, String value) {
         if (!TextUtils.isEmpty(value)) {
-            MoreInformationFieldView fieldView = new MoreInformationFieldView(this);
+            InformationFieldView fieldView = new InformationFieldView(this);
             fieldView.show(iconId, titleStringId, value);
             layoutFieldsContainer.addView(fieldView);
         }

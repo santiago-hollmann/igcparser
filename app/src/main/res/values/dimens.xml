@@ -29,5 +29,7 @@
     <dimen name="altitude_reference_height">64dp</dimen>
     <dimen name="altitude_reference_margin">32dp</dimen>
     <dimen name="altitude_margin_correction">-3dp</dimen>
+    <dimen name="info_graphic_icon_size">20dp</dimen>
+    <dimen name="info_graphic_margin">-4dp</dimen>
 
 </resources>
