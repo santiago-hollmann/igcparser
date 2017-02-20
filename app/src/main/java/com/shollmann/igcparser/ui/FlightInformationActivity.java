@@ -124,10 +124,11 @@ public class FlightInformationActivity extends AppCompatActivity {
         List<Entry> altitudeEntries = new ArrayList<>();
         List<Entry> speedEntries = new ArrayList<>();
         BRecord lastRecord = null;
-        int lastAverageSpeed = 30;
+        int lastAverageSpeed = 0;
 
         final List<ILatLonRecord> trackPoints = igcFile.getTrackPoints();
         int i;
+        int lastI = 0;
 
         for (i = 0; i < trackPoints.size(); i++) {
             BRecord bRecord = (BRecord) trackPoints.get(i);
@@ -138,11 +139,10 @@ public class FlightInformationActivity extends AppCompatActivity {
 
             if (i % Constants.Chart.SPEED_POINTS_SIMPLIFIER == 0) {
                 if (lastRecord == null) {
+                    speedEntries.add(new Entry(0, 0)); // start with 0 speed maybe not needed
                     lastRecord = (BRecord) trackPoints.get(0);
                 }
-                double distanceBetween = SphericalUtil.computeDistanceBetween(
-                        new LatLng(lastRecord.getLatLon().getLat(), lastRecord.getLatLon().getLon()),
-                        new LatLng(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon()));
+                double distanceBetween = SphericalUtil.computeLength(Utilities.getLatLngPoints(trackPoints.subList(lastI, i)));
                 long timeBetween = Utilities.getDiffTimeInSeconds(lastRecord.getTime(), bRecord.getTime());
                 int averageSpeed = Utilities.calculateAverageSpeed(distanceBetween, timeBetween);
                 if (averageSpeed < 40) {
@@ -151,6 +151,7 @@ public class FlightInformationActivity extends AppCompatActivity {
                 speedEntries.add(new Entry(i, averageSpeed));
                 lastAverageSpeed = averageSpeed;
                 lastRecord = bRecord;
+                lastI = i;
             }
         }
 
