@@ -37,7 +37,6 @@
         android:src="@drawable/ic_person"
         android:tint="@color/gray" />
 
-
     <TextView
         android:id="@+id/more_info_title"
         android:layout_width="match_parent"

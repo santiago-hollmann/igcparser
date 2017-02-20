@@ -46,8 +46,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="@dimen/more_information_icon_size"
-                    android:layout_height="@dimen/more_information_icon_size"
+                    android:layout_width="@dimen/info_graphic_icon_size"
+                    android:layout_height="@dimen/info_graphic_icon_size"
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/large_margin"
                     android:src="@drawable/ic_chart"
@@ -65,20 +65,14 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/more_info_altitude_line_chart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/chart_height" />
+                android:layout_height="@dimen/chart_height"
+                android:layout_marginLeft="@dimen/info_graphic_margin" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/half_dp"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:background="@color/gray" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/more_info_speed_chart_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,8 +81,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="@dimen/more_information_icon_size"
-                    android:layout_height="@dimen/more_information_icon_size"
+                    android:layout_width="@dimen/info_graphic_icon_size"
+                    android:layout_height="@dimen/info_graphic_icon_size"
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/large_margin"
                     android:src="@drawable/ic_speed"
@@ -106,7 +100,8 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/more_info_speed_line_chart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/chart_height" />
+                android:layout_height="@dimen/chart_height"
+                android:layout_marginLeft="@dimen/info_graphic_margin" />
 
             <View
                 android:layout_width="match_parent"

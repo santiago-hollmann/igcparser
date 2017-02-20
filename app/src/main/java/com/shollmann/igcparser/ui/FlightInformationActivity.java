@@ -51,7 +51,7 @@ import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
-import com.shollmann.igcparser.ui.view.MoreInformationFieldView;
+import com.shollmann.igcparser.ui.view.InformationFieldView;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.ResourcesHelper;
 
@@ -242,7 +242,7 @@ public class FlightInformationActivity extends AppCompatActivity {
 
     public void insertField(int iconId, int titleStringId, String value) {
         if (!TextUtils.isEmpty(value)) {
-            MoreInformationFieldView fieldView = new MoreInformationFieldView(this);
+            InformationFieldView fieldView = new InformationFieldView(this);
             fieldView.show(iconId, titleStringId, value);
             layoutFieldsContainer.addView(fieldView);
         }
