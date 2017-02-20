@@ -43,7 +43,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
@@ -124,40 +123,35 @@ public class FlightInformationActivity extends AppCompatActivity {
         List<Entry> altitudeEntries = new ArrayList<>();
         List<Entry> speedEntries = new ArrayList<>();
         BRecord lastRecord = null;
-        int lastAverageSpeed = 0;
 
         final List<ILatLonRecord> trackPoints = igcFile.getTrackPoints();
-        int i;
-        int lastI = 0;
+        int index;
+        int lastIndexShown = 0;
 
-        for (i = 0; i < trackPoints.size(); i++) {
-            BRecord bRecord = (BRecord) trackPoints.get(i);
+        for (index = 0; index < trackPoints.size(); index++) {
+            BRecord bRecord = (BRecord) trackPoints.get(index);
 
-            if (i % Constants.Chart.POINTS_SIMPLIFIER == 0) {
-                altitudeEntries.add(new Entry(i, bRecord.getAltitude()));
+            if (index % Constants.Chart.POINTS_SIMPLIFIER == 0) {
+                altitudeEntries.add(new Entry(index, bRecord.getAltitude()));
             }
 
-            if (i % Constants.Chart.SPEED_POINTS_SIMPLIFIER == 0) {
+            if (index % Constants.Chart.POINTS_SIMPLIFIER == 0) {
                 if (lastRecord == null) {
-                    speedEntries.add(new Entry(0, 0)); // start with 0 speed maybe not needed
                     lastRecord = (BRecord) trackPoints.get(0);
                 }
-                double distanceBetween = SphericalUtil.computeLength(Utilities.getLatLngPoints(trackPoints.subList(lastI, i)));
+                double distanceBetween = SphericalUtil.computeLength(Utilities.getLatLngPoints(trackPoints.subList(lastIndexShown, index)));
                 long timeBetween = Utilities.getDiffTimeInSeconds(lastRecord.getTime(), bRecord.getTime());
                 int averageSpeed = Utilities.calculateAverageSpeed(distanceBetween, timeBetween);
-                if (averageSpeed < 40) {
-                    averageSpeed = lastAverageSpeed;
-                }
-                speedEntries.add(new Entry(i, averageSpeed));
-                lastAverageSpeed = averageSpeed;
+
+                speedEntries.add(new Entry(index, averageSpeed));
                 lastRecord = bRecord;
-                lastI = i;
+                lastIndexShown = index;
             }
         }
 
-        //Hack to always finish the graph where the glider has landed after the graph is simplified
-        altitudeEntries.add(new Entry(i + 1, ((BRecord) igcFile.getTrackPoints().get(igcFile.getTrackPoints().size() - 1)).getAltitude()));
-        speedEntries.add(new Entry(i + 1, 0));
+        //Hack to always graph at altitude and speed where the glider has landed after the graph is simplified
+        altitudeEntries.add(new Entry(index + 1, ((BRecord) igcFile.getTrackPoints().get(igcFile.getTrackPoints().size() - 1)).getAltitude()));
+        speedEntries.add(new Entry(index + 1, 0));
 
         setupGraphic(altitudeLineChart, altitudeEntries, igcFile.getMinAltitude());
         setupGraphic(speedLineChart, speedEntries, 0);
