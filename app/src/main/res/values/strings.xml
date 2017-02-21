@@ -20,7 +20,7 @@
     <string name="about">About this app</string>
     <string name="about_developer">Developed by Santiago Hollmann</string>
     <string name="about_why">I kindly offer this app to the glider pilots community so they can view and enjoy their flights.\n\nFeel free to contact me for improvements, suggestions or any kind of feedback.</string>
-    <string name="about_contact">You can send me e-mails to santiago.hollmann@gmail or tweet to @santihollmann.</string>
+    <string name="about_contact">You can send me e-mails to santiago.hollmann@gmail.com or tweet to @santihollmann.</string>
     <string name="about_enjoy">Good flights!</string>
     <string name="version">"Version: "</string>
     <string name="sort">Sort</string>
@@ -39,7 +39,7 @@
     <string name="start">Start</string>
     <string name="turn">Turn</string>
     <string name="sorry_error_happen">Sorry, an unexpected error happen</string>
-    <string name="altitude_chart">Historic Altitude (in meters)</string>
+    <string name="altitude_chart">Historic Altitude</string>
     <string name="replay_speed_indicator">x%1$d</string>
     <string name="replay_speed_minimum">Lowest speed reached</string>
     <string name="replay_speed_maximum">Fastest speed reached</string>
@@ -48,12 +48,13 @@
     <string name="need_storage_access">Access to external storage is required to find the IGC files, accept the permission request after tapping here.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2,500m</string>
-    <string name="rate_us_text"><![CDATA[<b>Did you like this app?</b><br/>I hope so! Rate it on Play Store and give your feedback]]></string>
+    <string name="rate_us_text"><![CDATA[<b>Did you like IGC Viewer?</b><br/>Rate and give us feedback to keep improving.]]></string>
     <string name="yes_sure">Yes, sure!</string>
     <string name="not_now">Not now</string>
     <string name="share_app">Share this app</string>
     <string name="share_app_link">Hey check this app! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
     <string name="share">Share flight:</string>
     <string name="share_email_subject">Flight %1$s</string>
-    <string name="avg_speed">Average Speed</string>
+    <string name="avg_speed">Flight Average Speed</string>
+    <string name="historic_speed">Historic Speed</string>
 </resources>
