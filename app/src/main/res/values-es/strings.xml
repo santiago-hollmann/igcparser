@@ -56,7 +56,7 @@
     <string name="take_off">Decolaje</string>
     <string name="landing">Aterrizaje</string>
     <string name="task_distance">Distancia: %1$skm</string>
-    <string name="altitude_chart">Altura Histórica (en metros)</string>
+    <string name="altitude_chart">Altura Histórica</string>
     <string name="max_altitude">Altura Máxima</string>
     <string name="min_altitude">Altura Mínima</string>
     <string name="task">Prueba</string>
@@ -79,6 +79,7 @@
     <string name="share">Compartir vuelo:</string>
     <string name="share_email_subject">Vuelo %1$s</string>
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
+    <string name="historic_speed">Velocidad Histórica</string>
 
 
 </resources>

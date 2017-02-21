@@ -43,6 +43,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
@@ -51,6 +52,8 @@ import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.ui.formatter.AltitudeGrphicFormatter;
+import com.shollmann.igcparser.ui.formatter.SpeedGrphicFormatter;
 import com.shollmann.igcparser.ui.view.InformationFieldView;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.ResourcesHelper;
@@ -153,11 +156,11 @@ public class FlightInformationActivity extends AppCompatActivity {
         altitudeEntries.add(new Entry(index + 1, ((BRecord) igcFile.getTrackPoints().get(igcFile.getTrackPoints().size() - 1)).getAltitude()));
         speedEntries.add(new Entry(index + 1, 0));
 
-        setupGraphic(altitudeLineChart, altitudeEntries, igcFile.getMinAltitude());
-        setupGraphic(speedLineChart, speedEntries, 0);
+        setupGraphic(altitudeLineChart, altitudeEntries, igcFile.getMinAltitude(), new AltitudeGrphicFormatter());
+        setupGraphic(speedLineChart, speedEntries, 0, new SpeedGrphicFormatter());
     }
 
-    private void setupGraphic(LineChart chart, List<Entry> entries, float axisMinimum) {
+    private void setupGraphic(LineChart chart, List<Entry> entries, float axisMinimum, IAxisValueFormatter formatter) {
         LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
         dataSet.setDrawCircles(false);
         dataSet.setDrawCircleHole(false);
@@ -183,6 +186,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         chart.getAxisLeft().setTextColor(getResources().getColor(R.color.gray));
         chart.getAxisLeft().setAxisMinimum(axisMinimum);
         chart.getAxisLeft().setTextSize(Constants.Chart.LABEL_SIZE);
+        chart.getAxisLeft().setValueFormatter(formatter);
 
         chart.animateX(Constants.Chart.ANIMATION_DURATION, Easing.EasingOption.EaseInSine);
 
