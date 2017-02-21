@@ -44,7 +44,7 @@
     <string name="about">Sobre o app</string>
     <string name="about_developer">Desenvolvido por Santiago Hollmann</string>
     <string name="about_why">Gostaria de oferecer este aplicativo para a comunidade de pilotos planador para que eles possam ver e desfrutar de seus vôos.\n\nSaia livre para entrar em contato comigo para melhorias, sugestões ou qualquer tipo de feedback.</string>
-    <string name="about_contact">Você pode me enviar e-mails para santiago.hollmann@gmail ou tweet para @santihollmann.</string>
+    <string name="about_contact">Você pode me enviar e-mails para santiago.hollmann@gmail.com ou tweet para @santihollmann.</string>
     <string name="about_enjoy">Boa voos!</string>
     <string name="version">"Versão: "</string>
     <string name="sort">Classificar</string>
@@ -72,7 +72,7 @@
     <string name="need_storage_access">O acesso ao armazenamento externo é necessário para encontrar os arquivos IGC, aceite a solicitação de permissão depois de tocar aqui.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2.500m</string>
-    <string name="rate_us_text"><![CDATA[<b>Você gostou desse aplicativo?</b><br/>Por favor, deixe um comentário na Play Store]]></string>
+    <string name="rate_us_text"><![CDATA[<b>Você gostou IGC Viewer?</b><br/>Deixe um comentário para continuar melhorando.]]></string>
     <string name="yes_sure">Sim, claro!</string>
     <string name="not_now">Agora não</string>
     <string name="share_app">Compartilhar este app</string>

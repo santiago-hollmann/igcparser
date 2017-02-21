@@ -71,7 +71,7 @@
     <string name="need_storage_access">Se necesita acceso al almacenamiento externo para encontrar los archivos IGC. Por favor acepta la petición del permiso luego de tocar aquí</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2.500m</string>
-    <string name="rate_us_text"><![CDATA[<b>¿Te gusta la app?</b><br/>¡Espero que si! Califícala en Play Store y deja tu opinión.]]></string>
+    <string name="rate_us_text"><![CDATA[<b>¿Te gusta IGC Viewer?</b><br/>Califícala y deja tu opinión para seguir mejorando.]]></string>
     <string name="yes_sure">¡Si, genial!</string>
     <string name="not_now">Ahora no</string>
     <string name="share_app">Compartir app</string>
