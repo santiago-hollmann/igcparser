@@ -92,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Historic Speed"
+                    android:text="@string/historic_speed"
                     android:textSize="@dimen/material_text_body"
                     android:textStyle="bold" />
             </LinearLayout>

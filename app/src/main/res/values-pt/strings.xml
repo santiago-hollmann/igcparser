@@ -63,7 +63,7 @@
     <string name="start">Partida</string>
     <string name="turn">Ponto de viragem</string>
     <string name="sorry_error_happen">Lamentamos, mas ocorreu um erro inesperado</string>
-    <string name="altitude_chart">Altitude Histórica (em metros)</string>
+    <string name="altitude_chart">Altitude Histórica</string>
     <string name="replay_speed_indicator">x%1$d</string>
     <string name="replay_speed_minimum">Velocidade mais baixa alcançada</string>
     <string name="replay_speed_maximum">Velocidade máxima alcançada</string>
@@ -80,5 +80,6 @@
     <string name="share">Compartilhar voo:</string>
     <string name="share_email_subject">Voo %1$s</string>
     <string name="avg_speed">Vel. Média de Voo</string>
+    <string name="historic_speed">Velocidade Histórica</string>
 
 </resources>
