@@ -140,6 +140,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                     }
                 }
             }
+            Collections.sort(inFiles, Comparators.compareByDate);
         } catch (Throwable t) {
             final String message = "Couldn't open files";
             Crashlytics.log(message);
@@ -147,7 +148,6 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             Logger.logError(message);
         }
 
-        Collections.sort(inFiles, Comparators.compareByDate);
 
         return inFiles;
     }
