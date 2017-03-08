@@ -83,4 +83,7 @@ public class Constants {
     }
 
 
+    public class TASK {
+        public static final int AREA_WDITH = 10000;
+    }
 }

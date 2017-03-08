@@ -97,22 +97,16 @@ public class MapUtilities {
         return min < value && value <= max;
     }
 
-    public static boolean isZeroCoordinate(ILatLonRecord wayPoint) {
-        return Utilities.isZero(wayPoint.getLatLon().getLat()) && Utilities.isZero(wayPoint.getLatLon().getLon());
-    }
-
     /**
-     * Returns line through pt1, at right angles to line between pt1 and pt2, length lineRadius.
+     * Returns line through point1, at right angles to line between point1 and point2, length lineRadius.
      *
      * @param point1
      * @param point2
      * @param lineRadius
      * @return
      */
-    public static PolylineOptions getPerpendicularPolyline(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
-        //returns line through pt1, at right angles to line between pt1 and pt2, length lineRadius.
-
-        //Use Pythogoras- accurate enough on this scale
+    public static PerpendicularLineCoordinates getPerpendicularLine(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
+        //Use Pythogoras is accurate enough on this scale
         double latDiff = point2.getLatLon().getLat() - point1.getLatLon().getLat();
 
         //need radians for cosine function
@@ -127,12 +121,29 @@ public class MapUtilities {
         LatLng lineStart = new LatLng(point1.getLatLon().getLat() - latDelta, point1.getLatLon().getLon() - longDelta);
         LatLng lineEnd = new LatLng(point1.getLatLon().getLat() + latDelta, longDelta + point1.getLatLon().getLon());
 
+        return new PerpendicularLineCoordinates(lineStart, lineEnd, point1);
+
+    }
+
+    public static PolylineOptions getPerpendicularPolyline(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
+        PerpendicularLineCoordinates perpendicularLine = getPerpendicularLine(point1, point2, lineRadius);
         PolylineOptions polyline = new PolylineOptions().color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color)).width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width))
-                .zIndex(16)
-                .add(lineStart)
-                .add(lineEnd);
+                .add(perpendicularLine.start)
+                .add(perpendicularLine.end);
 
         return polyline;
 
+    }
+
+    public static class PerpendicularLineCoordinates {
+        protected LatLng start;
+        protected LatLng end;
+        protected LatLng center;
+
+        public PerpendicularLineCoordinates(LatLng lineStart, LatLng lineEnd, ILatLonRecord point1) {
+            start = lineStart;
+            end = lineEnd;
+            center = new LatLng(point1.getLatLon().getLat(), point1.getLatLon().getLon());
+        }
     }
 }

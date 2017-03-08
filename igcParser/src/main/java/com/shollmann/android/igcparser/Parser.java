@@ -24,6 +24,7 @@
 
 package com.shollmann.android.igcparser;
 
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,7 +34,9 @@ import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Constants;
+import com.shollmann.android.igcparser.util.CoordinatesUtilities;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 
@@ -41,6 +44,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 public class Parser {
 
@@ -53,6 +57,7 @@ public class Parser {
         String takeOffTime = Constants.EMPTY_STRING;
         String landingTime = Constants.EMPTY_STRING;
         BufferedReader reader = null;
+        HashMap<String, Integer> mapAreaReached = new HashMap<>();
         try {
             reader = new BufferedReader(
                     new InputStreamReader(new FileInputStream(filePath.toString()), "UTF-8"));
@@ -69,6 +74,10 @@ public class Parser {
                     landingTime = bRecord.getTime();
 
                     igcFile.appendTrackPoint(bRecord);
+
+                    if (igcFile.getWaypoints() != null && !igcFile.getWaypoints().isEmpty()) {
+                        calculateTaskStats(igcFile.getTrackPoints().size() - 1, bRecord, igcFile, mapAreaReached);
+                    }
                 } else {
                     if (isCRecord(line)) {
                         if (!isFirstCRecord) {
@@ -95,6 +104,8 @@ public class Parser {
                 }
             }
 
+            Logger.log("Santi :: TaskCompleted=" + mapAreaReached.toString());
+
             igcFile.setStartAltitude(firstBRecord != null ? firstBRecord.getAltitude() : 0);
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
@@ -103,7 +114,7 @@ public class Parser {
             igcFile.setFileData(filePath);
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
-            // By default we discount a 500 meters tug which means 8000 meters lengths and 240 seconds
+            // By default we discount a 500 meters tug which means 8000 meters length and 240 seconds
             igcFile.setAverageSpeed(Utilities.calculateAverageSpeed(distance - Constants.Calculation.TUG_DEFAULT_DISTANCE_METERS,
                     Utilities.getDiffTimeInSeconds(takeOffTime, landingTime) - Constants.Calculation.TUG_DEFAULT_DURATION_SECONDS));
 
@@ -125,6 +136,27 @@ public class Parser {
         }
         Logger.log(igcFile.toString());
         return igcFile;
+    }
+
+    private static void calculateTaskStats(int positionBRecord, BRecord bRecord, IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        calculateReachedAreas(positionBRecord, bRecord, igcFile, mapAreaReached);
+    }
+
+    private static void calculateReachedAreas(int positionBRecord, BRecord bRecord, IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        for (int i = 1; i < igcFile.getWaypoints().size() - 2; i++) {
+            final ILatLonRecord waypoint = igcFile.getWaypoints().get(i);
+            if (!CoordinatesUtilities.isZeroCoordinate(waypoint)) {
+                float[] distance = new float[2];
+                Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
+                        waypoint.getLatLon().getLat(), waypoint.getLatLon().getLon(), distance);
+                if (distance[0] < Constants.TASK.AREA_WDITH) {
+                    String waypointKey = waypoint.getLatLon().toString();
+                    if (mapAreaReached.get(waypointKey) == null) {
+                        mapAreaReached.put(waypointKey, positionBRecord);
+                    }
+                }
+            }
+        }
     }
 
     public static IGCFile quickParse(Uri filePath) {
