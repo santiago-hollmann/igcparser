@@ -224,4 +224,18 @@ public class IGCFile implements Serializable {
     public void setAverageSpeed(int averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
+
+    public int getTakeOffAltitude() {
+        if (listTrackPoints != null && !listTrackPoints.isEmpty()) {
+            return ((BRecord) listTrackPoints.get(0)).getAltitude();
+        }
+        return 0;
+    }
+
+    public int getLandingAltitude() {
+        if (listTrackPoints != null && !listTrackPoints.isEmpty()) {
+            return ((BRecord) listTrackPoints.get(listTrackPoints.size() - 1)).getAltitude();
+        }
+        return 0;
+    }
 }

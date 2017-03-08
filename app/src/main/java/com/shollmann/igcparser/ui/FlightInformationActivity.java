@@ -108,8 +108,8 @@ public class FlightInformationActivity extends AppCompatActivity {
         insertField(R.drawable.ic_distance, R.string.distance, Utilities.getDistanceInKm(igcFile.getDistance(), getResources().getConfiguration().locale) + "km");
         insertField(R.drawable.ic_min, R.string.min_altitude, Utilities.getFormattedNumber(igcFile.getMinAltitude(), getResources().getConfiguration().locale) + "m");
         insertField(R.drawable.ic_max, R.string.max_altitude, Utilities.getFormattedNumber(igcFile.getMaxAltitude(), getResources().getConfiguration().locale) + "m");
-        insertField(R.drawable.ic_departure, R.string.take_off, Utilities.getTimeHHMM(igcFile.getTakeOffTime()) + " UTC");
-        insertField(R.drawable.ic_landing, R.string.landing, Utilities.getTimeHHMM(igcFile.getLandingTime()) + " UTC");
+        insertField(R.drawable.ic_departure, R.string.take_off, String.format(getString(R.string.time_and_altitude), Utilities.getTimeHHMM(igcFile.getTakeOffTime()), igcFile.getTakeOffAltitude()));
+        insertField(R.drawable.ic_landing, R.string.landing, String.format(getString(R.string.time_and_altitude), Utilities.getTimeHHMM(igcFile.getTakeOffTime()), igcFile.getLandingAltitude()));
         if (!igcFile.getWaypoints().isEmpty() && !Utilities.isZero(igcFile.getTaskDistance())) {
             layoutTaskContainer.setVisibility(View.VISIBLE);
             populateTask();

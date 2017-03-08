@@ -57,4 +57,5 @@
     <string name="share_email_subject">Flight %1$s</string>
     <string name="avg_speed">Flight Average Speed</string>
     <string name="historic_speed">Historic Speed</string>
+    <string name="time_and_altitude">%1$s UTC at %2$dm</string>
 </resources>

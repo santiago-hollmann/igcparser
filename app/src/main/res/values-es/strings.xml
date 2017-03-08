@@ -80,6 +80,7 @@
     <string name="share_email_subject">Vuelo %1$s</string>
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
     <string name="historic_speed">Velocidad Histórica</string>
+    <string name="time_and_altitude">%1$s UTC a %2$dm</string>
 
 
 </resources>
