@@ -287,9 +287,17 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void displayFinishStartLines(List<ILatLonRecord> waypoints) {
-        try {
-            googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), Constants.Map.START_RADIUS));
-            googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), Constants.Map.FINISH_RADIUS));
+        try {//TODO Move the logic to determine takeoff, start, etc points to WaypointsHelper
+            if (((CRecordWayPoint) waypoints.get(0)).getType() == CRecordType.START) {
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), Constants.Map.START_RADIUS));
+            } else {
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), Constants.Map.START_RADIUS));
+            }
+            if (((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).getType() == CRecordType.FINISH) {
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), Constants.Map.FINISH_RADIUS));
+            } else {
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Constants.Map.FINISH_RADIUS));
+            }
         } catch (Throwable t) {
             Logger.logError("Error trying to draw task lines: " + t.getMessage());
         }
@@ -316,8 +324,11 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(getResources().getColor(R.color.task_line));
 
             for (int i = 0; i < waypoints.size(); i++) {
-                polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
-                if (((CRecordWayPoint) waypoints.get(i)).getType() == CRecordType.TURN) {// Avoid showing area at start and end point
+                CRecordWayPoint cRecordWayPoint = (CRecordWayPoint) waypoints.get(i);
+                if (cRecordWayPoint.getType() == CRecordType.START || cRecordWayPoint.getType() == CRecordType.TURN || cRecordWayPoint.getType() == CRecordType.FINISH) {
+                    polyline.add(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()));
+                }
+                if (cRecordWayPoint.getType() == CRecordType.TURN) {
                     googleMap.addCircle(new CircleOptions().center(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()))
                             .radius(Constants.Map.TASK_RADIUS).strokeColor(Color.TRANSPARENT).strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
                             .fillColor(getResources().getColor(R.color.task_fill_color)));

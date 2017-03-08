@@ -59,13 +59,27 @@ public class WaypointUtilities {
             CRecordWayPoint aCRecord = (CRecordWayPoint) waypoints.get(i);
             int oppositePosition = waypoints.size() - 1 - i;
             CRecordWayPoint otherCRecord = (CRecordWayPoint) waypoints.get(oppositePosition);
-            if (!aCRecord.getDescription().equalsIgnoreCase(otherCRecord.getDescription()) || oppositePosition == i) {
+            if (!includesTakeOffOrLanding(aCRecord) && (!aCRecord.getDescription().equalsIgnoreCase(otherCRecord.getDescription()) || oppositePosition == i)) {
                 aCRecord.setType(CRecordType.TURN);
+            } else {
+                if (i == 1) { //it has take off, start, finish and landing way points
+                    ((CRecordWayPoint) waypoints.get(0)).setType(CRecordType.TAKEOFF);
+                    ((CRecordWayPoint) waypoints.get(1)).setType(CRecordType.START);
+                    ((CRecordWayPoint) waypoints.get(waypoints.size() - 2)).setType(CRecordType.FINISH);
+                    ((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).setType(CRecordType.LANDING);
+                } else if (i == 0) {
+                    ((CRecordWayPoint) waypoints.get(0)).setType(CRecordType.START);
+                    ((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).setType(CRecordType.FINISH);
+                }
             }
         }
     }
 
+    public static boolean includesTakeOffOrLanding(CRecordWayPoint aCRecord) {
+        return aCRecord.getDescription().toUpperCase().contains("TAKE_OFF") || aCRecord.getDescription().toUpperCase().contains("TAKEOFF") || aCRecord.getDescription().toUpperCase().contains("LANDING");
+    }
+
     public static double calculateTaskDistance(List<ILatLonRecord> waypoints) {
-        return  SphericalUtil.computeLength(Utilities.getLatLngPoints(waypoints));
+        return SphericalUtil.computeLength(Utilities.getLatLngPoints(waypoints));
     }
 }

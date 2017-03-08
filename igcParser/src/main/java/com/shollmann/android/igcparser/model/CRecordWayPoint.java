@@ -51,23 +51,7 @@ public class CRecordWayPoint implements ILatLonRecord, Serializable {
     }
 
     private int getTypeLastCharPosition(String rawRecord) {
-        switch (type) {
-            case START:
-                return rawRecord.indexOf(Constants.CRecord.START) + Constants.CRecord.START.length();
-            case TAKEOFF:
-                return rawRecord.indexOf(Constants.CRecord.TAKEOFF) + Constants.CRecord.TAKEOFF.length();
-            case FINISH:
-                return rawRecord.indexOf(Constants.CRecord.FINISH) + Constants.CRecord.FINISH.length();
-            case LANDING:
-                return rawRecord.indexOf(Constants.CRecord.LANDING) + Constants.CRecord.LANDING.length();
-            case TURN:
-                if (rawRecord.contains(Constants.CRecord.TURN)) {
-                    return rawRecord.indexOf(Constants.CRecord.TURN) + Constants.CRecord.TURN.length();
-                } else {
-                    return rawRecord.indexOf("W") == -1 ? rawRecord.indexOf("E") + 1 : rawRecord.indexOf("W") + 1;
-                }
-        }
-        return rawRecord.length() - 1;
+        return rawRecord.indexOf("W") == -1 ? rawRecord.indexOf("E") + 1 : rawRecord.indexOf("W") + 1;
     }
 
     private CRecordType parseType(String rawRecord) {
