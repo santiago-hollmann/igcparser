@@ -84,7 +84,7 @@ public class CRecordWayPoint implements ILatLonRecord, Serializable {
         } else if (rawRecord.contains(Constants.CRecord.LANDING)) {
             return CRecordType.LANDING;
         }
-        return CRecordType.TURN;
+        return CRecordType.UNDEFINED;
     }
 
     public String getDescription() {
@@ -105,5 +105,9 @@ public class CRecordWayPoint implements ILatLonRecord, Serializable {
 
     public CRecordType getType() {
         return type;
+    }
+
+    public void setType(CRecordType type) {
+        this.type = type;
     }
 }
