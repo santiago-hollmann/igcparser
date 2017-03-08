@@ -70,6 +70,7 @@ import com.shollmann.android.igcparser.Parser;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
+import com.shollmann.android.igcparser.util.CoordinatesUtilities;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
@@ -298,7 +299,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         try {
             for (int i = 1; i < waypoints.size() - 2; i++) {
                 final ILatLonRecord wayPoint = waypoints.get(i);
-                if (!MapUtilities.isZeroCoordinate(wayPoint)) {
+                if (!CoordinatesUtilities.isZeroCoordinate(wayPoint)) {
                     googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
                             .draggable(false)

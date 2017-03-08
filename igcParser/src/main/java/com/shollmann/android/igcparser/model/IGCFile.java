@@ -51,6 +51,7 @@ public class IGCFile implements Serializable {
     private String date;
     private String fileName;
     private String filePath;
+    private boolean isTaskCompleted;
 
     public IGCFile() {
         listWayPoints = new ArrayList<>();
@@ -237,5 +238,13 @@ public class IGCFile implements Serializable {
             return ((BRecord) listTrackPoints.get(listTrackPoints.size() - 1)).getAltitude();
         }
         return 0;
+    }
+
+    public void seTaskCompleted(boolean isCompleted) {
+        isTaskCompleted = isCompleted;
+    }
+
+    public boolean isTaskCompleted() {
+        return isTaskCompleted;
     }
 }
