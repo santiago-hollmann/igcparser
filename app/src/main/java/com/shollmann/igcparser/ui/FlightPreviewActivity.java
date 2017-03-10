@@ -307,7 +307,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         try {
             for (int i = 0; i < waypoints.size(); i++) {
                 final CRecordWayPoint wayPoint = (CRecordWayPoint) waypoints.get(i);
-                if (wayPoint.getType() == CRecordType.TURN) {
+                if (wayPoint.getType() == CRecordType.TURN || wayPoint.getType() == CRecordType.START) {
                     googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(wayPoint.getLatLon().getLat(), wayPoint.getLatLon().getLon()))
                             .draggable(false)
