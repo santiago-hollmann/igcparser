@@ -191,7 +191,18 @@ public class WaypointUtilities {
 
     }
 
-    public static double TraveledTaskDistance(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+    public static int getTaskAverageSpeed(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        try {
+            ArrayList<Integer> listReachedAreas = getListReachedAreas(mapAreaReached);
+            String startTime = ((BRecord) igcFile.getTrackPoints().get(listReachedAreas.get(0))).getTime();
+            String finishTime = ((BRecord) igcFile.getTrackPoints().get(listReachedAreas.get(listReachedAreas.size() - 1))).getTime();
+            return Utilities.calculateAverageSpeed(igcFile.getTaskDistance(), Utilities.getDiffTimeInSeconds(startTime, finishTime));
+        } catch (Throwable t) {
+            return -1;
+        }
+    }
+
+    public static double getTaskTraveledDistance(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
         if (!igcFile.isTaskCompleted()) {
             return igcFile.getDistance();
         }

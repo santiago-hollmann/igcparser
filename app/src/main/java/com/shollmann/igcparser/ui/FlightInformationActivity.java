@@ -210,11 +210,18 @@ public class FlightInformationActivity extends AppCompatActivity {
             layoutWayPointsContainer.addView(createTaskTextView(taskDistanceText));
         }
 
+        if (igcFile.isTaskCompleted()) {
+            if (!Utilities.isZero(igcFile.getTraveledTaskDistance())) {
+                final String taskTraveledDistanceText = String.format(getResources().getString(R.string.task_made_distance), Utilities.getDistanceInKm(igcFile.getTraveledTaskDistance(), getResources().getConfiguration().locale));
+                layoutWayPointsContainer.addView(createTaskTextView(taskTraveledDistanceText));
+            }
 
-        if (!Utilities.isZero(igcFile.getTraveledTaskDistance())) {
-            final String taskTraveledDistanceText = String.format(getResources().getString(R.string.task_made_distance), Utilities.getDistanceInKm(igcFile.getTraveledTaskDistance(), getResources().getConfiguration().locale));
-            layoutWayPointsContainer.addView(createTaskTextView(taskTraveledDistanceText));
+            if (igcFile.getTaskAverageSpeed() > 0) {
+                final String taskAverageSpeed = String.format(getResources().getString(R.string.task_average_speed), igcFile.getTaskAverageSpeed() + "km/h");
+                layoutWayPointsContainer.addView(createTaskTextView(taskAverageSpeed));
+            }
         }
+
 
         layoutWayPointsContainer.addView(createTaskTextView(getString(igcFile.isTaskCompleted() ? R.string.task_completed : R.string.task_not_completed)));
     }
