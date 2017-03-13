@@ -84,5 +84,6 @@
     <string name="task_completed">Prueba Completa</string>
     <string name="task_not_completed">Prueba Incompleta</string>
     <string name="task_made_distance">Distancia Recorrida: %1$skm</string>
+    <string name="task_average_speed">Velocidad Promedio: %1$s</string>
 
 </resources>
