@@ -52,7 +52,7 @@
     <string name="glider">Planador</string>
     <string name="duration">Duração</string>
     <string name="distance">Distância</string>
-    <string name="task_distance">Distância: %1$skm</string>
+    <string name="task_distance">Distância da tarefa: %1$skm</string>
     <string name="date">Data</string>
     <string name="take_off">Descolar</string>
     <string name="landing">Aterrissagem</string>
@@ -82,6 +82,7 @@
     <string name="avg_speed">Vel. Média de Voo</string>
     <string name="historic_speed">Velocidade Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
-    <string name="task_completed">Tarefa concluída</string>
-    <string name="task_not_completed">Tarefa incompleta</string>
+    <string name="task_completed">Tarefa Concluída</string>
+    <string name="task_not_completed">Tarefa Incompleta</string>
+    <string name="task_made_distance">Distância Percorrida: %1$skm</string>
 </resources>

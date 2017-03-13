@@ -52,6 +52,7 @@ public class IGCFile implements Serializable {
     private String fileName;
     private String filePath;
     private boolean isTaskCompleted;
+    private double traveledTaskDistance;
 
     public IGCFile() {
         listWayPoints = new ArrayList<>();
@@ -241,11 +242,19 @@ public class IGCFile implements Serializable {
         return 0;
     }
 
-    public void seTaskCompleted(boolean isCompleted) {
+    public void setTaskCompleted(boolean isCompleted) {
         isTaskCompleted = isCompleted;
     }
 
     public boolean isTaskCompleted() {
         return isTaskCompleted;
+    }
+
+    public double getTraveledTaskDistance() {
+        return traveledTaskDistance;
+    }
+
+    public void setTraveledTaskDistance(double traveledTaskDistance) {
+        this.traveledTaskDistance = traveledTaskDistance;
     }
 }
