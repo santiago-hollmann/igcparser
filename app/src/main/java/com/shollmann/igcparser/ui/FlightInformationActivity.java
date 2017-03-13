@@ -207,6 +207,8 @@ public class FlightInformationActivity extends AppCompatActivity {
         } else {
             layoutWayPointsContainer.setVisibility(View.GONE);
         }
+
+        layoutWayPointsContainer.addView(createTaskTextView(getString(igcFile.isTaskCompleted() ? R.string.task_completed : R.string.task_not_completed)));
     }
 
     @NonNull

@@ -82,5 +82,6 @@
     <string name="avg_speed">Vel. Média de Voo</string>
     <string name="historic_speed">Velocidade Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
-
+    <string name="task_completed">Tarefa concluída</string>
+    <string name="task_not_completed">Tarefa incompleta</string>
 </resources>
