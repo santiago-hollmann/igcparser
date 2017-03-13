@@ -220,6 +220,8 @@ public class FlightInformationActivity extends AppCompatActivity {
                 final String taskAverageSpeed = String.format(getResources().getString(R.string.task_average_speed), igcFile.getTaskAverageSpeed() + "km/h");
                 layoutWayPointsContainer.addView(createTaskTextView(taskAverageSpeed));
             }
+
+            layoutWayPointsContainer.addView(createTaskTextView(String.format(getResources().getString(R.string.task_duration), igcFile.getTaskDuration())));
         }
 
 

@@ -86,4 +86,6 @@
     <string name="task_not_completed">Tarefa Incompleta</string>
     <string name="task_made_distance">Distância Percorrida: %1$skm</string>
     <string name="task_average_speed">Velocidade Média: %1$s</string>
+    <string name="task_duration">Duração: %1$s</string>
+
 </resources>

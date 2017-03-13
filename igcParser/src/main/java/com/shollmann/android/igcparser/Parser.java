@@ -145,6 +145,7 @@ public class Parser {
         igcFile.setTaskCompleted(WaypointUtilities.isTaskCompleted(igcFile.getWaypoints(), mapAreaReached));
         igcFile.setTraveledTaskDistance(WaypointUtilities.getTaskTraveledDistance(igcFile, mapAreaReached));
         igcFile.setTaskAverageSpeed(WaypointUtilities.getTaskAverageSpeed(igcFile, mapAreaReached));
+        igcFile.setTaskDuration(WaypointUtilities.getTaskDuration(igcFile, mapAreaReached));
     }
 
 

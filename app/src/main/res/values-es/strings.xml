@@ -81,9 +81,10 @@
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
     <string name="historic_speed">Velocidad Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
-    <string name="task_completed">Prueba Completa</string>
+    <string name="task_completed">Prueba Completada</string>
     <string name="task_not_completed">Prueba Incompleta</string>
     <string name="task_made_distance">Distancia Recorrida: %1$skm</string>
     <string name="task_average_speed">Velocidad Promedio: %1$s</string>
+    <string name="task_duration">Duración: %1$s</string>
 
 </resources>
