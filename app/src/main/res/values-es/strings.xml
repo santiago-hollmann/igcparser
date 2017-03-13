@@ -55,7 +55,7 @@
     <string name="date">Fecha</string>
     <string name="take_off">Decolaje</string>
     <string name="landing">Aterrizaje</string>
-    <string name="task_distance">Distancia: %1$skm</string>
+    <string name="task_distance">Distancia de la prueba: %1$skm</string>
     <string name="altitude_chart">Altura Histórica</string>
     <string name="max_altitude">Altura Máxima</string>
     <string name="min_altitude">Altura Mínima</string>
@@ -81,7 +81,8 @@
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
     <string name="historic_speed">Velocidad Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
-    <string name="task_completed">Prueba completa</string>
-    <string name="task_not_completed">Prueba incompleta</string>
+    <string name="task_completed">Prueba Completa</string>
+    <string name="task_not_completed">Prueba Incompleta</string>
+    <string name="task_made_distance">Distancia Recorrida: %1$skm</string>
 
 </resources>

@@ -35,6 +35,7 @@ import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -173,6 +174,32 @@ public class WaypointUtilities {
 
         return new PerpendicularLineCoordinates(lineStart, lineEnd, point1);
 
+    }
+
+    public static double TraveledTaskDistance(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        if (!igcFile.isTaskCompleted()) {
+            return igcFile.getDistance();
+        }
+        double totalDistance = 0;
+        ArrayList<Integer> listReachedAreas = getListReachedAreas(mapAreaReached);
+        for (int i = 0; i < listReachedAreas.size() - 1; i++) {
+            int nextPosition = i + 1;
+            totalDistance = totalDistance + SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints().subList(listReachedAreas.get(i), listReachedAreas.get(nextPosition))));
+        }
+        return totalDistance;
+    }
+
+    private static ArrayList<Integer> getListReachedAreas(HashMap<String, Integer> mapAreaReached) {
+        ArrayList<Integer> listAreaReached = new ArrayList<>();
+        if (!mapAreaReached.isEmpty()) {
+            for (Integer bRecordPosition : mapAreaReached.values()) {
+                if (listAreaReached.isEmpty() || listAreaReached.get(0) > bRecordPosition) {
+                    listAreaReached.add(0, bRecordPosition);
+                }
+            }
+        }
+
+        return listAreaReached;
     }
 
     public static class PerpendicularLineCoordinates {

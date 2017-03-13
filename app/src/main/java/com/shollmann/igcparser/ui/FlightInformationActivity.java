@@ -195,6 +195,10 @@ public class FlightInformationActivity extends AppCompatActivity {
     }
 
     private void populateTask() {
+        if (igcFile.getWaypoints().isEmpty()) {
+            layoutWayPointsContainer.setVisibility(View.GONE);
+            return;
+        }
         for (ILatLonRecord waypoint : igcFile.getWaypoints()) {
             CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
             if (!TextUtils.isEmpty(cRecord.getDescription().trim())) {
@@ -204,8 +208,12 @@ public class FlightInformationActivity extends AppCompatActivity {
         if (!Utilities.isZero(igcFile.getTaskDistance())) {
             final String taskDistanceText = String.format(getResources().getString(R.string.task_distance), Utilities.getDistanceInKm(igcFile.getTaskDistance(), getResources().getConfiguration().locale));
             layoutWayPointsContainer.addView(createTaskTextView(taskDistanceText));
-        } else {
-            layoutWayPointsContainer.setVisibility(View.GONE);
+        }
+
+
+        if (!Utilities.isZero(igcFile.getTraveledTaskDistance())) {
+            final String taskTraveledDistanceText = String.format(getResources().getString(R.string.task_made_distance), Utilities.getDistanceInKm(igcFile.getTraveledTaskDistance(), getResources().getConfiguration().locale));
+            layoutWayPointsContainer.addView(createTaskTextView(taskTraveledDistanceText));
         }
 
         layoutWayPointsContainer.addView(createTaskTextView(getString(igcFile.isTaskCompleted() ? R.string.task_completed : R.string.task_not_completed)));

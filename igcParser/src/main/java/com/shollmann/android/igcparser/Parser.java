@@ -142,7 +142,8 @@ public class Parser {
 
     private static void calculateTaskStats(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
         igcFile.setTaskDistance(WaypointUtilities.calculateTaskDistance(igcFile.getWaypoints()));
-        igcFile.seTaskCompleted(WaypointUtilities.isTaskCompleted(igcFile.getWaypoints(), mapAreaReached));
+        igcFile.setTaskCompleted(WaypointUtilities.isTaskCompleted(igcFile.getWaypoints(), mapAreaReached));
+        igcFile.setTraveledTaskDistance(WaypointUtilities.TraveledTaskDistance(igcFile, mapAreaReached));
     }
 
 
