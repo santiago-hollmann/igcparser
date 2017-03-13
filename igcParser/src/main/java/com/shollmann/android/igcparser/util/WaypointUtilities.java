@@ -202,6 +202,17 @@ public class WaypointUtilities {
         }
     }
 
+    public static String getTaskDuration(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        try {
+            ArrayList<Integer> listReachedAreas = getListReachedAreas(mapAreaReached);
+            String startTime = ((BRecord) igcFile.getTrackPoints().get(listReachedAreas.get(0))).getTime();
+            String finishTime = ((BRecord) igcFile.getTrackPoints().get(listReachedAreas.get(listReachedAreas.size() - 1))).getTime();
+            return Utilities.getFlightTime(startTime, finishTime);
+        } catch (Throwable t) {
+            return "EE:EE";
+        }
+    }
+
     public static double getTaskTraveledDistance(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
         if (!igcFile.isTaskCompleted()) {
             return igcFile.getDistance();

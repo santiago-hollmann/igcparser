@@ -62,4 +62,6 @@
     <string name="task_not_completed">Task Not Completed</string>
     <string name="task_made_distance">Distance Traveled: %1$skm</string>
     <string name="task_average_speed">Average Speed: %1$s</string>
+    <string name="task_duration">Duration: %1$s</string>
+
 </resources>

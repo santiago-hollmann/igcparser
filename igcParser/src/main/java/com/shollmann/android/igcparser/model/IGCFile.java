@@ -54,6 +54,7 @@ public class IGCFile implements Serializable {
     private boolean isTaskCompleted;
     private double traveledTaskDistance;
     private int taskAverageSpeed;
+    private String taskDuration;
 
     public IGCFile() {
         listWayPoints = new ArrayList<>();
@@ -265,5 +266,13 @@ public class IGCFile implements Serializable {
 
     public void setTaskAverageSpeed(int taskAverageSpeed) {
         this.taskAverageSpeed = taskAverageSpeed;
+    }
+
+    public String getTaskDuration() {
+        return taskDuration;
+    }
+
+    public void setTaskDuration(String taskDuration) {
+        this.taskDuration = taskDuration;
     }
 }
