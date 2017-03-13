@@ -25,7 +25,6 @@
 package com.shollmann.android.igcparser.util;
 
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
@@ -36,6 +35,7 @@ import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,7 +51,6 @@ public class WaypointUtilities {
                         waypoint.getLatLon().getLat(), waypoint.getLatLon().getLon(), distance);
                 if (distance[0] <= Constants.TASK.AREA_WIDTH_IN_METERS) {
                     isPointToAdd = true;
-                    Log.e("Santi", "Reached zone: " + waypoint.getDescription());
                 }
             } else if (waypoint.getType() == CRecordType.START) {
                 if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.TASK.START_IN_METERS)) {
@@ -65,7 +64,16 @@ public class WaypointUtilities {
 
             if (isPointToAdd) {
                 String waypointKey = waypoint.toString();
-                mapAreaReached.put(waypointKey, positionBRecord);
+                if (waypoint.getType() == CRecordType.TURN) {
+                    if (mapAreaReached.get(waypointKey) == null) {
+                        //We kept only the first point of the reached area
+                        mapAreaReached.put(waypointKey, positionBRecord);
+                    }
+                } else {
+                    //We overwrite the last start and finish points
+                    mapAreaReached.put(waypointKey, positionBRecord);
+
+                }
             }
 
             isPointToAdd = false;
@@ -143,7 +151,14 @@ public class WaypointUtilities {
     }
 
     public static double calculateTaskDistance(List<ILatLonRecord> waypoints) {
-        return SphericalUtil.computeLength(Utilities.getLatLngPoints(waypoints));
+        ArrayList<ILatLonRecord> listCRecord = new ArrayList<>();
+        for (ILatLonRecord waypoint : waypoints) {
+            CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
+            if (cRecord.getType() != CRecordType.LANDING && cRecord.getType() != CRecordType.TAKEOFF) {
+                listCRecord.add(cRecord);
+            }
+        }
+        return SphericalUtil.computeLength(Utilities.getLatLngPoints(listCRecord));
     }
 
 
@@ -190,16 +205,9 @@ public class WaypointUtilities {
     }
 
     private static ArrayList<Integer> getListReachedAreas(HashMap<String, Integer> mapAreaReached) {
-        ArrayList<Integer> listAreaReached = new ArrayList<>();
-        if (!mapAreaReached.isEmpty()) {
-            for (Integer bRecordPosition : mapAreaReached.values()) {
-                if (listAreaReached.isEmpty() || listAreaReached.get(0) > bRecordPosition) {
-                    listAreaReached.add(0, bRecordPosition);
-                }
-            }
-        }
-
-        return listAreaReached;
+        ArrayList<Integer> values = new ArrayList<>(mapAreaReached.values());
+        Collections.sort(values);
+        return values;
     }
 
     public static class PerpendicularLineCoordinates {

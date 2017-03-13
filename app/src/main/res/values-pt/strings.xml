@@ -61,7 +61,7 @@
     <string name="task">Tarefa</string>
     <string name="finish">Acabamento</string>
     <string name="start">Partida</string>
-    <string name="turn">Ponto de viragem</string>
+    <string name="turn">Waypoint</string>
     <string name="sorry_error_happen">Lamentamos, mas ocorreu um erro inesperado</string>
     <string name="altitude_chart">Altitude Histórica</string>
     <string name="replay_speed_indicator">x%1$d</string>
