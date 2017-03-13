@@ -85,8 +85,8 @@ public class Constants {
 
     public class TASK {
         public static final int AREA_WIDTH_IN_METERS = 10000;
-        public static final int START_IN_KM = 5;
-        public static final int FINISH_IN_KM = 1;
+        public static final int START_IN_METERS = 5000;
+        public static final int FINISH_IN_METERS = 1000;
         public static final int MIN_TOLERANCE_IN_METERS = 200;
     }
 }

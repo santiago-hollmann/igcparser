@@ -50,14 +50,14 @@ public class WaypointUtilities {
                         waypoint.getLatLon().getLat(), waypoint.getLatLon().getLon(), distance);
                 if (distance[0] <= Constants.TASK.AREA_WIDTH_IN_METERS) {
                     isPointToAdd = true;
-                    Log.e("Santi","Reached zone: " + waypoint.getDescription());
+                    Log.e("Santi", "Reached zone: " + waypoint.getDescription());
                 }
             } else if (waypoint.getType() == CRecordType.START) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.TASK.START_IN_KM)) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.TASK.START_IN_METERS)) {
                     isPointToAdd = true;
                 }
             } else if (waypoint.getType() == CRecordType.FINISH) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), Constants.TASK.FINISH_IN_KM)) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), Constants.TASK.FINISH_IN_METERS)) {
                     isPointToAdd = true;
                 }
             }
@@ -95,9 +95,9 @@ public class WaypointUtilities {
             return true;
         }
 
-        if (centerDistance[0] <= (width / 2) * 1000) { // Avoid doing this calculations if the point is not event close to the line
+        if (centerDistance[0] <= (width / 2)) { // Avoid doing this calculations if the point is not event close to the line
             float distanceToClosestEndLine = startDistance[0] > endDistance[0] ? endDistance[0] : startDistance[0];
-            if (distanceToClosestEndLine + centerDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS + ((width * 1000) / 2)) {
+            if (distanceToClosestEndLine + centerDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS + (width / 2)) {
                 return true;
             }
         }
@@ -147,14 +147,14 @@ public class WaypointUtilities {
 
 
     /**
-     * Returns line through point1, at right angles to line between point1 and point2, length lineRadius.
+     * Returns line through point1, at right angles to line between point1 and point2, length lineRadius in meters.
      *
      * @param point1
      * @param point2
-     * @param lineRadius
+     * @param lineRadiusInMeters
      * @return
      */
-    public static PerpendicularLineCoordinates getPerpendicularLine(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
+    public static PerpendicularLineCoordinates getPerpendicularLine(ILatLonRecord point1, ILatLonRecord point2, int lineRadiusInMeters) {
         //Use Pythogoras is accurate enough on this scale
         double latDiff = point2.getLatLon().getLat() - point1.getLatLon().getLat();
 
@@ -165,6 +165,7 @@ public class WaypointUtilities {
         double hypotenuse = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
 
         //assume earth is a sphere circumference 40030 Km
+        int lineRadius = lineRadiusInMeters / 1000;
         double latDelta = lineRadius * longDiff / hypotenuse / 111.1949269;
         double longDelta = lineRadius * latDiff / hypotenuse / 111.1949269 / Math.cos(startRads);
         LatLng lineStart = new LatLng(point1.getLatLon().getLat() - latDelta, point1.getLatLon().getLon() - longDelta);
