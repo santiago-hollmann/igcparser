@@ -84,7 +84,8 @@ public class IGCFile implements Serializable {
                 + " :: maxAltitude: " + maxAltitude
                 + " :: minAltitude: " + minAltitude
                 + " :: landingTime: " + landingTime
-                + " :: takeOffTime: " + takeOffTime;
+                + " :: takeOffTime: " + takeOffTime
+                + " :: isTaskCompleted: " + isTaskCompleted;
     }
 
 

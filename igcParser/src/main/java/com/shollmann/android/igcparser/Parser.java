@@ -64,6 +64,10 @@ public class Parser {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (isBRecord(line)) {
+                    if (firstBRecord == null) { // Classify waypoints to determine reached ares later
+                        WaypointUtilities.classifyWayPoints(igcFile.getWaypoints());
+                    }
+
                     BRecord bRecord = new BRecord(line);
 
                     firstBRecord = setFirstBRecord(bRecord, firstBRecord);
@@ -118,7 +122,7 @@ public class Parser {
                     Utilities.getDiffTimeInSeconds(takeOffTime, landingTime) - Constants.Calculation.TUG_DEFAULT_DURATION_SECONDS));
 
             if (!igcFile.getWaypoints().isEmpty()) {
-                calculateTaskStats(igcFile);
+                calculateTaskStats(igcFile, mapAreaReached);
             }
 
         } catch (IOException e) {
@@ -136,9 +140,9 @@ public class Parser {
         return igcFile;
     }
 
-    private static void calculateTaskStats(IGCFile igcFile) {
-        WaypointUtilities.classifyWayPoints(igcFile.getWaypoints());
+    private static void calculateTaskStats(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
         igcFile.setTaskDistance(WaypointUtilities.calculateTaskDistance(igcFile.getWaypoints()));
+        igcFile.seTaskCompleted(WaypointUtilities.isTaskCompleted(igcFile.getWaypoints(), mapAreaReached));
     }
 
 

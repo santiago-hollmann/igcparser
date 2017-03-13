@@ -94,4 +94,9 @@ public class CRecordWayPoint implements ILatLonRecord, Serializable {
     public void setType(CRecordType type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return lat + lon;
+    }
 }

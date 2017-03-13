@@ -25,7 +25,9 @@
 package com.shollmann.android.igcparser.util;
 
 import android.location.Location;
+import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordType;
@@ -38,20 +40,80 @@ import java.util.List;
 
 public class WaypointUtilities {
     public static void calculateReachedAreas(int positionBRecord, BRecord bRecord, IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
-        for (int i = 1; i < igcFile.getWaypoints().size() - 2; i++) {
-            final ILatLonRecord waypoint = igcFile.getWaypoints().get(i);
-            if (!CoordinatesUtilities.isZeroCoordinate(waypoint)) {
-                float[] distance = new float[2];
+        List<ILatLonRecord> waypoints = igcFile.getWaypoints();
+        boolean isPointToAdd = false;
+        float[] distance = new float[2];
+        for (int i = 0; i < waypoints.size(); i++) {
+            final CRecordWayPoint waypoint = (CRecordWayPoint) waypoints.get(i);
+            if (waypoint.getType() == CRecordType.TURN) {
                 Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
                         waypoint.getLatLon().getLat(), waypoint.getLatLon().getLon(), distance);
-                if (distance[0] < Constants.TASK.AREA_WDITH) {
-                    String waypointKey = waypoint.getLatLon().toString();
-                    if (mapAreaReached.get(waypointKey) == null) {
-                        mapAreaReached.put(waypointKey, positionBRecord);
-                    }
+                if (distance[0] <= Constants.TASK.AREA_WIDTH_IN_METERS) {
+                    isPointToAdd = true;
+                    Log.e("Santi","Reached zone: " + waypoint.getDescription());
+                }
+            } else if (waypoint.getType() == CRecordType.START) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.TASK.START_IN_KM)) {
+                    isPointToAdd = true;
+                }
+            } else if (waypoint.getType() == CRecordType.FINISH) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), Constants.TASK.FINISH_IN_KM)) {
+                    isPointToAdd = true;
                 }
             }
+
+            if (isPointToAdd) {
+                String waypointKey = waypoint.toString();
+                mapAreaReached.put(waypointKey, positionBRecord);
+            }
+
+            isPointToAdd = false;
         }
+    }
+
+    private static boolean isLineCrossed(BRecord bRecord, ILatLonRecord oneRecord, ILatLonRecord otherRecord, float width) {
+        PerpendicularLineCoordinates perpendicularLine = getPerpendicularLine(oneRecord, otherRecord, (int) width);
+
+        float[] centerDistance = new float[2];
+        Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
+                perpendicularLine.center.latitude, perpendicularLine.center.longitude, centerDistance);
+        if (centerDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS) {
+            return true;
+        }
+
+        float[] startDistance = new float[2];
+        Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
+                perpendicularLine.start.latitude, perpendicularLine.start.longitude, startDistance);
+        if (startDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS) {
+            return true;
+        }
+
+        float[] endDistance = new float[2];
+        Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
+                perpendicularLine.end.latitude, perpendicularLine.end.longitude, endDistance);
+        if (endDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS) {
+            return true;
+        }
+
+        if (centerDistance[0] <= (width / 2) * 1000) { // Avoid doing this calculations if the point is not event close to the line
+            float distanceToClosestEndLine = startDistance[0] > endDistance[0] ? endDistance[0] : startDistance[0];
+            if (distanceToClosestEndLine + centerDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS + ((width * 1000) / 2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isTaskCompleted(List<ILatLonRecord> waypoints, HashMap<String, Integer> mapAreaReached) {
+        for (ILatLonRecord waypoint : waypoints) {
+            CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
+            if (cRecord.getType() != CRecordType.TAKEOFF
+                    && cRecord.getType() != CRecordType.LANDING
+                    && mapAreaReached.get(cRecord.toString()) == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void classifyWayPoints(List<ILatLonRecord> waypoints) {
@@ -81,5 +143,46 @@ public class WaypointUtilities {
 
     public static double calculateTaskDistance(List<ILatLonRecord> waypoints) {
         return SphericalUtil.computeLength(Utilities.getLatLngPoints(waypoints));
+    }
+
+
+    /**
+     * Returns line through point1, at right angles to line between point1 and point2, length lineRadius.
+     *
+     * @param point1
+     * @param point2
+     * @param lineRadius
+     * @return
+     */
+    public static PerpendicularLineCoordinates getPerpendicularLine(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
+        //Use Pythogoras is accurate enough on this scale
+        double latDiff = point2.getLatLon().getLat() - point1.getLatLon().getLat();
+
+        //need radians for cosine function
+        double northMean = (point1.getLatLon().getLat() + point2.getLatLon().getLat()) * Math.PI / 360;
+        double startRads = point1.getLatLon().getLat() * Math.PI / 180;
+        double longDiff = (point1.getLatLon().getLon() - point2.getLatLon().getLon()) * Math.cos(northMean);
+        double hypotenuse = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
+
+        //assume earth is a sphere circumference 40030 Km
+        double latDelta = lineRadius * longDiff / hypotenuse / 111.1949269;
+        double longDelta = lineRadius * latDiff / hypotenuse / 111.1949269 / Math.cos(startRads);
+        LatLng lineStart = new LatLng(point1.getLatLon().getLat() - latDelta, point1.getLatLon().getLon() - longDelta);
+        LatLng lineEnd = new LatLng(point1.getLatLon().getLat() + latDelta, longDelta + point1.getLatLon().getLon());
+
+        return new PerpendicularLineCoordinates(lineStart, lineEnd, point1);
+
+    }
+
+    public static class PerpendicularLineCoordinates {
+        public LatLng start;
+        public LatLng end;
+        protected LatLng center;
+
+        public PerpendicularLineCoordinates(LatLng lineStart, LatLng lineEnd, ILatLonRecord point1) {
+            start = lineStart;
+            end = lineEnd;
+            center = new LatLng(point1.getLatLon().getLat(), point1.getLatLon().getLon());
+        }
     }
 }
