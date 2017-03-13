@@ -60,9 +60,9 @@
     <string name="max_altitude">Altura Máxima</string>
     <string name="min_altitude">Altura Mínima</string>
     <string name="task">Prueba</string>
-    <string name="finish">Final</string>
+    <string name="finish">Llegada</string>
     <string name="start">Partida</string>
-    <string name="turn">Turn</string>
+    <string name="turn">Waypoint</string>
     <string name="sorry_error_happen">Ocurrió un error inesperado</string>
     <string name="replay_speed_indicator">x%1$d</string>
     <string name="replay_speed_minimum">Velocidad mínima alcanzada</string>
