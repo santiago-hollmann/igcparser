@@ -240,7 +240,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         for (ILatLonRecord waypoint : igcFile.getWaypoints()) {
             CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
             if (!TextUtils.isEmpty(cRecord.getDescription().trim())) {
-                layoutWayPointsContainer.addView(createTaskTextView(getReadableCRecordType(cRecord) + ": " + cRecord.getDescription()));
+                layoutWayPointsContainer.addView(createTaskTextView(getReadableCRecordType(cRecord) + cRecord.getDescription()));
             }
         }
     }

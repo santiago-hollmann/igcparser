@@ -57,7 +57,7 @@
     <string name="landing">Aterrizaje</string>
     <string name="task_take_off"><![CDATA[<b>Decolaje: </b>]]></string>
     <string name="task_landing"><![CDATA[<b>Aterrizaje: </b>]]></string>
-    <string name="task_distance">Distancia de la prueba: %1$skm</string>
+    <string name="task_distance"><![CDATA[<b>Distancia de la prueba:</b> %1$skm]]></string>
     <string name="altitude_chart">Altura Histórica</string>
     <string name="max_altitude">Altura Máxima</string>
     <string name="min_altitude">Altura Mínima</string>
