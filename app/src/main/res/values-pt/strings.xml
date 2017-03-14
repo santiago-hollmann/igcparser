@@ -52,7 +52,7 @@
     <string name="glider">Planador</string>
     <string name="duration">Duração</string>
     <string name="distance">Distância</string>
-    <string name="task_distance">Distância da tarefa: %1$skm</string>
+    <string name="task_distance"><![CDATA[<b>Distância da tarefa: %1$skm]]></string>
     <string name="date">Data</string>
     <string name="take_off">Descolar</string>
     <string name="landing">Aterrissagem</string>
