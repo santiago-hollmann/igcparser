@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.ui;
+package com.shollmann.igcparser.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
