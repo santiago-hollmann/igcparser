@@ -32,6 +32,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.util.PreferencesHelper;
 
 public class SettingsSeekBarView extends RelativeLayout {
     private TextView txtValue;
@@ -58,17 +59,13 @@ public class SettingsSeekBarView extends RelativeLayout {
         setTitle();
         setMaxValue();
         setIcon();
+        setInitialValue();
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
-                double realValue = value;
-                if (value == 0) {
-                    realValue = 0.5;
-                    txtValue.setText(String.valueOf(realValue) + "km");
-                } else {
-                    txtValue.setText(String.valueOf(value) + "km");
-                }
+                setTextValue(value);
+                saveValue(value * 1000);
             }
 
             @Override
@@ -81,6 +78,50 @@ public class SettingsSeekBarView extends RelativeLayout {
 
             }
         });
+    }
+
+    private void setTextValue(int value) {
+        float realValue;
+        if (value == 0) {
+            realValue = 0.5f;
+            txtValue.setText(String.valueOf(realValue) + "km");
+        } else {
+            txtValue.setText(String.valueOf(value) + "km");
+        }
+    }
+
+    private void setInitialValue() {
+        int value;
+        switch (type) {
+            case AREA:
+                value = PreferencesHelper.getAreaWidth();
+                break;
+            case START:
+                value = PreferencesHelper.getStartLength();
+                break;
+            case FINISH:
+                value = PreferencesHelper.getFinishLength();
+                break;
+            default:
+                value = 0;
+        }
+        int valueInKm = value / 1000;
+        setTextValue(valueInKm);
+        seekbar.setProgress(valueInKm);
+    }
+
+    private void saveValue(int realValue) {
+        switch (type) {
+            case AREA:
+                PreferencesHelper.setAreaWidth(realValue);
+                break;
+            case START:
+                PreferencesHelper.setStartLength(realValue);
+                break;
+            case FINISH:
+                PreferencesHelper.setFinishLength(realValue);
+                break;
+        }
     }
 
     private void setMaxValue() {

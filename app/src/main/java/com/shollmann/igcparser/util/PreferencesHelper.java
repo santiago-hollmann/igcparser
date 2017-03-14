@@ -34,6 +34,9 @@ public class PreferencesHelper {
     private static final String IS_RATED = "is_rated";
     private static final String FLIGHT_VIEWED = "flight_viewed";
     private static final String MIN_FLIGHTS_TO_RATE = "min_flights_to_rate";
+    private static final String AREA_WIDTH = "area_width";
+    private static final String START_LENGTH = "start_length";
+    private static final String FINISH_LENGTH = "finish_length";
 
     static {
         prefs = PreferenceManager.getDefaultSharedPreferences(IGCViewerApplication.getApplication());
@@ -121,5 +124,31 @@ public class PreferencesHelper {
         int flightViewed = getMinFlightsViewedToRate();
         flightViewed = (int) (flightViewed * 1.7);
         set(MIN_FLIGHTS_TO_RATE, flightViewed);
+    }
+
+    public static int getAreaWidth() {
+        return get(AREA_WIDTH, Constants.Task.AREA_WIDTH_IN_METERS);
+    }
+
+    public static void setAreaWidth(int value) {
+        set(AREA_WIDTH, value);
+    }
+
+
+    public static int getStartLength() {
+        return get(START_LENGTH, Constants.Task.START_IN_METERS);
+    }
+
+    public static void setStartLength(int value) {
+        set(START_LENGTH, value);
+    }
+
+
+    public static int getFinishLength() {
+        return get(FINISH_LENGTH, Constants.Task.FINISH_IN_METERS);
+    }
+
+    public static void setFinishLength(int value) {
+        set(FINISH_LENGTH, value);
     }
 }
