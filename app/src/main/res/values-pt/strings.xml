@@ -56,12 +56,14 @@
     <string name="date">Data</string>
     <string name="take_off">Descolar</string>
     <string name="landing">Aterrissagem</string>
+    <string name="task_take_off"><![CDATA[<b>Descolar: </b>]]></string>
+    <string name="task_landing"><![CDATA[<b>Aterrissagem: /b>]]></string>
     <string name="max_altitude">Máx Altitude</string>
     <string name="min_altitude">Mín Altitude</string>
     <string name="task">Tarefa</string>
-    <string name="finish">Acabamento</string>
-    <string name="start">Partida</string>
-    <string name="turn">Waypoint</string>
+    <string name="finish"><![CDATA[<b>Acabamento: </b>]]></string>
+    <string name="start"><![CDATA[<b>Partida: </b>]]></string>
+    <string name="turn"><![CDATA[<b>Waypoint: </b>]]></string>
     <string name="sorry_error_happen">Lamentamos, mas ocorreu um erro inesperado</string>
     <string name="altitude_chart">Altitude Histórica</string>
     <string name="replay_speed_indicator">x%1$d</string>
@@ -82,10 +84,10 @@
     <string name="avg_speed">Vel. Média de Voo</string>
     <string name="historic_speed">Velocidade Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
-    <string name="task_completed">Tarefa Concluída</string>
-    <string name="task_not_completed">Tarefa Incompleta</string>
-    <string name="task_made_distance">Distância Percorrida: %1$skm</string>
-    <string name="task_average_speed">Velocidade Média: %1$s</string>
-    <string name="task_duration">Duração: %1$s</string>
+    <string name="task_completed"><![CDATA[<b>Tarefa Concluída</b>]]></string>
+    <string name="task_not_completed"><![CDATA[<b>Tarefa Incompleta</b>]]></string>
+    <string name="task_made_distance"><![CDATA[<b>Distância Percorrida:</b> %1$skm]]></string>
+    <string name="task_average_speed"><![CDATA[<b>Velocidade Média:</b> %1$s]]></string>
+    <string name="task_duration"><![CDATA[<b>Duração:</b> %1$s]]></string>
 
 </resources>

@@ -289,14 +289,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayFinishStartLines(List<ILatLonRecord> waypoints) {
         try {//TODO Move the logic to determine takeoff, start, etc points to WaypointsHelper
             if (((CRecordWayPoint) waypoints.get(0)).getType() == CRecordType.START) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), Constants.Map.START_RADIUS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), Constants.Task.START_IN_METERS));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), Constants.Map.START_RADIUS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), Constants.Task.START_IN_METERS));
             }
             if (((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).getType() == CRecordType.FINISH) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), Constants.Map.FINISH_RADIUS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), Constants.Task.FINISH_IN_METERS));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Constants.Map.FINISH_RADIUS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Constants.Task.FINISH_IN_METERS));
             }
         } catch (Throwable t) {
             Logger.logError("Error trying to draw task lines: " + t.getMessage());
