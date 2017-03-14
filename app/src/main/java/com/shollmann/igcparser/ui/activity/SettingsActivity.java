@@ -22,32 +22,33 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.ui;
+package com.shollmann.igcparser.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.shollmann.igcparser.BuildConfig;
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.ui.view.SettingsSeekBarView;
 
-public class AboutActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
+    private SettingsSeekBarView seekbarArea;
+    private SettingsSeekBarView seekbarStart;
+    private SettingsSeekBarView seekbarFinish;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        findViews();
 
-        setContentView(R.layout.activity_about);
-        TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
-        txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        seekbarArea.init(SettingsSeekBarView.SeekbarType.AREA);
+        seekbarStart.init(SettingsSeekBarView.SeekbarType.START);
+        seekbarFinish.init(SettingsSeekBarView.SeekbarType.FINISH);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
-        return super.onOptionsItemSelected(item);
+    private void findViews() {
+        setContentView(R.layout.activity_settings);
+        seekbarArea = (SettingsSeekBarView) findViewById(R.id.settings_area_seekbar);
+        seekbarStart = (SettingsSeekBarView) findViewById(R.id.settings_start_seekbar);
+        seekbarFinish = (SettingsSeekBarView) findViewById(R.id.settings_finish_seekbar);
     }
 }
