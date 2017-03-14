@@ -49,15 +49,15 @@ public class WaypointUtilities {
             if (waypoint.getType() == CRecordType.TURN) {
                 Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
                         waypoint.getLatLon().getLat(), waypoint.getLatLon().getLon(), distance);
-                if (distance[0] <= Constants.TASK.AREA_WIDTH_IN_METERS) {
+                if (distance[0] <= Constants.Task.AREA_WIDTH_IN_METERS) {
                     isPointToAdd = true;
                 }
             } else if (waypoint.getType() == CRecordType.START) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.TASK.START_IN_METERS)) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.Task.START_IN_METERS)) {
                     isPointToAdd = true;
                 }
             } else if (waypoint.getType() == CRecordType.FINISH) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), Constants.TASK.FINISH_IN_METERS)) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), Constants.Task.FINISH_IN_METERS)) {
                     isPointToAdd = true;
                 }
             }
@@ -86,27 +86,27 @@ public class WaypointUtilities {
         float[] centerDistance = new float[2];
         Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
                 perpendicularLine.center.latitude, perpendicularLine.center.longitude, centerDistance);
-        if (centerDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS) {
+        if (centerDistance[0] <= Constants.Task.MIN_TOLERANCE_IN_METERS) {
             return true;
         }
 
         float[] startDistance = new float[2];
         Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
                 perpendicularLine.start.latitude, perpendicularLine.start.longitude, startDistance);
-        if (startDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS) {
+        if (startDistance[0] <= Constants.Task.MIN_TOLERANCE_IN_METERS) {
             return true;
         }
 
         float[] endDistance = new float[2];
         Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
                 perpendicularLine.end.latitude, perpendicularLine.end.longitude, endDistance);
-        if (endDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS) {
+        if (endDistance[0] <= Constants.Task.MIN_TOLERANCE_IN_METERS) {
             return true;
         }
 
         if (centerDistance[0] <= (width / 2)) { // Avoid doing this calculations if the point is not event close to the line
             float distanceToClosestEndLine = startDistance[0] > endDistance[0] ? endDistance[0] : startDistance[0];
-            if (distanceToClosestEndLine + centerDistance[0] <= Constants.TASK.MIN_TOLERANCE_IN_METERS + (width / 2)) {
+            if (distanceToClosestEndLine + centerDistance[0] <= Constants.Task.MIN_TOLERANCE_IN_METERS + (width / 2)) {
                 return true;
             }
         }

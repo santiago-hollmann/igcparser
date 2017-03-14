@@ -28,16 +28,18 @@
     <string name="glider">Glider</string>
     <string name="duration">Duration</string>
     <string name="distance">Distance</string>
-    <string name="task_distance">Task Distance: %1$skm</string>
+    <string name="task_distance"><![CDATA[<b>Task Distance:</b> %1$skm]]></string>
     <string name="date">Date</string>
     <string name="take_off">Take Off</string>
     <string name="landing">Landing</string>
+    <string name="task_take_off"><![CDATA[<b>Take Off: </b>]]></string>
+    <string name="task_landing"><![CDATA[<b>Landing: </b>]]></string>
     <string name="max_altitude">Max Altitude</string>
     <string name="min_altitude">Min Altitude</string>
     <string name="task">Task</string>
-    <string name="finish">Finish</string>
-    <string name="start">Start</string>
-    <string name="turn">Turn</string>
+    <string name="finish"><![CDATA[<b>Finish: </b>]]></string>
+    <string name="start"><![CDATA[<b>Start: </b>]]></string>
+    <string name="turn"><![CDATA[<b>Turn: </b>]]></string>
     <string name="sorry_error_happen">Sorry, an unexpected error happen</string>
     <string name="altitude_chart">Historic Altitude</string>
     <string name="replay_speed_indicator">x%1$d</string>
@@ -58,10 +60,10 @@
     <string name="avg_speed">Flight Average Speed</string>
     <string name="historic_speed">Historic Speed</string>
     <string name="time_and_altitude">%1$s UTC at %2$dm</string>
-    <string name="task_completed">Task completed</string>
-    <string name="task_not_completed">Task Not Completed</string>
-    <string name="task_made_distance">Distance Traveled: %1$skm</string>
-    <string name="task_average_speed">Average Speed: %1$s</string>
-    <string name="task_duration">Duration: %1$s</string>
+    <string name="task_completed"><![CDATA[<b>Completed Task</b>]]></string>
+    <string name="task_not_completed"><![CDATA[<b>Uncompleted Task</b>]]></string>
+    <string name="task_made_distance"><![CDATA[<b>Distance Traveled:</b> %1$skm]]></string>
+    <string name="task_average_speed"><![CDATA[<b>Average Speed:</b> %1$s]]></string>
+    <string name="task_duration"><![CDATA[<b>Duration:</b> %1$s]]></string>
 
 </resources>

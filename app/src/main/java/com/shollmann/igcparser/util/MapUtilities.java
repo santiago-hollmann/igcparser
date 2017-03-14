@@ -102,7 +102,9 @@ public class MapUtilities {
 
     public static PolylineOptions getPerpendicularPolyline(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
         WaypointUtilities.PerpendicularLineCoordinates perpendicularLine = getPerpendicularLine(point1, point2, lineRadius);
-        PolylineOptions polyline = new PolylineOptions().color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color)).width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width))
+        PolylineOptions polyline = new PolylineOptions()
+                .color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color))
+                .width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_start_finish_line_width))
                 .add(perpendicularLine.start)
                 .add(perpendicularLine.end);
 

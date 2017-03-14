@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -199,33 +200,49 @@ public class FlightInformationActivity extends AppCompatActivity {
             layoutWayPointsContainer.setVisibility(View.GONE);
             return;
         }
-        for (ILatLonRecord waypoint : igcFile.getWaypoints()) {
-            CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
-            if (!TextUtils.isEmpty(cRecord.getDescription().trim())) {
-                layoutWayPointsContainer.addView(createTaskTextView(cRecord.getDescription()));
-            }
-        }
-        if (!Utilities.isZero(igcFile.getTaskDistance())) {
-            final String taskDistanceText = String.format(getResources().getString(R.string.task_distance), Utilities.getDistanceInKm(igcFile.getTaskDistance(), getResources().getConfiguration().locale));
-            layoutWayPointsContainer.addView(createTaskTextView(taskDistanceText));
-        }
+        displayWaypoints();
+        //Add empty string to separate waypoints from statistics
+        layoutWayPointsContainer.addView(createTaskTextView(Constants.EMPTY_STRING));
+        displayTaskDistance();
 
         if (igcFile.isTaskCompleted()) {
-            if (!Utilities.isZero(igcFile.getTraveledTaskDistance())) {
-                final String taskTraveledDistanceText = String.format(getResources().getString(R.string.task_made_distance), Utilities.getDistanceInKm(igcFile.getTraveledTaskDistance(), getResources().getConfiguration().locale));
-                layoutWayPointsContainer.addView(createTaskTextView(taskTraveledDistanceText));
-            }
-
-            if (igcFile.getTaskAverageSpeed() > 0) {
-                final String taskAverageSpeed = String.format(getResources().getString(R.string.task_average_speed), igcFile.getTaskAverageSpeed() + "km/h");
-                layoutWayPointsContainer.addView(createTaskTextView(taskAverageSpeed));
-            }
-
+            displayTaskTraveledDistance();
             layoutWayPointsContainer.addView(createTaskTextView(String.format(getResources().getString(R.string.task_duration), igcFile.getTaskDuration())));
+            displayTaskAverageSpeed();
         }
 
 
         layoutWayPointsContainer.addView(createTaskTextView(getString(igcFile.isTaskCompleted() ? R.string.task_completed : R.string.task_not_completed)));
+    }
+
+    private void displayTaskAverageSpeed() {
+        if (igcFile.getTaskAverageSpeed() > 0) {
+            final String taskAverageSpeed = String.format(getResources().getString(R.string.task_average_speed), igcFile.getTaskAverageSpeed() + "km/h");
+            layoutWayPointsContainer.addView(createTaskTextView(taskAverageSpeed));
+        }
+    }
+
+    private void displayTaskTraveledDistance() {
+        if (!Utilities.isZero(igcFile.getTraveledTaskDistance())) {
+            final String taskTraveledDistanceText = String.format(getResources().getString(R.string.task_made_distance), Utilities.getDistanceInKm(igcFile.getTraveledTaskDistance(), getResources().getConfiguration().locale));
+            layoutWayPointsContainer.addView(createTaskTextView(taskTraveledDistanceText));
+        }
+    }
+
+    private void displayTaskDistance() {
+        if (!Utilities.isZero(igcFile.getTaskDistance())) {
+            final String taskDistanceText = String.format(getResources().getString(R.string.task_distance), Utilities.getDistanceInKm(igcFile.getTaskDistance(), getResources().getConfiguration().locale));
+            layoutWayPointsContainer.addView(createTaskTextView(taskDistanceText));
+        }
+    }
+
+    private void displayWaypoints() {
+        for (ILatLonRecord waypoint : igcFile.getWaypoints()) {
+            CRecordWayPoint cRecord = (CRecordWayPoint) waypoint;
+            if (!TextUtils.isEmpty(cRecord.getDescription().trim())) {
+                layoutWayPointsContainer.addView(createTaskTextView(getReadableCRecordType(cRecord) + ": " + cRecord.getDescription()));
+            }
+        }
     }
 
     @NonNull
@@ -234,7 +251,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         txtWaypoint.setEllipsize(TextUtils.TruncateAt.END);
         txtWaypoint.setMaxLines(2);
         txtWaypoint.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.material_text_subhead));
-        txtWaypoint.setText(value);
+        txtWaypoint.setText(Html.fromHtml(value));
         return txtWaypoint;
     }
 
@@ -248,10 +265,10 @@ public class FlightInformationActivity extends AppCompatActivity {
                 stringId = R.string.start;
                 break;
             case TAKEOFF:
-                stringId = R.string.take_off;
+                stringId = R.string.task_take_off;
                 break;
             case LANDING:
-                stringId = R.string.landing;
+                stringId = R.string.task_landing;
                 break;
             case TURN:
                 stringId = R.string.turn;
