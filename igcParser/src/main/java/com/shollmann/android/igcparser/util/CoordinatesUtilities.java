@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,21 +24,11 @@
 
 package com.shollmann.android.igcparser.util;
 
-import android.util.Log;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 
-import com.shollmann.android.igcparser.BuildConfig;
-
-public class Logger {
-
-    public static void log(String s) {
-        if (BuildConfig.DEBUG) {
-            Log.d("IGCParser :: ", s);
-        }
+public class CoordinatesUtilities {
+    public static boolean isZeroCoordinate(ILatLonRecord wayPoint) {
+        return Utilities.isZero(wayPoint.getLatLon().getLat()) && Utilities.isZero(wayPoint.getLatLon().getLon());
     }
 
-    public static void logError(String s) {
-        if (BuildConfig.DEBUG) {
-            Log.e("IGCParser :: ", s);
-        }
-    }
 }

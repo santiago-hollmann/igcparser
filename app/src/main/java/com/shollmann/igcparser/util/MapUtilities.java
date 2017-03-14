@@ -32,12 +32,15 @@ import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.android.igcparser.util.WaypointUtilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.model.AltitudeSegment;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
 
 import java.util.ArrayList;
+
+import static com.shollmann.android.igcparser.util.WaypointUtilities.getPerpendicularLine;
 
 public class MapUtilities {
 
@@ -97,40 +100,13 @@ public class MapUtilities {
         return min < value && value <= max;
     }
 
-    public static boolean isZeroCoordinate(ILatLonRecord wayPoint) {
-        return Utilities.isZero(wayPoint.getLatLon().getLat()) && Utilities.isZero(wayPoint.getLatLon().getLon());
-    }
-
-    /**
-     * Returns line through pt1, at right angles to line between pt1 and pt2, length lineRadius.
-     *
-     * @param point1
-     * @param point2
-     * @param lineRadius
-     * @return
-     */
     public static PolylineOptions getPerpendicularPolyline(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
-        //returns line through pt1, at right angles to line between pt1 and pt2, length lineRadius.
-
-        //Use Pythogoras- accurate enough on this scale
-        double latDiff = point2.getLatLon().getLat() - point1.getLatLon().getLat();
-
-        //need radians for cosine function
-        double northMean = (point1.getLatLon().getLat() + point2.getLatLon().getLat()) * Math.PI / 360;
-        double startRads = point1.getLatLon().getLat() * Math.PI / 180;
-        double longDiff = (point1.getLatLon().getLon() - point2.getLatLon().getLon()) * Math.cos(northMean);
-        double hypotenuse = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
-
-        //assume earth is a sphere circumference 40030 Km
-        double latDelta = lineRadius * longDiff / hypotenuse / 111.1949269;
-        double longDelta = lineRadius * latDiff / hypotenuse / 111.1949269 / Math.cos(startRads);
-        LatLng lineStart = new LatLng(point1.getLatLon().getLat() - latDelta, point1.getLatLon().getLon() - longDelta);
-        LatLng lineEnd = new LatLng(point1.getLatLon().getLat() + latDelta, longDelta + point1.getLatLon().getLon());
-
-        PolylineOptions polyline = new PolylineOptions().color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color)).width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width))
-                .zIndex(16)
-                .add(lineStart)
-                .add(lineEnd);
+        WaypointUtilities.PerpendicularLineCoordinates perpendicularLine = getPerpendicularLine(point1, point2, lineRadius);
+        PolylineOptions polyline = new PolylineOptions()
+                .color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color))
+                .width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_start_finish_line_width))
+                .add(perpendicularLine.start)
+                .add(perpendicularLine.end);
 
         return polyline;
 

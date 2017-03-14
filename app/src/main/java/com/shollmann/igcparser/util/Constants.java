@@ -49,7 +49,7 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final int REPLAY_MAX_MULTIPLIER = 8;
         public static final int START_RADIUS = 5;
         public static final int FINISH_RADIUS = 1;
-        public static final double TASK_RADIUS = 2500;
+        public static final double TASK_RADIUS = 10000;
     }
 
     public class Chart {
