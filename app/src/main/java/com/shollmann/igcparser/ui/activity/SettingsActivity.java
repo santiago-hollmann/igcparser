@@ -26,6 +26,7 @@ package com.shollmann.igcparser.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.ui.view.SettingsSeekBarView;
@@ -38,6 +39,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         findViews();
 
         seekbarArea.init(SettingsSeekBarView.SeekbarType.AREA);
@@ -50,5 +53,11 @@ public class SettingsActivity extends AppCompatActivity {
         seekbarArea = (SettingsSeekBarView) findViewById(R.id.settings_area_seekbar);
         seekbarStart = (SettingsSeekBarView) findViewById(R.id.settings_start_seekbar);
         seekbarFinish = (SettingsSeekBarView) findViewById(R.id.settings_finish_seekbar);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 }
