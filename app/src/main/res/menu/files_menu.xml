@@ -31,12 +31,18 @@
         app:actionViewClass="android.widget.ImageView"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/sort"
+        app:actionViewClass="android.widget.ImageView"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_refresh"
         android:title="@string/refresh" />
     <item
         android:id="@+id/menu_search_sdcard"
-        android:visible="false"
-        android:title="@string/scan_complete_sd_card" />
+        android:title="@string/scan_complete_sd_card"
+        android:visible="false" />
     <item
         android:id="@+id/menu_share"
         android:title="@string/share_app" />
