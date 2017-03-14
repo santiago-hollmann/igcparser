@@ -184,6 +184,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
         MenuItem menuAbout = menu.findItem(R.id.menu_about);
         MenuItem menuShare = menu.findItem(R.id.menu_share);
+        MenuItem menuSettings = menu.findItem(R.id.menu_settings);
 
         ImageView viewAttach = (ImageView) menu.findItem(R.id.menu_sort).getActionView();
         viewAttach.setBackgroundResource(R.drawable.drawable_sort_icon);
@@ -199,6 +200,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         menuRefresh.setOnMenuItemClickListener(this);
         menuAbout.setOnMenuItemClickListener(this);
         menuShare.setOnMenuItemClickListener(this);
+        menuSettings.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -245,6 +247,11 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             case R.id.menu_about:
                 TrackerHelper.trackAbout();
                 Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_settings:
+                TrackerHelper.trackSettings();
+                intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
         }

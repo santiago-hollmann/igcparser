@@ -32,6 +32,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.PreferencesHelper;
 
 public class SettingsSeekBarView extends RelativeLayout {
@@ -66,6 +67,7 @@ public class SettingsSeekBarView extends RelativeLayout {
             public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
                 setTextValue(value);
                 saveValue(value * 1000);
+                trackEvent();
             }
 
             @Override
@@ -78,6 +80,20 @@ public class SettingsSeekBarView extends RelativeLayout {
 
             }
         });
+    }
+
+    private void trackEvent() {
+        switch (type) {
+            case AREA:
+                TrackerHelper.trackChangeArea();
+                break;
+            case START:
+                TrackerHelper.trackChangeStart();
+                break;
+            case FINISH:
+                TrackerHelper.trackChangeFinish();
+                break;
+        }
     }
 
     private void setTextValue(int value) {
