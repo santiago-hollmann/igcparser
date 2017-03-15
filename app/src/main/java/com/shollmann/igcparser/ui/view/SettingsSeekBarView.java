@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.PreferencesHelper;
@@ -126,16 +127,22 @@ public class SettingsSeekBarView extends RelativeLayout {
         seekbar.setProgress(valueInKm);
     }
 
-    private void saveValue(int realValue) {
+    private void saveValue(int value) {
+        if (value == 0) {
+            value = 500;
+        }
         switch (type) {
             case AREA:
-                PreferencesHelper.setAreaWidth(realValue);
+                TaskConfig.setAreaWidth(value);
+                PreferencesHelper.setAreaWidth(value);
                 break;
             case START:
-                PreferencesHelper.setStartLength(realValue);
+                TaskConfig.setStartLength(value);
+                PreferencesHelper.setStartLength(value);
                 break;
             case FINISH:
-                PreferencesHelper.setFinishLength(realValue);
+                TaskConfig.setFinishLength(value);
+                PreferencesHelper.setFinishLength(value);
                 break;
         }
     }
