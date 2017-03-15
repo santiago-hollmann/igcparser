@@ -33,6 +33,7 @@ import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.CoordinatesUtilities;
 import com.shollmann.android.igcparser.util.Logger;

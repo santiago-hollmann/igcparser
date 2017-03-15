@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~ MIT License
   ~
   ~ Copyright (c) 2017 Santiago Hollmann
@@ -22,30 +22,12 @@
   ~ SOFTWARE.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/menu_sort"
-        android:icon="@drawable/ic_sort"
-        android:title="@string/sort"
-        app:actionViewClass="android.widget.ImageView"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_refresh"
-        android:title="@string/refresh" />
-    <item
-        android:id="@+id/menu_search_sdcard"
-        android:title="@string/scan_complete_sd_card"
-        android:visible="false" />
-    <item
-        android:id="@+id/menu_share"
-        android:title="@string/share_app" />
-    <item
-        android:id="@+id/menu_about"
-        android:title="@string/about" />
-</menu>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M19,13H5v-2h14v2z"/>
+</vector>

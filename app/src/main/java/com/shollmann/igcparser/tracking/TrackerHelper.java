@@ -49,6 +49,10 @@ public class TrackerHelper {
     private static final String SHARE_APP = "Share app";
     private static final String SHARE_FLIGHT = "Share flight";
     private static final String OPEN_GMAIL_FLIGHT = "Open Gmail Flight";
+    private static final String OPEN_SETTINGS = "Open Settings";
+    private static final String SETTINGS_CHANGE_AREA = "Change Area";
+    private static final String SETTINGS_CHANGE_START = "Change Start";
+    private static final String SETTINGS_CHANGE_FINISH = "Change Finish";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -143,5 +147,21 @@ public class TrackerHelper {
 
     public static void trackOpenGmailFlight() {
         AnswersHelper.trackEvent(OPEN_GMAIL_FLIGHT);
+    }
+
+    public static void trackSettings() {
+        AnswersHelper.trackEvent(OPEN_SETTINGS);
+    }
+
+    public static void trackChangeArea() {
+        AnswersHelper.trackEvent(SETTINGS_CHANGE_AREA);
+    }
+
+    public static void trackChangeStart() {
+        AnswersHelper.trackEvent(SETTINGS_CHANGE_START);
+    }
+
+    public static void trackChangeFinish() {
+        AnswersHelper.trackEvent(SETTINGS_CHANGE_FINISH);
     }
 }

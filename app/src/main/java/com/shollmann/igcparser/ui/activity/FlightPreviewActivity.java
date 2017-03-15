@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.ui;
+package com.shollmann.igcparser.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -71,6 +71,7 @@ import com.shollmann.android.igcparser.model.CRecordType;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
+import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
@@ -289,14 +290,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayFinishStartLines(List<ILatLonRecord> waypoints) {
         try {//TODO Move the logic to determine takeoff, start, etc points to WaypointsHelper
             if (((CRecordWayPoint) waypoints.get(0)).getType() == CRecordType.START) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), Constants.Task.START_IN_METERS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), TaskConfig.getStartLength()));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), Constants.Task.START_IN_METERS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), TaskConfig.getStartLength()));
             }
             if (((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).getType() == CRecordType.FINISH) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), Constants.Task.FINISH_IN_METERS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), TaskConfig.getFinishLength()));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Constants.Task.FINISH_IN_METERS));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), TaskConfig.getFinishLength()));
             }
         } catch (Throwable t) {
             Logger.logError("Error trying to draw task lines: " + t.getMessage());
@@ -330,7 +331,8 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 }
                 if (cRecordWayPoint.getType() == CRecordType.TURN) {
                     googleMap.addCircle(new CircleOptions().center(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()))
-                            .radius(Constants.Map.TASK_RADIUS).strokeColor(Color.TRANSPARENT).strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
+                            .radius(TaskConfig.getAreaWidth()).strokeColor(Color.TRANSPARENT)
+                            .strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
                             .fillColor(getResources().getColor(R.color.task_fill_color)));
                 }
             }
