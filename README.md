@@ -1,12 +1,13 @@
-<img src="http://i.imgur.com/K8P2El4.png" height="25%" width="25%"">
+<img src="http://i.imgur.com/K8P2El4.png" height="25%" width="25%">
+
 #IGC Parser Project
 This is an open source project that includes:
-- An Android library to parse IGC files.
-- An Android app to friendly view IGC files.
+* An Android library to parse IGC files.
+* An Android app to friendly view IGC files.
 
 You are more than welcome to contribute to the project. Below you can find some way to contribute to.
 
-<b>Disclosure</b>: the project is not approbed by the <a href="http://www.fai.org/">FAI</a> so, don't use it to get offical FAI statistics and records.
+<b>Disclosure</b>: the project is not approved by the <a href="http://www.fai.org/">FAI</a> so, don't use it to get offical FAI statistics and records.
 
 ##IGC Viewer Screenshots
 <img src="http://i.imgur.com/YG7SRqH.png" height="32%" width="32%">
