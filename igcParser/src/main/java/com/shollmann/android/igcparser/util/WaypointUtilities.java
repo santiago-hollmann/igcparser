@@ -33,6 +33,7 @@ import com.shollmann.android.igcparser.model.CRecordType;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
+import com.shollmann.android.igcparser.model.TaskConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,15 +50,15 @@ public class WaypointUtilities {
             if (waypoint.getType() == CRecordType.TURN) {
                 Location.distanceBetween(bRecord.getLatLon().getLat(), bRecord.getLatLon().getLon(),
                         waypoint.getLatLon().getLat(), waypoint.getLatLon().getLon(), distance);
-                if (distance[0] <= Constants.Task.AREA_WIDTH_IN_METERS) {
+                if (distance[0] <= TaskConfig.getAreaWidth()) {
                     isPointToAdd = true;
                 }
             } else if (waypoint.getType() == CRecordType.START) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), Constants.Task.START_IN_METERS)) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i + 1), TaskConfig.getStartLength())) {
                     isPointToAdd = true;
                 }
             } else if (waypoint.getType() == CRecordType.FINISH) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), Constants.Task.FINISH_IN_METERS)) {
+                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), TaskConfig.getFinishLength())) {
                     isPointToAdd = true;
                 }
             }

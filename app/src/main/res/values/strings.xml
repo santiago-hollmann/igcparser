@@ -65,8 +65,9 @@
     <string name="task_made_distance"><![CDATA[<b>Distance Traveled:</b> %1$skm]]></string>
     <string name="task_average_speed"><![CDATA[<b>Average Speed:</b> %1$s]]></string>
     <string name="task_duration"><![CDATA[<b>Duration:</b> %1$s]]></string>
-    <string name="settings_area">Waypoint Area Size</string>
+    <string name="settings_area">Way Point Radius</string>
     <string name="settings_start">Start Line Length</string>
     <string name="settings_finish">Finish Line Length</string>
+    <string name="settings">Settings</string>
 
 </resources>

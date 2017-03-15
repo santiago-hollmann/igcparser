@@ -61,9 +61,9 @@
     <string name="max_altitude">Máx Altitude</string>
     <string name="min_altitude">Mín Altitude</string>
     <string name="task">Tarefa</string>
-    <string name="finish"><![CDATA[<b>Acabamento: </b>]]></string>
+    <string name="finish"><![CDATA[<b>Chegada: </b>]]></string>
     <string name="start"><![CDATA[<b>Partida: </b>]]></string>
-    <string name="turn"><![CDATA[<b>Waypoint: </b>]]></string>
+    <string name="turn"><![CDATA[<b>Ponto: </b>]]></string>
     <string name="sorry_error_happen">Lamentamos, mas ocorreu um erro inesperado</string>
     <string name="altitude_chart">Altitude Histórica</string>
     <string name="replay_speed_indicator">x%1$d</string>
@@ -89,7 +89,9 @@
     <string name="task_made_distance"><![CDATA[<b>Distância Percorrida:</b> %1$skm]]></string>
     <string name="task_average_speed"><![CDATA[<b>Velocidade Média:</b> %1$s]]></string>
     <string name="task_duration"><![CDATA[<b>Duração:</b> %1$s]]></string>
-    <string name="settings_area">Waypoint Area Size</string>
-    <string name="settings_start">Start Line Length</string>
+    <string name="settings_area">Raio do Ponto</string>
+    <string name="settings_start">Longo da linha de Partida</string>
+    <string name="settings_finish">Longo da Linha de Chegada</string>
+    <string name="settings">Ajustes</string>
 
 </resources>
