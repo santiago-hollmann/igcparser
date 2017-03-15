@@ -32,5 +32,7 @@
     <dimen name="altitude_margin_correction">-3dp</dimen>
     <dimen name="info_graphic_icon_size">20dp</dimen>
     <dimen name="info_graphic_margin">-4dp</dimen>
+    <dimen name="settings_value_min_width">50dp</dimen>
+    <dimen name="seekbar_icon_size">20dp</dimen>
 
 </resources>
