@@ -88,7 +88,7 @@
     <string name="task_made_distance"><![CDATA[<b>Distancia Recorrida:</b> %1$skm]]></string>
     <string name="task_average_speed"><![CDATA[<b>Velocidad Promedio:</b> %1$s]]></string>
     <string name="task_duration"><![CDATA[<b>Duración:</b> %1$s]]></string>
-    <string name="settings_area">Radio del Punto</string>
+    <string name="settings_area">Radio del Área</string>
     <string name="settings_start">Largo de la Linea de Partida</string>
     <string name="settings_finish">Largo de la Linea de Llegada</string>
     <string name="settings">Configuración</string>
