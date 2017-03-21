@@ -58,7 +58,8 @@ public class WaypointUtilities {
                     isPointToAdd = true;
                 }
             } else if (waypoint.getType() == CRecordType.FINISH) {
-                if (isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), TaskConfig.getFinishLength())) {
+                // Added check for i != 0 to avoid OutOfBoundException when doing i-1
+                if (i != 0 && isLineCrossed(bRecord, waypoints.get(i), waypoints.get(i - 1), TaskConfig.getFinishLength())) {
                     isPointToAdd = true;
                 }
             }
@@ -105,7 +106,7 @@ public class WaypointUtilities {
             return true;
         }
 
-        if (centerDistance[0] <= (width / 2)) { // Avoid doing this calculations if the point is not event close to the line
+        if (centerDistance[0] <= (width / 2)) { // Avoid doing this calculation if the point is not even close to the line
             float distanceToClosestEndLine = startDistance[0] > endDistance[0] ? endDistance[0] : startDistance[0];
             if (distanceToClosestEndLine + centerDistance[0] <= Constants.Task.MIN_TOLERANCE_IN_METERS + (width / 2)) {
                 return true;
