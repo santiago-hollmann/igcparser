@@ -55,14 +55,16 @@
     <string name="date">Fecha</string>
     <string name="take_off">Decolaje</string>
     <string name="landing">Aterrizaje</string>
-    <string name="task_distance">Distancia: %1$skm</string>
+    <string name="task_take_off"><![CDATA[<b>Decolaje: </b>]]></string>
+    <string name="task_landing"><![CDATA[<b>Aterrizaje: </b>]]></string>
+    <string name="task_distance"><![CDATA[<b>Distancia de la prueba:</b> %1$skm]]></string>
     <string name="altitude_chart">Altura Histórica</string>
     <string name="max_altitude">Altura Máxima</string>
     <string name="min_altitude">Altura Mínima</string>
     <string name="task">Prueba</string>
-    <string name="finish">Final</string>
-    <string name="start">Partida</string>
-    <string name="turn">Turn</string>
+    <string name="finish"><![CDATA[<b>Llegada: </b>]]></string>
+    <string name="start"><![CDATA[<b>Partida: </b>]]></string>
+    <string name="turn"><![CDATA[<b>Punto: </b>]]></string>
     <string name="sorry_error_happen">Ocurrió un error inesperado</string>
     <string name="replay_speed_indicator">x%1$d</string>
     <string name="replay_speed_minimum">Velocidad mínima alcanzada</string>
@@ -80,6 +82,15 @@
     <string name="share_email_subject">Vuelo %1$s</string>
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
     <string name="historic_speed">Velocidad Histórica</string>
-
+    <string name="time_and_altitude">%1$s UTC a %2$dm</string>
+    <string name="task_completed"><![CDATA[<b>Prueba Completada</b>]]></string>
+    <string name="task_not_completed"><![CDATA[<b>Prueba Incompleta</b>]]></string>
+    <string name="task_made_distance"><![CDATA[<b>Distancia Recorrida:</b> %1$skm]]></string>
+    <string name="task_average_speed"><![CDATA[<b>Velocidad Promedio:</b> %1$s]]></string>
+    <string name="task_duration"><![CDATA[<b>Duración:</b> %1$s]]></string>
+    <string name="settings_area">Radio del Área</string>
+    <string name="settings_start">Largo de la Linea de Partida</string>
+    <string name="settings_finish">Largo de la Linea de Llegada</string>
+    <string name="settings">Configuración</string>
 
 </resources>

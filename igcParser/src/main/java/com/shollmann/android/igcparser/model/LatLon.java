@@ -50,4 +50,9 @@ public class LatLon implements Serializable {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(lat) + String.valueOf(lon);
+    }
 }

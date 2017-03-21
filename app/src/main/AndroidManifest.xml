@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.IGCFilesActivity"
+            android:name=".ui.activity.IGCFilesActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.FlightPreviewActivity"
+            android:name=".ui.activity.FlightPreviewActivity"
             android:screenOrientation="portrait">
             <intent-filter
                 android:icon="@drawable/ic_launcher"
@@ -69,11 +69,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.activity.AboutActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.FlightInformationActivity"
+            android:name=".ui.activity.FlightInformationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SettingsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 

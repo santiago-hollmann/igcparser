@@ -51,6 +51,10 @@ public class IGCFile implements Serializable {
     private String date;
     private String fileName;
     private String filePath;
+    private boolean isTaskCompleted;
+    private double traveledTaskDistance;
+    private int taskAverageSpeed;
+    private String taskDuration;
 
     public IGCFile() {
         listWayPoints = new ArrayList<>();
@@ -83,7 +87,8 @@ public class IGCFile implements Serializable {
                 + " :: maxAltitude: " + maxAltitude
                 + " :: minAltitude: " + minAltitude
                 + " :: landingTime: " + landingTime
-                + " :: takeOffTime: " + takeOffTime;
+                + " :: takeOffTime: " + takeOffTime
+                + " :: isTaskCompleted: " + isTaskCompleted;
     }
 
 
@@ -223,5 +228,51 @@ public class IGCFile implements Serializable {
 
     public void setAverageSpeed(int averageSpeed) {
         this.averageSpeed = averageSpeed;
+    }
+
+    public int getTakeOffAltitude() {
+        if (listTrackPoints != null && !listTrackPoints.isEmpty()) {
+            return ((BRecord) listTrackPoints.get(0)).getAltitude();
+        }
+        return 0;
+    }
+
+    public int getLandingAltitude() {
+        if (listTrackPoints != null && !listTrackPoints.isEmpty()) {
+            return ((BRecord) listTrackPoints.get(listTrackPoints.size() - 1)).getAltitude();
+        }
+        return 0;
+    }
+
+    public void setTaskCompleted(boolean isCompleted) {
+        isTaskCompleted = isCompleted;
+    }
+
+    public boolean isTaskCompleted() {
+        return isTaskCompleted;
+    }
+
+    public double getTraveledTaskDistance() {
+        return traveledTaskDistance;
+    }
+
+    public void setTraveledTaskDistance(double traveledTaskDistance) {
+        this.traveledTaskDistance = traveledTaskDistance;
+    }
+
+    public int getTaskAverageSpeed() {
+        return taskAverageSpeed;
+    }
+
+    public void setTaskAverageSpeed(int taskAverageSpeed) {
+        this.taskAverageSpeed = taskAverageSpeed;
+    }
+
+    public String getTaskDuration() {
+        return taskDuration;
+    }
+
+    public void setTaskDuration(String taskDuration) {
+        this.taskDuration = taskDuration;
     }
 }

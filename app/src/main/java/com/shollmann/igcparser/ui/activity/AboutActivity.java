@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,32 @@
  * SOFTWARE.
  */
 
-package com.shollmann.android.igcparser.util;
+package com.shollmann.igcparser.ui.activity;
 
-import android.util.Log;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.widget.TextView;
 
-import com.shollmann.android.igcparser.BuildConfig;
+import com.shollmann.igcparser.BuildConfig;
+import com.shollmann.igcparser.R;
 
-public class Logger {
+public class AboutActivity extends AppCompatActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    public static void log(String s) {
-        if (BuildConfig.DEBUG) {
-            Log.d("IGCParser :: ", s);
-        }
+        setContentView(R.layout.activity_about);
+        TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
+        txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
-    public static void logError(String s) {
-        if (BuildConfig.DEBUG) {
-            Log.e("IGCParser :: ", s);
-        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 }

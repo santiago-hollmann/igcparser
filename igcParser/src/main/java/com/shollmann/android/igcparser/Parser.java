@@ -33,14 +33,18 @@ import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
+import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.android.igcparser.util.Constants;
+import com.shollmann.android.igcparser.util.CoordinatesUtilities;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
+import com.shollmann.android.igcparser.util.WaypointUtilities;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 public class Parser {
 
@@ -53,6 +57,7 @@ public class Parser {
         String takeOffTime = Constants.EMPTY_STRING;
         String landingTime = Constants.EMPTY_STRING;
         BufferedReader reader = null;
+        HashMap<String, Integer> mapAreaReached = new HashMap<>();
         try {
             reader = new BufferedReader(
                     new InputStreamReader(new FileInputStream(filePath.toString()), "UTF-8"));
@@ -60,6 +65,10 @@ public class Parser {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (isBRecord(line)) {
+                    if (firstBRecord == null) { // Classify waypoints to determine reached ares later
+                        WaypointUtilities.classifyWayPoints(igcFile.getWaypoints());
+                    }
+
                     BRecord bRecord = new BRecord(line);
 
                     firstBRecord = setFirstBRecord(bRecord, firstBRecord);
@@ -69,10 +78,17 @@ public class Parser {
                     landingTime = bRecord.getTime();
 
                     igcFile.appendTrackPoint(bRecord);
+
+                    if (igcFile.getWaypoints() != null && !igcFile.getWaypoints().isEmpty()) {
+                        WaypointUtilities.calculateReachedAreas(igcFile.getTrackPoints().size() - 1, bRecord, igcFile, mapAreaReached);
+                    }
                 } else {
                     if (isCRecord(line)) {
                         if (!isFirstCRecord) {
-                            igcFile.appendWayPoint(new CRecordWayPoint(line));
+                            CRecordWayPoint waypoint = new CRecordWayPoint(line);
+                            if (!CoordinatesUtilities.isZeroCoordinate(waypoint)) {
+                                igcFile.appendWayPoint(waypoint);
+                            }
                         }
                         isFirstCRecord = false;
                     } else {
@@ -94,7 +110,6 @@ public class Parser {
                     }
                 }
             }
-
             igcFile.setStartAltitude(firstBRecord != null ? firstBRecord.getAltitude() : 0);
             igcFile.setMaxAltitude(maxAltitude);
             igcFile.setMinAltitude(minAltitude);
@@ -103,13 +118,12 @@ public class Parser {
             igcFile.setFileData(filePath);
             double distance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints()));
             igcFile.setDistance(distance);
-            // By default we discount a 500 meters tug which means 8000 meters lengths and 240 seconds
+            // By default we discount a 500 meters tug which means 8000 meters length and 240 seconds
             igcFile.setAverageSpeed(Utilities.calculateAverageSpeed(distance - Constants.Calculation.TUG_DEFAULT_DISTANCE_METERS,
                     Utilities.getDiffTimeInSeconds(takeOffTime, landingTime) - Constants.Calculation.TUG_DEFAULT_DURATION_SECONDS));
 
             if (!igcFile.getWaypoints().isEmpty()) {
-                double taskDistance = SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getWaypoints()));
-                igcFile.setTaskDistance(taskDistance);
+                calculateTaskStats(igcFile, mapAreaReached);
             }
 
         } catch (IOException e) {
@@ -126,6 +140,15 @@ public class Parser {
         Logger.log(igcFile.toString());
         return igcFile;
     }
+
+    private static void calculateTaskStats(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        igcFile.setTaskDistance(WaypointUtilities.calculateTaskDistance(igcFile.getWaypoints()));
+        igcFile.setTaskCompleted(WaypointUtilities.isTaskCompleted(igcFile.getWaypoints(), mapAreaReached));
+        igcFile.setTraveledTaskDistance(WaypointUtilities.getTaskTraveledDistance(igcFile, mapAreaReached));
+        igcFile.setTaskAverageSpeed(WaypointUtilities.getTaskAverageSpeed(igcFile, mapAreaReached));
+        igcFile.setTaskDuration(WaypointUtilities.getTaskDuration(igcFile, mapAreaReached));
+    }
+
 
     public static IGCFile quickParse(Uri filePath) {
         IGCFile igcFile = new IGCFile();

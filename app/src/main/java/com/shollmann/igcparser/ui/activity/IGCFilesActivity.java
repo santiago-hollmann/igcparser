@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.ui;
+package com.shollmann.igcparser.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -140,6 +140,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                     }
                 }
             }
+            Collections.sort(inFiles, Comparators.compareByDate);
         } catch (Throwable t) {
             final String message = "Couldn't open files";
             Crashlytics.log(message);
@@ -147,7 +148,6 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             Logger.logError(message);
         }
 
-        Collections.sort(inFiles, Comparators.compareByDate);
 
         return inFiles;
     }
@@ -184,6 +184,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         MenuItem menuRefresh = menu.findItem(R.id.menu_refresh);
         MenuItem menuAbout = menu.findItem(R.id.menu_about);
         MenuItem menuShare = menu.findItem(R.id.menu_share);
+        MenuItem menuSettings = menu.findItem(R.id.menu_settings);
 
         ImageView viewAttach = (ImageView) menu.findItem(R.id.menu_sort).getActionView();
         viewAttach.setBackgroundResource(R.drawable.drawable_sort_icon);
@@ -199,6 +200,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         menuRefresh.setOnMenuItemClickListener(this);
         menuAbout.setOnMenuItemClickListener(this);
         menuShare.setOnMenuItemClickListener(this);
+        menuSettings.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -245,6 +247,11 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             case R.id.menu_about:
                 TrackerHelper.trackAbout();
                 Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_settings:
+                TrackerHelper.trackSettings();
+                intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
         }

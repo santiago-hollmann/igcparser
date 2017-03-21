@@ -22,32 +22,14 @@
  * SOFTWARE.
  */
 
-package com.shollmann.igcparser.ui;
+package com.shollmann.android.igcparser.util;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.widget.TextView;
+import com.shollmann.android.igcparser.model.ILatLonRecord;
 
-import com.shollmann.igcparser.BuildConfig;
-import com.shollmann.igcparser.R;
-
-public class AboutActivity extends AppCompatActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_about);
-        TextView txtVersion = (TextView) findViewById(R.id.about_version_number);
-        txtVersion.setText(getString(R.string.version) + String.valueOf(BuildConfig.VERSION_NAME));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+public class CoordinatesUtilities {
+    public static boolean isZeroCoordinate(ILatLonRecord wayPoint) {
+        return wayPoint == null
+                || (Utilities.isZero(wayPoint.getLatLon().getLat()) && Utilities.isZero(wayPoint.getLatLon().getLon()));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
-        return super.onOptionsItemSelected(item);
-    }
 }

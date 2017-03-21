@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016 Santiago Hollmann
+ * Copyright (c) 2017 Santiago Hollmann
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,37 @@
  * SOFTWARE.
  */
 
-package com.shollmann.android.igcparser.util;
+package com.shollmann.android.igcparser.model;
 
-import android.util.Log;
+import com.shollmann.android.igcparser.util.Constants;
 
-import com.shollmann.android.igcparser.BuildConfig;
+public class TaskConfig {
+    private static int areaWidth = Constants.Task.AREA_WIDTH_IN_METERS;
+    private static int startLength = Constants.Task.START_IN_METERS;
+    private static int finishLength = Constants.Task.FINISH_IN_METERS;
 
-public class Logger {
-
-    public static void log(String s) {
-        if (BuildConfig.DEBUG) {
-            Log.d("IGCParser :: ", s);
-        }
+    public static int getFinishLength() {
+        return finishLength;
     }
 
-    public static void logError(String s) {
-        if (BuildConfig.DEBUG) {
-            Log.e("IGCParser :: ", s);
-        }
+    public static void setFinishLength(int finishLength) {
+        TaskConfig.finishLength = finishLength;
     }
+
+    public static int getStartLength() {
+        return startLength;
+    }
+
+    public static void setStartLength(int startLength) {
+        TaskConfig.startLength = startLength;
+    }
+
+    public static int getAreaWidth() {
+        return areaWidth;
+    }
+
+    public static void setAreaWidth(int areaWidth) {
+        TaskConfig.areaWidth = areaWidth;
+    }
+
 }

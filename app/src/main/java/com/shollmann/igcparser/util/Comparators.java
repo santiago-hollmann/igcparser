@@ -41,8 +41,6 @@ public class Comparators {
     };
 
     private static int genericCompare(String string0, String string1) {
-        string0.toUpperCase();
-        string1.toUpperCase();
         if (TextUtils.isEmpty(string0) && TextUtils.isEmpty(string1)) {
             return -10000;
         }
@@ -52,6 +50,10 @@ public class Comparators {
         if (TextUtils.isEmpty(string0) && !TextUtils.isEmpty(string1)) {
             return 1;
         }
+
+        string0.toUpperCase();
+        string1.toUpperCase();
+
         return string0.compareToIgnoreCase(string1);
     }
 
