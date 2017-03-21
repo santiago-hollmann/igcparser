@@ -1,8 +1,9 @@
 <img src="http://i.imgur.com/K8P2El4.png" height="25%" width="25%">
+
 # IGC Parser Project
 This is an open source project that includes:
 * An Android library to parse IGC files.
-* An Android app to friendly view IGC files.
+* An Android app (IGC Viewer) to friendly view IGC files.
 
 You are more than welcome to contribute to the project. Below you can find some way to contribute to.
 
