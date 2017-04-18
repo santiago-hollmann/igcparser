@@ -24,16 +24,14 @@
 
 package com.shollmann.igcparser.util;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
-import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.android.igcparser.util.WaypointUtilities;
-import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.model.AltitudeSegment;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
@@ -100,11 +98,11 @@ public class MapUtilities {
         return min < value && value <= max;
     }
 
-    public static PolylineOptions getPerpendicularPolyline(ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
+    public static PolylineOptions getPerpendicularPolyline(Context context, ILatLonRecord point1, ILatLonRecord point2, int lineRadius) {
         WaypointUtilities.PerpendicularLineCoordinates perpendicularLine = getPerpendicularLine(point1, point2, lineRadius);
         PolylineOptions polyline = new PolylineOptions()
-                .color(IGCViewerApplication.getApplication().getResources().getColor(R.color.start_finish_color))
-                .width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_start_finish_line_width))
+                .color(context.getResources().getColor(R.color.start_finish_color))
+                .width(ResourcesHelper.getDimensionPixelSize(context, R.dimen.task_start_finish_line_width))
                 .add(perpendicularLine.start)
                 .add(perpendicularLine.end);
 

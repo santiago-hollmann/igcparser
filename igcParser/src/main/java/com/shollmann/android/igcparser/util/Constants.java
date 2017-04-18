@@ -87,6 +87,6 @@ public class Constants {
         public static final int AREA_WIDTH_IN_METERS = 10000;
         public static final int START_IN_METERS = 5000;
         public static final int FINISH_IN_METERS = 1000;
-        public static final int MIN_TOLERANCE_IN_METERS = 200;
+        public static final int MIN_TOLERANCE_IN_METERS = 400;
     }
 }
