@@ -165,7 +165,7 @@ public class FlightInformationActivity extends AppCompatActivity {
         LineDataSet dataSet = new LineDataSet(entries, Constants.EMPTY_STRING);
         dataSet.setDrawCircles(false);
         dataSet.setDrawCircleHole(false);
-        dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(R.dimen.half_dp));
+        dataSet.setLineWidth(ResourcesHelper.getDimensionPixelSize(this, R.dimen.half_dp));
         dataSet.setFillColor(getResources().getColor(R.color.colorPrimary));
         dataSet.setDrawFilled(true);
         dataSet.setFillAlpha(Constants.Chart.ALPHA_FILL);
@@ -296,7 +296,7 @@ public class FlightInformationActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onStop();
+        super.onDestroy();
         IGCViewerApplication.setCurrentIGCFile(null);
     }
 }

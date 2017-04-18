@@ -97,6 +97,6 @@ public class CRecordWayPoint implements ILatLonRecord, Serializable {
 
     @Override
     public String toString() {
-        return lat + lon;
+        return lat + lon + type;
     }
 }
