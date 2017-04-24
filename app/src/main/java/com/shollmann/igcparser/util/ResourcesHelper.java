@@ -27,20 +27,17 @@ package com.shollmann.igcparser.util;
 import android.content.Context;
 import android.util.TypedValue;
 
-import com.shollmann.igcparser.IGCViewerApplication;
-
 public class ResourcesHelper {
 
-    public static int getDimensionPixelSize(int resource) {
-        Context app = IGCViewerApplication.getApplication();
+    public static int getDimensionPixelSize(Context context, int resource) {
         TypedValue rawValue = new TypedValue();
-        app.getResources().getValue(resource, rawValue, true);
+        context.getResources().getValue(resource, rawValue, true);
         if (rawValue.type == TypedValue.TYPE_FIRST_INT) {
             //This is the case in which a dimen references an int like this: <dimen name="mydimen">@integer/custom_match_parent</dimen>
-            return app.getResources().getInteger(resource);
+            return context.getResources().getInteger(resource);
         } else {
             //This is the standard case of reading a dimen as a dimen like this: <dimen name="mydimen">400dp</dimen>
-            return app.getResources().getDimensionPixelSize(resource);
+            return context.getResources().getDimensionPixelSize(resource);
         }
     }
 }

@@ -87,6 +87,16 @@ public class Utilities {
         return listLatLng;
     }
 
+    public static LatLng getLatLng(ILatLonRecord record) {
+        LatLng latLng = new LatLng(0, 0);
+        if (record != null && record.getLatLon() != null) {
+            final double lat = record.getLatLon().getLat();
+            final double lon = record.getLatLon().getLon();
+            latLng = new LatLng(lat, lon);
+        }
+        return latLng;
+    }
+
     public static String generateTime(String igcTime) {
         try {
             final String hoursString = igcTime.substring(0, 2);

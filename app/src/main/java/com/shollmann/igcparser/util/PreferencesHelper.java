@@ -24,131 +24,124 @@
 
 package com.shollmann.igcparser.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.shollmann.igcparser.IGCViewerApplication;
-
 public class PreferencesHelper {
 
-    private static final String IS_RATED = "is_rated";
-    private static final String FLIGHT_VIEWED = "flight_viewed";
-    private static final String MIN_FLIGHTS_TO_RATE = "min_flights_to_rate";
-    private static final String AREA_WIDTH = "area_width";
-    private static final String START_LENGTH = "start_length";
-    private static final String FINISH_LENGTH = "finish_length";
+    private final String IS_RATED = "is_rated";
+    private final String FLIGHT_VIEWED = "flight_viewed";
+    private final String MIN_FLIGHTS_TO_RATE = "min_flights_to_rate";
+    private final String AREA_WIDTH = "area_width";
+    private final String START_LENGTH = "start_length";
+    private final String FINISH_LENGTH = "finish_length";
+    private SharedPreferences prefs;
 
-    static {
-        prefs = PreferenceManager.getDefaultSharedPreferences(IGCViewerApplication.getApplication());
+    public PreferencesHelper(Context appContext) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 
-
-    private static SharedPreferences prefs;
-
-    public static void clear() {
-        prefs.edit().clear().commit();
-    }
-
-    public static int get(String key, int _default) {
+    public int get(String key, int _default) {
         return prefs.getInt(key, _default);
     }
 
-    public static String get(String key, String _default) {
+    public String get(String key, String _default) {
         return prefs.getString(key, _default);
     }
 
-    public static float get(String key, float _default) {
+    public float get(String key, float _default) {
         return prefs.getFloat(key, _default);
     }
 
-    public static boolean get(String key, boolean _default) {
+    public boolean get(String key, boolean _default) {
         return prefs.getBoolean(key, _default);
     }
 
-    public static long get(String key, long _default) {
+    public long get(String key, long _default) {
         return prefs.getLong(key, _default);
     }
 
-    public static void set(String key, long value) {
+    public void set(String key, long value) {
         prefs.edit().putLong(key, value).commit();
     }
 
-    public static void set(String key, int value) {
+    public void set(String key, int value) {
         prefs.edit().putInt(key, value).commit();
     }
 
-    public static void set(String key, String value) {
+    public void set(String key, String value) {
         prefs.edit().putString(key, value).commit();
     }
 
-    public static void set(String key, float value) {
+    public void set(String key, float value) {
         prefs.edit().putFloat(key, value).commit();
     }
 
-    public static void set(String key, boolean value) {
+    public void set(String key, boolean value) {
         prefs.edit().putBoolean(key, value).commit();
     }
 
-    public static void remove(String key) {
+    public void remove(String key) {
         prefs.edit().remove(key).commit();
     }
 
-    public static void setIsRated() {
+    public void setIsRated() {
         set(IS_RATED, true);
     }
 
-    public static boolean isRated() {
+    public boolean isRated() {
         return get(IS_RATED, false);
     }
 
-    public static void resetViewedFlightsForRate() {
+    public void resetViewedFlightsForRate() {
         set(FLIGHT_VIEWED, 0);
     }
 
-    public static void setViewedFlightsForRate() {
+    public void setViewedFlightsForRate() {
         int flightViewed = getViewedFlightCountForRate();
         flightViewed++;
         set(FLIGHT_VIEWED, flightViewed);
     }
 
-    public static int getViewedFlightCountForRate() {
+    public int getViewedFlightCountForRate() {
         return get(FLIGHT_VIEWED, 0);
     }
 
 
-    public static int getMinFlightsViewedToRate() {
+    public int getMinFlightsViewedToRate() {
         return get(MIN_FLIGHTS_TO_RATE, Constants.App.MIN_FLIGHTS_TO_RATE_APP);
     }
 
-    public static void setMinFlightsViewedToRate() {
+    public void setMinFlightsViewedToRate() {
         int flightViewed = getMinFlightsViewedToRate();
-        flightViewed = (int) (flightViewed * 1.7);
+        flightViewed = (int) (flightViewed * Constants.App.MIN_FLIGHTS_TO_RATE_APP_MULTIPLIER);
         set(MIN_FLIGHTS_TO_RATE, flightViewed);
     }
 
-    public static int getAreaWidth() {
+    public int getAreaWidth() {
         return get(AREA_WIDTH, Constants.Task.AREA_WIDTH_IN_METERS);
     }
 
-    public static void setAreaWidth(int value) {
+    public void setAreaWidth(int value) {
         set(AREA_WIDTH, value);
     }
 
 
-    public static int getStartLength() {
+    public int getStartLength() {
         return get(START_LENGTH, Constants.Task.START_IN_METERS);
     }
 
-    public static void setStartLength(int value) {
+    public void setStartLength(int value) {
         set(START_LENGTH, value);
     }
 
 
-    public static int getFinishLength() {
+    public int getFinishLength() {
         return get(FINISH_LENGTH, Constants.Task.FINISH_IN_METERS);
     }
 
-    public static void setFinishLength(int value) {
+    public void setFinishLength(int value) {
         set(FINISH_LENGTH, value);
     }
 }
