@@ -42,6 +42,7 @@ import com.shollmann.igcparser.util.PreferencesHelper;
 import org.greenrobot.eventbus.EventBus;
 
 public class RateUsView extends LinearLayout implements View.OnClickListener {
+    private final PreferencesHelper preferencesHelper;
     private TextView btnOk;
     private TextView btnCancel;
     private TextView txtMessage;
@@ -56,6 +57,7 @@ public class RateUsView extends LinearLayout implements View.OnClickListener {
 
     public RateUsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        preferencesHelper = new PreferencesHelper(getContext());
         init();
 
     }
@@ -80,12 +82,12 @@ public class RateUsView extends LinearLayout implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.rate_us_yes:
                 TrackerHelper.trackRateUsYes();
-                PreferencesHelper.setIsRated();
+                preferencesHelper.setIsRated();
                 openPlayStore();
                 break;
             case R.id.rate_us_no:
-                PreferencesHelper.resetViewedFlightsForRate();
-                PreferencesHelper.setMinFlightsViewedToRate();
+                preferencesHelper.resetViewedFlightsForRate();
+                preferencesHelper.setMinFlightsViewedToRate();
                 TrackerHelper.trackRateUsNo();
                 break;
         }

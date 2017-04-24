@@ -45,6 +45,7 @@ public class WaypointUtilities {
         List<ILatLonRecord> waypoints = igcFile.getWaypoints();
         boolean isPointToAdd = false;
         float[] distance = new float[2];
+
         for (int i = 0; i < waypoints.size(); i++) {
             final CRecordWayPoint waypoint = (CRecordWayPoint) waypoints.get(i);
             if (waypoint.getType() == CRecordType.TURN) {
@@ -66,15 +67,9 @@ public class WaypointUtilities {
 
             if (isPointToAdd) {
                 String waypointKey = waypoint.toString();
-                if (waypoint.getType() == CRecordType.TURN) {
-                    if (mapAreaReached.get(waypointKey) == null) {
-                        //We kept only the first point of the reached area
-                        mapAreaReached.put(waypointKey, positionBRecord);
-                    }
-                } else {
-                    //We overwrite the last start and finish points
+                if (mapAreaReached.get(waypointKey) == null) {
+                    //We kept only the first point of the reached area
                     mapAreaReached.put(waypointKey, positionBRecord);
-
                 }
             }
 
@@ -132,7 +127,9 @@ public class WaypointUtilities {
             CRecordWayPoint aCRecord = (CRecordWayPoint) waypoints.get(i);
             int oppositePosition = waypoints.size() - 1 - i;
             CRecordWayPoint otherCRecord = (CRecordWayPoint) waypoints.get(oppositePosition);
-            if (!includesTakeOffOrLanding(aCRecord) && (!aCRecord.getDescription().equalsIgnoreCase(otherCRecord.getDescription()) || oppositePosition == i)) {
+            if (!includesTakeOffOrLanding(aCRecord)
+                    && (!aCRecord.getDescription().equalsIgnoreCase(otherCRecord.getDescription())
+                    || oppositePosition == i)) {
                 aCRecord.setType(CRecordType.TURN);
             } else {
                 if (i == 1) { //it has take off, start, finish and landing way points
@@ -148,8 +145,10 @@ public class WaypointUtilities {
         }
     }
 
-    public static boolean includesTakeOffOrLanding(CRecordWayPoint aCRecord) {
-        return aCRecord.getDescription().toUpperCase().contains("TAKE_OFF") || aCRecord.getDescription().toUpperCase().contains("TAKEOFF") || aCRecord.getDescription().toUpperCase().contains("LANDING");
+    private static boolean includesTakeOffOrLanding(CRecordWayPoint aCRecord) {
+        return aCRecord.getDescription().toUpperCase().contains("TAKE_OFF")
+                || aCRecord.getDescription().toUpperCase().contains("TAKEOFF")
+                || aCRecord.getDescription().toUpperCase().contains("LANDING");
     }
 
     public static double calculateTaskDistance(List<ILatLonRecord> waypoints) {
@@ -164,7 +163,7 @@ public class WaypointUtilities {
     }
 
 
-    /**
+    /*
      * Returns line through point1, at right angles to line between point1 and point2, length lineRadius in meters.
      *
      * @param point1
@@ -198,7 +197,7 @@ public class WaypointUtilities {
             ArrayList<Integer> listReachedAreas = getListReachedAreas(mapAreaReached);
             String startTime = ((BRecord) igcFile.getTrackPoints().get(listReachedAreas.get(0))).getTime();
             String finishTime = ((BRecord) igcFile.getTrackPoints().get(listReachedAreas.get(listReachedAreas.size() - 1))).getTime();
-            return Utilities.calculateAverageSpeed(igcFile.getTaskDistance(), Utilities.getDiffTimeInSeconds(startTime, finishTime));
+            return Utilities.calculateAverageSpeed(igcFile.getTraveledTaskDistance(), Utilities.getDiffTimeInSeconds(startTime, finishTime));
         } catch (Throwable t) {
             return -1;
         }
@@ -216,16 +215,16 @@ public class WaypointUtilities {
     }
 
     public static double getTaskTraveledDistance(IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        ArrayList<ILatLonRecord> list = new ArrayList<>();
         if (!igcFile.isTaskCompleted()) {
             return igcFile.getDistance();
         }
-        double totalDistance = 0;
+
         ArrayList<Integer> listReachedAreas = getListReachedAreas(mapAreaReached);
-        for (int i = 0; i < listReachedAreas.size() - 1; i++) {
-            int nextPosition = i + 1;
-            totalDistance = totalDistance + SphericalUtil.computeLength(Utilities.getLatLngPoints(igcFile.getTrackPoints().subList(listReachedAreas.get(i), listReachedAreas.get(nextPosition))));
+        for (int i = 0; i < listReachedAreas.size(); i++) {
+            list.add(igcFile.getTrackPoints().get(listReachedAreas.get(i)));
         }
-        return totalDistance;
+        return SphericalUtil.computeLength(Utilities.getLatLngPoints(list));
     }
 
     private static ArrayList<Integer> getListReachedAreas(HashMap<String, Integer> mapAreaReached) {
@@ -237,9 +236,9 @@ public class WaypointUtilities {
     public static class PerpendicularLineCoordinates {
         public LatLng start;
         public LatLng end;
-        protected LatLng center;
+        LatLng center;
 
-        public PerpendicularLineCoordinates(LatLng lineStart, LatLng lineEnd, ILatLonRecord point1) {
+        PerpendicularLineCoordinates(LatLng lineStart, LatLng lineEnd, ILatLonRecord point1) {
             start = lineStart;
             end = lineEnd;
             center = new LatLng(point1.getLatLon().getLat(), point1.getLatLon().getLon());
