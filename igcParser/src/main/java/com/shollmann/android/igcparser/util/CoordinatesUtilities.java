@@ -29,6 +29,7 @@ import com.shollmann.android.igcparser.model.ILatLonRecord;
 public class CoordinatesUtilities {
     public static boolean isZeroCoordinate(ILatLonRecord wayPoint) {
         return wayPoint == null
+                || wayPoint.getLatLon() == null
                 || (Utilities.isZero(wayPoint.getLatLon().getLat()) && Utilities.isZero(wayPoint.getLatLon().getLon()));
     }
 

@@ -30,6 +30,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -85,10 +86,10 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     private TextView txtLoading;
     private ProgressBar progress;
     private FilesAdapter adapter;
-    private LinearLayoutManager layoutManager;
     private List<IGCFile> listFiles = new ArrayList<>();
     private File lastSearchedPath;
     private boolean isSearching = true;
+    private PreferencesHelper preferencesHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +97,13 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
 
         setContentView(R.layout.activity_igc_files);
         findViews();
+        preferencesHelper = new PreferencesHelper(getApplicationContext());
         setupFilesList();
-        checkForStoragePemrission();
+        checkForStoragePermission();
     }
 
     private void setupRateUsView() {
-        if (!PreferencesHelper.isRated() && PreferencesHelper.getViewedFlightCountForRate() >= PreferencesHelper.getMinFlightsViewedToRate()) {
+        if (!preferencesHelper.isRated() && preferencesHelper.getViewedFlightCountForRate() >= preferencesHelper.getMinFlightsViewedToRate()) {
             viewRateUs.setVisibility(View.VISIBLE);
         } else {
             viewRateUs.setVisibility(View.GONE);
@@ -110,7 +112,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
 
     private void setupFilesList() {
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new FilesAdapter(listFiles);
         recyclerView.setAdapter(adapter);
@@ -279,10 +281,66 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         }
     }
 
+    private void checkForStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            txtLoading.setClickable(false);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    EXTERNAL_STORAGE_PERMISSION_REQUEST);
+
+        } else {
+            new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case EXTERNAL_STORAGE_PERMISSION_REQUEST: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
+                } else {
+                    layoutEmpty.setVisibility(View.GONE);
+                    progress.setVisibility(View.GONE);
+                    txtLoading.setClickable(true);
+                    txtLoading.setText(R.string.need_storage_access);
+                    txtLoading.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkForStoragePermission();
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void shareApp() {
+        try {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_app_link));
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        } catch (Throwable t) {
+            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupRateUsView();
+    }
+
     private class FindIGCFilesAsyncTask extends AsyncTask<File, Void, Boolean> {
         WeakReference<IGCFilesActivity> activity;
 
-        public FindIGCFilesAsyncTask(IGCFilesActivity activity) {
+        FindIGCFilesAsyncTask(IGCFilesActivity activity) {
             this.activity = new WeakReference<>(activity);
         }
 
@@ -323,62 +381,5 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             }
             isSearching = false;
         }
-    }
-
-    private void checkForStoragePemrission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            txtLoading.setClickable(false);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    EXTERNAL_STORAGE_PERMISSION_REQUEST);
-
-        } else {
-            new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case EXTERNAL_STORAGE_PERMISSION_REQUEST: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
-                } else {
-                    layoutEmpty.setVisibility(View.GONE);
-                    progress.setVisibility(View.GONE);
-                    txtLoading.setClickable(true);
-                    txtLoading.setText(R.string.need_storage_access);
-                    txtLoading.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            checkForStoragePemrission();
-                        }
-                    });
-                }
-                return;
-            }
-        }
-    }
-
-    private void shareApp() {
-        try {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_app_link));
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);
-        } catch (Throwable t) {
-            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupRateUsView();
     }
 }

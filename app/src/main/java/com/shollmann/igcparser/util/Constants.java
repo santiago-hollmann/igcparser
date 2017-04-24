@@ -36,7 +36,8 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final String TEMP_TRACK_NAME = "tmp_record.igc";
         public static final String TEXT_HTML = "text/html";
         public static final String FILE_PROVIDER = "com.shollmann.fileprovider";
-        public static final int MIN_FLIGHTS_TO_RATE_APP = 10;
+        public static final int MIN_FLIGHTS_TO_RATE_APP = 12;
+        public static final int MIN_FLIGHTS_TO_RATE_APP_MULTIPLIER = 2;
     }
 
     public class Map {

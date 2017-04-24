@@ -91,6 +91,7 @@ import java.util.List;
 
 
 public class FlightPreviewActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+    private final Object lock = new Object();
     private boolean isFinishReplay = true;
     private int duration;
     private int replaySpeed = Constants.Map.DEFAULT_REPLAY_SPEED;
@@ -122,12 +123,41 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private ImageView btnSpeedDown;
     private View viewAltitudeReferenceBar;
     private Toast toast;
-    private Object lock = new Object();
+    private PreferencesHelper preferencesHelper;
+
+    public PaintDrawable getColorScala() {
+        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                LinearGradient linearGradient = new LinearGradient(width, height, 0, 0,
+                        new int[]{
+                                getResources().getColor(R.color.altitude_0_100),
+                                getResources().getColor(R.color.altitude_100_300),
+                                getResources().getColor(R.color.altitude_300_500),
+                                getResources().getColor(R.color.altitude_500_1000),
+                                getResources().getColor(R.color.altitude_1000_1500),
+                                getResources().getColor(R.color.altitude_1500_2000),
+                                getResources().getColor(R.color.altitude_2000_2500),
+                                getResources().getColor(R.color.altitude_more_than_2500)},
+                        new float[]{
+                                0, 0.07f, 0.14f, 0.28f, 0.42f, 0.56f, 0.7f, 0.84f},
+                        Shader.TileMode.REPEAT);
+                return linearGradient;
+            }
+        };
+
+        PaintDrawable paint = new PaintDrawable();
+        paint.setShape(new RectShape());
+        paint.setShaderFactory(shaderFactory);
+
+        return paint;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViews();
+        preferencesHelper = new PreferencesHelper(getApplicationContext());
         setClickListeners();
         initMap(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -247,31 +277,31 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         PolylineOptions polyline;
         switch (trackSegment1.getSegmentType()) {
             case ALTITUDE_0_100:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_0_100)).zIndex(0);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_0_100)).zIndex(0);
                 break;
             case ALTITUDE_100_300:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_100_300)).zIndex(1);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_100_300)).zIndex(1);
                 break;
             case ALTITUDE_300_500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_300_500)).zIndex(2);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_300_500)).zIndex(2);
                 break;
             case ALTITUDE_500_1000:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_500_1000)).zIndex(3);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_500_1000)).zIndex(3);
                 break;
             case ALTITUDE_1000_1500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1000_1500)).zIndex(4);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1000_1500)).zIndex(4);
                 break;
             case ALTITUDE_1500_2000:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1500_2000)).zIndex(5);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1500_2000)).zIndex(5);
                 break;
             case ALTITUDE_2000_2500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_2000_2500)).zIndex(6);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_2000_2500)).zIndex(6);
                 break;
             case ALTITUDE_MORE_THAN_2500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_more_than_2500)).zIndex(7);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_more_than_2500)).zIndex(7);
                 break;
             default:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.track_line_width)).color(Color.BLACK).zIndex(-1);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(Color.BLACK).zIndex(-1);
 
         }
 
@@ -290,14 +320,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayFinishStartLines(List<ILatLonRecord> waypoints) {
         try {//TODO Move the logic to determine takeoff, start, etc points to WaypointsHelper
             if (((CRecordWayPoint) waypoints.get(0)).getType() == CRecordType.START) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(0), waypoints.get(1), TaskConfig.getStartLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(0), waypoints.get(1), TaskConfig.getStartLength()));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(1), waypoints.get(2), TaskConfig.getStartLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(this, waypoints.get(1), waypoints.get(2), TaskConfig.getStartLength()));
             }
             if (((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).getType() == CRecordType.FINISH) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), TaskConfig.getFinishLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), TaskConfig.getFinishLength()));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), TaskConfig.getFinishLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), TaskConfig.getFinishLength()));
             }
         } catch (Throwable t) {
             Logger.logError("Error trying to draw task lines: " + t.getMessage());
@@ -322,7 +352,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
     private void displayLinesAndAreas(List<ILatLonRecord> waypoints) {
         try {
-            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(R.dimen.task_line_width)).color(getResources().getColor(R.color.task_line));
+            PolylineOptions polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.task_line_width)).color(getResources().getColor(R.color.task_line));
 
             for (int i = 0; i < waypoints.size(); i++) {
                 CRecordWayPoint cRecordWayPoint = (CRecordWayPoint) waypoints.get(i);
@@ -341,7 +371,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             Logger.logError("Error trying to draw waypoints: " + t.getMessage());
         }
     }
-
 
     @Override
     public void onResume() {
@@ -398,28 +427,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
-    private class ParseIGCFileAsyncTask extends AsyncTask<Void, Void, Void> {
-        private WeakReference<FlightPreviewActivity> activity;
-
-        public ParseIGCFileAsyncTask(FlightPreviewActivity activity) {
-            this.activity = new WeakReference<>(activity);
-        }
-
-        protected Void doInBackground(Void... something) {
-            igcFile = Parser.parse(Uri.parse(fileToLoadPath));
-            return null;
-        }
-
-        protected void onProgressUpdate(Void... something) {
-        }
-
-        protected void onPostExecute(Void result) {
-            if (activity.get() != null) {
-                handleIGCFileLoaded();
-            }
-        }
-    }
-
     private void handleIGCFileLoaded() {
         listLatLngPoints = Utilities.getLatLngPoints(igcFile.getTrackPoints());
         displayWayPoints();
@@ -430,7 +437,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         viewAltitudeReferenceBar.setBackground(getColorScala());
         mapView.setVisibility(View.VISIBLE);
         cardviewInformation.setVisibility(View.VISIBLE);
-        PreferencesHelper.setViewedFlightsForRate();
+        preferencesHelper.setViewedFlightsForRate();
         loading.setVisibility(View.GONE);
     }
 
@@ -585,32 +592,46 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         return super.onOptionsItemSelected(item);
     }
 
-    public static PaintDrawable getColorScala() {
-        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
-            @Override
-            public Shader resize(int width, int height) {
-                LinearGradient linearGradient = new LinearGradient(width, height, 0, 0,
-                        new int[]{
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_0_100),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_100_300),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_300_500),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_500_1000),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_1000_1500),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_1500_2000),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_2000_2500),
-                                IGCViewerApplication.getApplication().getResources().getColor(R.color.altitude_more_than_2500)},
-                        new float[]{
-                                0, 0.07f, 0.14f, 0.28f, 0.42f, 0.56f, 0.7f, 0.84f},
-                        Shader.TileMode.REPEAT);
-                return linearGradient;
+    private void launchShareFile(String tempIgcFilePath) {
+        try {
+            TrackerHelper.trackShareFlight();
+            Intent intentEmail = new Intent(Intent.ACTION_SEND);
+            intentEmail.setType(Constants.App.TEXT_HTML);
+            intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, Constants.App.FILE_PROVIDER, new File(tempIgcFilePath)));
+            intentEmail.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.share_email_subject), Uri.parse(tempIgcFilePath).getLastPathSegment()));
+            startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
+        } catch (Throwable t) {
+            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.flight_preview_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private class ParseIGCFileAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<FlightPreviewActivity> activity;
+
+        public ParseIGCFileAsyncTask(FlightPreviewActivity activity) {
+            this.activity = new WeakReference<>(activity);
+        }
+
+        protected Void doInBackground(Void... something) {
+            igcFile = Parser.parse(Uri.parse(fileToLoadPath));
+            return null;
+        }
+
+        protected void onProgressUpdate(Void... something) {
+        }
+
+        protected void onPostExecute(Void result) {
+            if (activity.get() != null) {
+                handleIGCFileLoaded();
             }
-        };
-
-        PaintDrawable paint = new PaintDrawable();
-        paint.setShape(new RectShape());
-        paint.setShaderFactory(shaderFactory);
-
-        return paint;
+        }
     }
 
     private class GetGmailAttachmentAsyncTask extends AsyncTask<String, Void, String> {
@@ -655,25 +676,5 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             super.onPostExecute(tempIgcFilePath);
         }
 
-    }
-
-    private void launchShareFile(String tempIgcFilePath) {
-        try {
-            TrackerHelper.trackShareFlight();
-            Intent intentEmail = new Intent(Intent.ACTION_SEND);
-            intentEmail.setType(Constants.App.TEXT_HTML);
-            intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, Constants.App.FILE_PROVIDER, new File(tempIgcFilePath)));
-            intentEmail.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.share_email_subject), Uri.parse(tempIgcFilePath).getLastPathSegment()));
-            startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
-        } catch (Throwable t) {
-            Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.flight_preview_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
     }
 }

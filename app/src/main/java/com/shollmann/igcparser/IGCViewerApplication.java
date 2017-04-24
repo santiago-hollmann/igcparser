@@ -36,22 +36,21 @@ import com.shollmann.igcparser.util.PreferencesHelper;
 import io.fabric.sdk.android.Fabric;
 
 public class IGCViewerApplication extends Application {
-    private static Context instance;
     private static IGCFile currentIGCFile;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
         setupCrashlytics();
         setupTaskConfig();
 
     }
 
     private void setupTaskConfig() {
-        TaskConfig.setAreaWidth(PreferencesHelper.getAreaWidth());
-        TaskConfig.setStartLength(PreferencesHelper.getStartLength());
-        TaskConfig.setFinishLength(PreferencesHelper.getFinishLength());
+        PreferencesHelper preferencesHelper = new PreferencesHelper(this);
+        TaskConfig.setAreaWidth(preferencesHelper.getAreaWidth());
+        TaskConfig.setStartLength(preferencesHelper.getStartLength());
+        TaskConfig.setFinishLength(preferencesHelper.getFinishLength());
     }
 
     private void setupCrashlytics() {
@@ -62,8 +61,8 @@ public class IGCViewerApplication extends Application {
         Fabric.with(this, crashlyticsKit);
     }
 
-    public static Context getApplication() {
-        return instance;
+    public Context getApplication() {
+        return this;
     }
 
     public static IGCFile getCurrentIGCFile() {

@@ -37,6 +37,7 @@ import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.PreferencesHelper;
 
 public class SettingsSeekBarView extends RelativeLayout {
+    private final PreferencesHelper preferencesHelper;
     private TextView txtValue;
     private TextView txtTitle;
     private ImageView imgIcon;
@@ -54,6 +55,7 @@ public class SettingsSeekBarView extends RelativeLayout {
     public SettingsSeekBarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         findViews();
+        preferencesHelper = new PreferencesHelper(getContext());
     }
 
     public void init(SeekbarType type) {
@@ -101,9 +103,9 @@ public class SettingsSeekBarView extends RelativeLayout {
         float realValue;
         if (value == 0) {
             realValue = 0.5f;
-            txtValue.setText(String.valueOf(realValue) + "km");
+            txtValue.setText(String.format("%skm", String.valueOf(realValue)));
         } else {
-            txtValue.setText(String.valueOf(value) + "km");
+            txtValue.setText(String.format("%skm", String.valueOf(value)));
         }
     }
 
@@ -111,13 +113,13 @@ public class SettingsSeekBarView extends RelativeLayout {
         int value;
         switch (type) {
             case AREA:
-                value = PreferencesHelper.getAreaWidth();
+                value = preferencesHelper.getAreaWidth();
                 break;
             case START:
-                value = PreferencesHelper.getStartLength();
+                value = preferencesHelper.getStartLength();
                 break;
             case FINISH:
-                value = PreferencesHelper.getFinishLength();
+                value = preferencesHelper.getFinishLength();
                 break;
             default:
                 value = 0;
@@ -134,15 +136,15 @@ public class SettingsSeekBarView extends RelativeLayout {
         switch (type) {
             case AREA:
                 TaskConfig.setAreaWidth(value);
-                PreferencesHelper.setAreaWidth(value);
+                preferencesHelper.setAreaWidth(value);
                 break;
             case START:
                 TaskConfig.setStartLength(value);
-                PreferencesHelper.setStartLength(value);
+                preferencesHelper.setStartLength(value);
                 break;
             case FINISH:
                 TaskConfig.setFinishLength(value);
-                PreferencesHelper.setFinishLength(value);
+                preferencesHelper.setFinishLength(value);
                 break;
         }
     }

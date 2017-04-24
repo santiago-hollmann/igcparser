@@ -136,16 +136,8 @@ public class IGCFile implements Serializable {
         return Utilities.getFlightTime(takeOffTime, landingTime);
     }
 
-    public String getGliderType() {
-        return gliderType;
-    }
-
     public void setGliderType(String gliderType) {
         this.gliderType = gliderType;
-    }
-
-    public String getGliderId() {
-        return gliderId;
     }
 
     public void setGliderId(String gliderId) {
@@ -172,16 +164,8 @@ public class IGCFile implements Serializable {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public String getFilePath() {
         return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     public String getGliderTypeAndId() {

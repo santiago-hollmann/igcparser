@@ -33,7 +33,6 @@ import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
-import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.CoordinatesUtilities;
 import com.shollmann.android.igcparser.util.Logger;
@@ -65,7 +64,7 @@ public class Parser {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (isBRecord(line)) {
-                    if (firstBRecord == null) { // Classify waypoints to determine reached ares later
+                    if (firstBRecord == null) { // Classify waypoints to later determine reached areas
                         WaypointUtilities.classifyWayPoints(igcFile.getWaypoints());
                     }
 

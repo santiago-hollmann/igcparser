@@ -26,6 +26,13 @@ Here you can find some ways for contribution. If you are insterested in, please 
 * Include new features to the app.
 * Port the project to other languages and platforms.
 
+## Setup
+### Setup Fabric
+Inside app/ create a file called fabric.properties with apiKey=here_the_api_key and below apiSecret=here_api_secret.
+
+### Setup Google Maps
+Inside app/ create a file called gradle.properties and add MAPS_KEY="the_key_here".
+
 ## Special Thanks to
 * <a href="http://www.forsterlewis.com/">Ian Forster-Lewis</a> for his <a href="http://carrier.csi.cam.ac.uk/forsterlewis/soaring/igc_file_format/igc_format_2008.html#link_C/">IGC File Format Reference</a>
 * <a href="http://www.maurogianzone.com">Mauro Gianzone</a> for contributing to app design.
