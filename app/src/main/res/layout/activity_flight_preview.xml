@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,9 +30,36 @@
             android:src="@drawable/ic_information"
             android:visibility="gone" />
 
-        <include layout="@layout/layout_altitude_reference" />
+        <include
+            android:id="@+id/map_altitude_reference"
+            layout="@layout/layout_altitude_reference" />
+
+        <ImageView
+            android:id="@+id/main_btn_map_type"
+            android:layout_width="@dimen/map_button_default_size"
+            android:layout_height="@dimen/map_button_default_size"
+            android:layout_above="@id/map_altitude_reference"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:background="@drawable/selector_replay_button"
+            android:clickable="true"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_satellite" />
+
+        <ImageView
+            android:id="@+id/main_btn_locate_plane"
+            android:layout_width="@dimen/map_button_default_size"
+            android:layout_height="@dimen/map_button_default_size"
+            android:layout_above="@+id/main_btn_map_type"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:background="@drawable/selector_replay_button"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_locate_plane"
+            android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/map_replay_buttons_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -48,8 +75,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_replay_button"
                 android:clickable="true"
-                android:visibility="gone"
-                app:src="@drawable/ic_turtle" />
+                android:src="@drawable/ic_turtle"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/main_btn_play"
@@ -71,8 +98,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_replay_button"
                 android:clickable="true"
-                android:visibility="gone"
-                app:src="@drawable/ic_rabbit" />
+                android:src="@drawable/ic_rabbit"
+                android:visibility="gone" />
         </LinearLayout>
 
         <ProgressBar
