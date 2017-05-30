@@ -79,7 +79,7 @@
     <string name="share_app">Compartir app</string>
     <string name="share_app_link">Hola, ¡descarga esta app! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
     <string name="share">Compartir vuelo:</string>
-    <string name="share_email_subject">Vuelo %1$s</string>
+    <string name="share_email_subject">IGC Viewer :: Vuelo %1$s</string>
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
     <string name="historic_speed">Velocidad Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
@@ -92,5 +92,6 @@
     <string name="settings_start">Largo de la Linea de Partida</string>
     <string name="settings_finish">Largo de la Linea de Llegada</string>
     <string name="settings">Configuración</string>
+    <string name="share_email_body">Mira este vuelo con IGC Viewer: http://bit.ly/igcviewer</string>
 
 </resources>
