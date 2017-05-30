@@ -5,9 +5,9 @@
     <color name="colorAccent">#CDDC39</color>
     <color name="gray">#535353</color>
     <color name="replay_button">#CCFFFFFF</color>
-    <color name="replay_button_selected">#EECCCCCC</color>
+    <color name="replay_button_selected">#CCCCCCCC</color>
     <color name="replay_button_border">#CCCCCC</color>
-    <color name="replay_icon_color">@color/gray</color>
+    <color name="map_icon">@color/gray</color>
     <color name="white">#ffffff</color>
     <color name="start_finish_color">#ad62f9</color>
     <color name="task_fill_color">#22ff00ff</color>

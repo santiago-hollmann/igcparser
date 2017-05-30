@@ -91,6 +91,7 @@ import java.util.List;
 
 
 public class FlightPreviewActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+    public static final int MAX_SPEED_TO_STOP_ANIMATING_CAMERA = 4;
     private final Object lock = new Object();
     private boolean isFinishReplay = true;
     private int duration;
@@ -124,8 +125,31 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private View viewAltitudeReferenceBar;
     private Toast toast;
     private PreferencesHelper preferencesHelper;
+    private ImageView btnMapType;
+    private ImageView btnCenterPlane;
 
-    public PaintDrawable getColorScala() {
+    private void switchMapType() {
+        if (googleMap == null) {
+            return;
+        }
+
+        switch (googleMap.getMapType()) {
+            case GoogleMap.MAP_TYPE_NORMAL:
+                btnMapType.setImageResource(R.drawable.ic_terrain);
+                googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                break;
+            case GoogleMap.MAP_TYPE_HYBRID:
+                googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                btnMapType.setImageResource(R.drawable.ic_map);
+                break;
+            case GoogleMap.MAP_TYPE_TERRAIN:
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                btnMapType.setImageResource(R.drawable.ic_satellite);
+                break;
+        }
+    }
+
+    public PaintDrawable getColorScale() {
         ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
             @Override
             public Shader resize(int width, int height) {
@@ -190,6 +214,8 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         btnCloseInformation.setOnClickListener(this);
         btnShowInformation.setOnClickListener(this);
         txtMoreInfo.setOnClickListener(this);
+        btnMapType.setOnClickListener(this);
+        btnCenterPlane.setOnClickListener(this);
     }
 
     private void findViews() {
@@ -214,7 +240,9 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         btnSpeedUp = (ImageView) findViewById(R.id.main_btn_speed_up);
         btnSpeedDown = (ImageView) findViewById(R.id.main_btn_speed_down);
         viewAltitudeReferenceBar = findViewById(R.id.altitude_reference_bar);
-        layoutAltitudeReference = (RelativeLayout) findViewById(R.id.altitude_reference_layout);
+        layoutAltitudeReference = (RelativeLayout) findViewById(R.id.map_altitude_reference);
+        btnMapType = (ImageView) findViewById(R.id.main_btn_map_type);
+        btnCenterPlane = (ImageView) findViewById(R.id.main_btn_locate_plane);
 
     }
 
@@ -222,9 +250,10 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         this.googleMap.getUiSettings().setMapToolbarEnabled(false);
+        this.googleMap.getUiSettings().setTiltGesturesEnabled(false);
+        this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
         this.googleMap.getUiSettings().setZoomControlsEnabled(true);
         this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
-        this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
 
         if (!TextUtils.isEmpty(fileToLoadPath)) {
             new ParseIGCFileAsyncTask(this).execute();
@@ -286,13 +315,13 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_300_500)).zIndex(2);
                 break;
             case ALTITUDE_500_1000:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_500_1000)).zIndex(3);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_500_1000)).zIndex(3);
                 break;
             case ALTITUDE_1000_1500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1000_1500)).zIndex(4);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1000_1500)).zIndex(4);
                 break;
             case ALTITUDE_1500_2000:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1500_2000)).zIndex(5);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1500_2000)).zIndex(5);
                 break;
             case ALTITUDE_2000_2500:
                 polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_2000_2500)).zIndex(6);
@@ -301,7 +330,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_more_than_2500)).zIndex(7);
                 break;
             default:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this,R.dimen.track_line_width)).color(Color.BLACK).zIndex(-1);
+                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(Color.BLACK).zIndex(-1);
 
         }
 
@@ -396,17 +425,11 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_cardview_close:
-                cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_dae_out));
-                cardviewInformation.setVisibility(View.GONE);
-                btnShowInformation.setVisibility(View.VISIBLE);
-                btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_enter));
+                hideInformationCard();
                 TrackerHelper.trackCloseInformation();
                 break;
             case R.id.main_information_btn:
-                btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_leave));
-                btnShowInformation.setVisibility(View.GONE);
-                cardviewInformation.setVisibility(View.VISIBLE);
-                cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
+                showInformationCard();
                 TrackerHelper.trackOpenInformation();
                 break;
             case R.id.main_btn_play:
@@ -418,12 +441,47 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             case R.id.main_btn_speed_down:
                 speedDownReplay();
                 break;
+            case R.id.main_btn_map_type:
+                switchMapType();
+                break;
+            case R.id.main_btn_locate_plane:
+                centerPlane();
+                break;
             case R.id.main_information_btn_viewmore:
                 TrackerHelper.trackOpenMoreInformation();
                 IGCViewerApplication.setCurrentIGCFile(igcFile);
                 Intent intent = new Intent(this, FlightInformationActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    private void showInformationCard() {
+        if (cardviewInformation.getVisibility() == View.GONE) {
+            btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_leave));
+            btnShowInformation.setVisibility(View.GONE);
+            cardviewInformation.setVisibility(View.VISIBLE);
+            cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_fade_in));
+        }
+    }
+
+    private void hideInformationCard() {
+        if (cardviewInformation.getVisibility() == View.VISIBLE) {
+            cardviewInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_dae_out));
+            cardviewInformation.setVisibility(View.GONE);
+            btnShowInformation.setVisibility(View.VISIBLE);
+            btnShowInformation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_information_btn_enter));
+        }
+    }
+
+    private void centerPlane() {
+        if (googleMap != null && markerGlider != null) {
+            hideInformationCard();
+            if (speedCounter >= MAX_SPEED_TO_STOP_ANIMATING_CAMERA) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerGlider.getPosition(), googleMap.getCameraPosition().zoom));
+            } else {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerGlider.getPosition(), googleMap.getCameraPosition().zoom));
+            }
         }
     }
 
@@ -434,10 +492,13 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         displayFlightInformation();
         displayReplayViews();
         layoutAltitudeReference.setVisibility(View.VISIBLE);
-        viewAltitudeReferenceBar.setBackground(getColorScala());
+        viewAltitudeReferenceBar.setBackground(getColorScale());
         mapView.setVisibility(View.VISIBLE);
         cardviewInformation.setVisibility(View.VISIBLE);
         preferencesHelper.setViewedFlightsForRate();
+        btnMapType.setVisibility(View.VISIBLE);
+        btnCenterPlane.setVisibility(View.VISIBLE);
+
         loading.setVisibility(View.GONE);
     }
 
@@ -469,7 +530,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
         btnSpeedDown.setVisibility(View.GONE);
 
     }
-
 
     private void showSpeedToast(int stringId, int speed) {
         if (toast == null) {
@@ -526,7 +586,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             TrackerHelper.trackStopFlight();
         }
     }
-
 
     private void animateMarker() {
         final Handler handler = new Handler();

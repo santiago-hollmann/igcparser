@@ -28,6 +28,6 @@
     android:viewportHeight="24.0"
     android:viewportWidth="24.0">
     <path
-        android:fillColor="@color/replay_icon_color"
+        android:fillColor="@color/map_icon"
         android:pathData="M6,6h12v12H6z" />
 </vector>
