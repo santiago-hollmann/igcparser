@@ -56,7 +56,7 @@
     <string name="share_app">Share this app</string>
     <string name="share_app_link">Hey check this app! IGC Viewer: https://play.google.com/store/apps/details?id=com.shollmann.igcparser"</string>
     <string name="share">Share flight:</string>
-    <string name="share_email_subject">Flight %1$s</string>
+    <string name="share_email_subject">IGC Viewer :: Flight %1$s</string>
     <string name="avg_speed">Flight Average Speed</string>
     <string name="historic_speed">Historic Speed</string>
     <string name="time_and_altitude">%1$s UTC at %2$dm</string>
@@ -69,5 +69,6 @@
     <string name="settings_start">Start Line Length</string>
     <string name="settings_finish">Finish Line Length</string>
     <string name="settings">Settings</string>
+    <string name="share_email_body">View this flight with IGC Viewer: http://bit.ly/igcviewer</string>
 
 </resources>

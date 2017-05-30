@@ -658,6 +658,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             intentEmail.setType(Constants.App.TEXT_HTML);
             intentEmail.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(FlightPreviewActivity.this, Constants.App.FILE_PROVIDER, new File(tempIgcFilePath)));
             intentEmail.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.share_email_subject), Uri.parse(tempIgcFilePath).getLastPathSegment()));
+            intentEmail.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_email_body));
             startActivity(Intent.createChooser(intentEmail, getString(R.string.share)));
         } catch (Throwable t) {
             Toast.makeText(this, R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
