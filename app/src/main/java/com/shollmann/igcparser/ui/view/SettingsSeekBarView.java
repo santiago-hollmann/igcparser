@@ -26,12 +26,11 @@ package com.shollmann.igcparser.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.shollmann.android.igcparser.model.TaskConfig;
+import com.shollmann.android.igcparser.model.ParserConfig;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.PreferencesHelper;
@@ -40,7 +39,6 @@ public class SettingsSeekBarView extends RelativeLayout {
     private final PreferencesHelper preferencesHelper;
     private TextView txtValue;
     private TextView txtTitle;
-    private ImageView imgIcon;
     private SeekBar seekbar;
     private SeekbarType type;
 
@@ -62,7 +60,6 @@ public class SettingsSeekBarView extends RelativeLayout {
         this.type = type;
         setTitle();
         setMaxValue();
-        setIcon();
         setInitialValue();
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -135,15 +132,15 @@ public class SettingsSeekBarView extends RelativeLayout {
         }
         switch (type) {
             case AREA:
-                TaskConfig.setAreaWidth(value);
+                ParserConfig.setAreaWidth(value);
                 preferencesHelper.setAreaWidth(value);
                 break;
             case START:
-                TaskConfig.setStartLength(value);
+                ParserConfig.setStartLength(value);
                 preferencesHelper.setStartLength(value);
                 break;
             case FINISH:
-                TaskConfig.setFinishLength(value);
+                ParserConfig.setFinishLength(value);
                 preferencesHelper.setFinishLength(value);
                 break;
         }
@@ -159,20 +156,6 @@ public class SettingsSeekBarView extends RelativeLayout {
                 break;
             case FINISH:
                 seekbar.setMax(20);
-                break;
-        }
-    }
-
-    private void setIcon() {
-        switch (type) {
-            case AREA:
-                imgIcon.setImageResource(R.drawable.ic_area);
-                break;
-            case START:
-                imgIcon.setImageResource(R.drawable.ic_line);
-                break;
-            case FINISH:
-                imgIcon.setImageResource(R.drawable.ic_line);
                 break;
         }
     }
@@ -197,7 +180,6 @@ public class SettingsSeekBarView extends RelativeLayout {
         txtTitle = (TextView) findViewById(R.id.seekbar_title);
         txtValue = (TextView) findViewById(R.id.seekbar_value);
         seekbar = (SeekBar) findViewById(R.id.seekbar_bar);
-        imgIcon = (ImageView) findViewById(R.id.seekbar_icon);
     }
 
     public enum SeekbarType {

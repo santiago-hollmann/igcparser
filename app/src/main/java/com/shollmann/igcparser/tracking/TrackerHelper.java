@@ -53,6 +53,9 @@ public class TrackerHelper {
     private static final String SETTINGS_CHANGE_AREA = "Change Area";
     private static final String SETTINGS_CHANGE_START = "Change Start";
     private static final String SETTINGS_CHANGE_FINISH = "Change Finish";
+    private static final String TRACK_THICKNESS_DEFAULT = "Track Thickness Default";
+    private static final String TRACK_THICKNESS_BIG = "Track Thickness Big";
+    private static final String TRACK_THICKNESS_EXTRA_BIG = "Track Thickness Extra Big";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -163,5 +166,17 @@ public class TrackerHelper {
 
     public static void trackChangeFinish() {
         AnswersHelper.trackEvent(SETTINGS_CHANGE_FINISH);
+    }
+
+    public static void trackTrackThicknessDefault() {
+        AnswersHelper.trackEvent(TRACK_THICKNESS_DEFAULT);
+    }
+
+    public static void trackTrackThicknessBig() {
+        AnswersHelper.trackEvent(TRACK_THICKNESS_BIG);
+    }
+
+    public static void trackTrackThicknessExtraBig() {
+        AnswersHelper.trackEvent(TRACK_THICKNESS_EXTRA_BIG);
     }
 }

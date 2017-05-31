@@ -93,5 +93,9 @@
     <string name="settings_finish">Largo de la Linea de Llegada</string>
     <string name="settings">Configuración</string>
     <string name="share_email_body">Mira este vuelo con IGC Viewer: http://bit.ly/igcviewer</string>
+    <string name="track_thickness">Grosor del track</string>
+    <string name="extra_big">Extra grande</string>
+    <string name="big">Grande</string>
+    <string name="radio_default">Por defecto</string>
 
 </resources>

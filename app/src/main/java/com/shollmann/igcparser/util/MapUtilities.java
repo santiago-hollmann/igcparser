@@ -58,17 +58,17 @@ public class MapUtilities {
 
             if (altitude < 100) {
                 currentSegment = AltitudeSegment.ALTITUDE_0_100;
-            } else if (between(altitude, 100, 300)) {
+            } else if (isBetween(altitude, 100, 300)) {
                 currentSegment = AltitudeSegment.ALTITUDE_100_300;
-            } else if (between(altitude, 300, 500)) {
+            } else if (isBetween(altitude, 300, 500)) {
                 currentSegment = AltitudeSegment.ALTITUDE_300_500;
-            } else if (between(altitude, 500, 1000)) {
+            } else if (isBetween(altitude, 500, 1000)) {
                 currentSegment = AltitudeSegment.ALTITUDE_500_1000;
-            } else if (between(altitude, 1000, 1500)) {
+            } else if (isBetween(altitude, 1000, 1500)) {
                 currentSegment = AltitudeSegment.ALTITUDE_1000_1500;
-            } else if (between(altitude, 1500, 2000)) {
+            } else if (isBetween(altitude, 1500, 2000)) {
                 currentSegment = AltitudeSegment.ALTITUDE_1500_2000;
-            } else if (between(altitude, 2000, 2500)) {
+            } else if (isBetween(altitude, 2000, 2500)) {
                 currentSegment = AltitudeSegment.ALTITUDE_2000_2500;
             } else if (altitude > 2500) {
                 currentSegment = AltitudeSegment.ALTITUDE_MORE_THAN_2500;
@@ -94,7 +94,7 @@ public class MapUtilities {
         return listTrackSegment;
     }
 
-    private static boolean between(int value, int min, int max) {
+    private static boolean isBetween(int value, int min, int max) {
         return min < value && value <= max;
     }
 

@@ -71,12 +71,12 @@ import com.shollmann.android.igcparser.model.CRecordType;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.ILatLonRecord;
-import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.IGCViewerApplication;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.model.AltitudeTrackSegment;
+import com.shollmann.igcparser.model.Config;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.util.Constants;
 import com.shollmann.igcparser.util.FileUtilities;
@@ -304,33 +304,34 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
     private PolylineOptions getAltitudeTrackPolyline(AltitudeTrackSegment trackSegment1) {
         PolylineOptions polyline;
+        int dimensionPixelSize = Config.getTrackWidthInPixels();
         switch (trackSegment1.getSegmentType()) {
             case ALTITUDE_0_100:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_0_100)).zIndex(0);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_0_100)).zIndex(0);
                 break;
             case ALTITUDE_100_300:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_100_300)).zIndex(1);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_100_300)).zIndex(1);
                 break;
             case ALTITUDE_300_500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_300_500)).zIndex(2);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_300_500)).zIndex(2);
                 break;
             case ALTITUDE_500_1000:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_500_1000)).zIndex(3);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_500_1000)).zIndex(3);
                 break;
             case ALTITUDE_1000_1500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1000_1500)).zIndex(4);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_1000_1500)).zIndex(4);
                 break;
             case ALTITUDE_1500_2000:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_1500_2000)).zIndex(5);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_1500_2000)).zIndex(5);
                 break;
             case ALTITUDE_2000_2500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_2000_2500)).zIndex(6);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_2000_2500)).zIndex(6);
                 break;
             case ALTITUDE_MORE_THAN_2500:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(getResources().getColor(R.color.altitude_more_than_2500)).zIndex(7);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(getResources().getColor(R.color.altitude_more_than_2500)).zIndex(7);
                 break;
             default:
-                polyline = new PolylineOptions().width(ResourcesHelper.getDimensionPixelSize(this, R.dimen.track_line_width)).color(Color.BLACK).zIndex(-1);
+                polyline = new PolylineOptions().width(dimensionPixelSize).color(Color.BLACK).zIndex(-1);
 
         }
 
@@ -349,14 +350,14 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
     private void displayFinishStartLines(List<ILatLonRecord> waypoints) {
         try {//TODO Move the logic to determine takeoff, start, etc points to WaypointsHelper
             if (((CRecordWayPoint) waypoints.get(0)).getType() == CRecordType.START) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(0), waypoints.get(1), TaskConfig.getStartLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(0), waypoints.get(1), Config.getStartLength()));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(this, waypoints.get(1), waypoints.get(2), TaskConfig.getStartLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(this, waypoints.get(1), waypoints.get(2), Config.getStartLength()));
             }
             if (((CRecordWayPoint) waypoints.get(waypoints.size() - 1)).getType() == CRecordType.FINISH) {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), TaskConfig.getFinishLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(waypoints.size() - 1), waypoints.get(waypoints.size() - 2), Config.getFinishLength()));
             } else {
-                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), TaskConfig.getFinishLength()));
+                googleMap.addPolyline(MapUtilities.getPerpendicularPolyline(getApplicationContext(), waypoints.get(waypoints.size() - 2), waypoints.get(waypoints.size() - 3), Config.getFinishLength()));
             }
         } catch (Throwable t) {
             Logger.logError("Error trying to draw task lines: " + t.getMessage());
@@ -390,7 +391,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 }
                 if (cRecordWayPoint.getType() == CRecordType.TURN) {
                     googleMap.addCircle(new CircleOptions().center(new LatLng(waypoints.get(i).getLatLon().getLat(), waypoints.get(i).getLatLon().getLon()))
-                            .radius(TaskConfig.getAreaWidth()).strokeColor(Color.TRANSPARENT)
+                            .radius(Config.getAreaWidth()).strokeColor(Color.TRANSPARENT)
                             .strokeWidth(getResources().getDimensionPixelSize(R.dimen.task_line_width))
                             .fillColor(getResources().getColor(R.color.task_fill_color)));
                 }

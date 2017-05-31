@@ -30,7 +30,7 @@ import android.content.Context;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.shollmann.android.igcparser.model.IGCFile;
-import com.shollmann.android.igcparser.model.TaskConfig;
+import com.shollmann.igcparser.model.Config;
 import com.shollmann.igcparser.util.PreferencesHelper;
 
 import io.fabric.sdk.android.Fabric;
@@ -48,9 +48,10 @@ public class IGCViewerApplication extends Application {
 
     private void setupTaskConfig() {
         PreferencesHelper preferencesHelper = new PreferencesHelper(this);
-        TaskConfig.setAreaWidth(preferencesHelper.getAreaWidth());
-        TaskConfig.setStartLength(preferencesHelper.getStartLength());
-        TaskConfig.setFinishLength(preferencesHelper.getFinishLength());
+        Config.setAreaWidth(preferencesHelper.getAreaWidth());
+        Config.setStartLength(preferencesHelper.getStartLength());
+        Config.setFinishLength(preferencesHelper.getFinishLength());
+        Config.setTrackWidth(getApplicationContext(), preferencesHelper.getTrackWidthType());
     }
 
     private void setupCrashlytics() {

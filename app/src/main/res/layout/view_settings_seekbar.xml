@@ -26,52 +26,44 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/extra_large_margin">
-
-    <ImageView
-        android:id="@+id/seekbar_icon"
-        android:layout_width="@dimen/seekbar_icon_size"
-        android:layout_height="@dimen/seekbar_icon_size"
-        android:layout_alignBottom="@+id/seekbar_title"
-        android:layout_marginRight="@dimen/large_margin"
-        android:tint="@color/gray"
-        app:srcCompat="@drawable/ic_area" />
+    android:layout_marginBottom="@dimen/medium_margin">
 
     <TextView
         android:id="@+id/seekbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/seekbar_icon"
-        android:text="Area Size"
-        android:textSize="@dimen/material_text_body"
-        android:textStyle="bold" />
+        android:textSize="@dimen/material_text_subhead"
+        tool:text="Area Size" />
 
     <TextView
         android:id="@+id/seekbar_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/seekbar_bar"
         android:layout_alignBottom="@+id/seekbar_bar"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/seekbar_title"
         android:layout_marginLeft="@dimen/medium_margin"
+        android:layout_marginStart="@dimen/medium_margin"
         android:layout_marginTop="@dimen/large_margin"
         android:maxLines="1"
         android:minWidth="@dimen/settings_value_min_width"
-        android:text="20km"
-        android:textSize="@dimen/material_text_body" />
+        android:textSize="@dimen/material_text_body"
+        tool:text="20km" />
 
     <SeekBar
         android:id="@+id/seekbar_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/seekbar_title"
-        android:layout_marginLeft="@dimen/extra_large_margin"
-        android:layout_marginTop="@dimen/large_margin"
-        android:layout_toLeftOf="@id/seekbar_value" />
+        android:layout_marginLeft="-8dp"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_toLeftOf="@id/seekbar_value"
+        android:layout_toStartOf="@id/seekbar_value" />
 
 </RelativeLayout>
 

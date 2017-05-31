@@ -26,7 +26,7 @@ package com.shollmann.android.igcparser.model;
 
 import com.shollmann.android.igcparser.util.Constants;
 
-public class TaskConfig {
+public class ParserConfig {
     private static int areaWidth = Constants.Task.AREA_WIDTH_IN_METERS;
     private static int startLength = Constants.Task.START_IN_METERS;
     private static int finishLength = Constants.Task.FINISH_IN_METERS;
@@ -36,7 +36,7 @@ public class TaskConfig {
     }
 
     public static void setFinishLength(int finishLength) {
-        TaskConfig.finishLength = finishLength;
+        ParserConfig.finishLength = finishLength;
     }
 
     public static int getStartLength() {
@@ -44,7 +44,7 @@ public class TaskConfig {
     }
 
     public static void setStartLength(int startLength) {
-        TaskConfig.startLength = startLength;
+        ParserConfig.startLength = startLength;
     }
 
     public static int getAreaWidth() {
@@ -52,7 +52,7 @@ public class TaskConfig {
     }
 
     public static void setAreaWidth(int areaWidth) {
-        TaskConfig.areaWidth = areaWidth;
+        ParserConfig.areaWidth = areaWidth;
     }
 
 }

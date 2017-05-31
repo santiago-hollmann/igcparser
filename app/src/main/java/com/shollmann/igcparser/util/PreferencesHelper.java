@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 
 public class PreferencesHelper {
 
+    private static final String TRACK_WIDTH_TYPE = "track_width_type";
     private final String IS_RATED = "is_rated";
     private final String FLIGHT_VIEWED = "flight_viewed";
     private final String MIN_FLIGHTS_TO_RATE = "min_flights_to_rate";
@@ -143,5 +144,13 @@ public class PreferencesHelper {
 
     public void setFinishLength(int value) {
         set(FINISH_LENGTH, value);
+    }
+
+    public int getTrackWidthType() {
+        return get(TRACK_WIDTH_TYPE, Constants.Settings.TRACK_WIDTH_DEFAULT);
+    }
+
+    public void setTrackWidthType(int trackWidthType) {
+        set(TRACK_WIDTH_TYPE, trackWidthType);
     }
 }
