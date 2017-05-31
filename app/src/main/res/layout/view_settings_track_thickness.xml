@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/extra_large_margin"
+    tools:showIn="@layout/activity_settings">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/track_thickness"
+        android:textSize="@dimen/material_text_subhead" />
+
+    <RadioGroup
+        android:id="@+id/track_width_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginTop="@dimen/medium_margin">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/track_width_radio_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/radio_default" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/track_width_radio_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/big" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/track_width_radio_extra_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/extra_big" />
+    </RadioGroup>
+
+</LinearLayout>

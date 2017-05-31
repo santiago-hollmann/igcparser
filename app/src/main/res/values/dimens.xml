@@ -23,8 +23,10 @@
     <dimen name="material_text_body">14sp</dimen>
     <dimen name="material_text_subhead">16sp</dimen>
     <dimen name="more_information_icon_size">24dp</dimen>
-    <dimen name="track_line_width">1.6dp</dimen>
-    <dimen name="task_line_width">0.8dp</dimen>
+    <dimen name="track_line_width_default">1.7dp</dimen>
+    <dimen name="track_line_width_big">2.7dp</dimen>
+    <dimen name="track_line_width_extra_big">3.7dp</dimen>
+    <dimen name="task_line_width">1dp</dimen>
     <dimen name="task_start_finish_line_width">1.8dp</dimen>
     <dimen name="chart_height">200dp</dimen>
     <dimen name="altitude_reference_width">8dp</dimen>

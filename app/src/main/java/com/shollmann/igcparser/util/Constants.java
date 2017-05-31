@@ -56,4 +56,10 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final int ALPHA_FILL = 60;
         public static final int POINTS_SIMPLIFIER = 30;
     }
+
+    public class Settings {
+        public static final int TRACK_WIDTH_DEFAULT = 0;
+        public static final int TRACK_WIDTH_BIG = 1;
+        public static final int TRACK_WIDTH_EXTRA_BIG = 2;
+    }
 }
