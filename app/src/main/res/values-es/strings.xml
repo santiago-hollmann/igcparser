@@ -83,7 +83,7 @@
     <string name="avg_speed">Vel. Promedio del Vuelo</string>
     <string name="historic_speed">Velocidad Histórica</string>
     <string name="time_and_altitude">%1$s UTC a %2$dm</string>
-    <string name="task_completed"><![CDATA[<b>Prueba Completada</b>]]></string>
+    <string name="task_completed"><![CDATA[<b>Prueba Completa</b>]]></string>
     <string name="task_not_completed"><![CDATA[<b>Prueba Incompleta</b>]]></string>
     <string name="task_made_distance"><![CDATA[<b>Distancia Recorrida:</b> %1$skm]]></string>
     <string name="task_average_speed"><![CDATA[<b>Velocidad Promedio:</b> %1$s]]></string>

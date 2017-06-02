@@ -59,7 +59,9 @@ public class FileViewHolder extends RecyclerView.ViewHolder {
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new FileClickEvent(new File(igcFile.getFilePath())));
+                if (igcFile != null) {
+                    EventBus.getDefault().post(new FileClickEvent(new File(igcFile.getFilePath())));
+                }
             }
         });
 

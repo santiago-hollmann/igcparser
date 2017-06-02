@@ -42,6 +42,10 @@ import java.util.List;
 
 public class WaypointUtilities {
     public static void calculateReachedAreas(int positionBRecord, BRecord bRecord, IGCFile igcFile, HashMap<String, Integer> mapAreaReached) {
+        if (bRecord == null) {
+            return;
+        }
+
         List<ILatLonRecord> waypoints = igcFile.getWaypoints();
         boolean isPointToAdd = false;
         float[] distance = new float[2];
