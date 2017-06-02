@@ -22,8 +22,8 @@ android {
         applicationId "com.shollmann.igcparser"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 10800
-        versionName "1.8.0"
+        versionCode 10900
+        versionName "1.9.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
