@@ -42,7 +42,7 @@
         android:layout_width="@dimen/altitude_reference_width"
         android:layout_height="@dimen/altitude_reference_height"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="@dimen/medium_margin" />
+        android:layout_marginRight="@dimen/small_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,6 +50,9 @@
         android:layout_alignBottom="@id/altitude_reference_bar"
         android:layout_marginBottom="@dimen/altitude_margin_correction"
         android:layout_toRightOf="@+id/altitude_reference_bar"
+        android:background="@color/altitude_white_bg"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text="@string/altitude_reference_0m"
         android:textSize="@dimen/material_text_caption" />
 
@@ -59,7 +62,10 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/altitude_margin_correction"
         android:layout_toRightOf="@+id/altitude_reference_bar"
+        android:background="@color/altitude_white_bg"
         android:gravity="top"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text="@string/altitude_reference_2500m"
         android:textSize="@dimen/material_text_caption" />
 </RelativeLayout>

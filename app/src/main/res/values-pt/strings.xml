@@ -41,10 +41,10 @@
     <string name="sort_by_pilot">Classificar por piloto</string>
     <string name="sort_by_glider">Classificar por planador</string>
     <string name="sort_by_date">Classificar por data</string>
-    <string name="about">Sobre o app</string>
+    <string name="about">Contato</string>
     <string name="about_developer">Desenvolvido por Santiago Hollmann</string>
-    <string name="about_why">Gostaria de oferecer este aplicativo para a comunidade de pilotos planador para que eles possam ver e desfrutar de seus vôos.\n\nSaia livre para entrar em contato comigo para melhorias, sugestões ou qualquer tipo de feedback.</string>
-    <string name="about_contact">Você pode me enviar e-mails para santiago.hollmann@gmail.com ou tweet para @santihollmann.</string>
+    <string name="about_why">Gosto de oferecer este aplicativo para a comunidade de pilotos para que eles/elas possam ver e desfrutar de seus vôos.\n\nSaia livre para entrar em contato comigo para melhorias, sugestões ou qualquer tipo de feedback.</string>
+    <string name="about_contact">E-mail: santiago.hollmann@gmail.com\nFacebook: https://www.facebook.com/igcviewer\nInstagram: @igcviewer\nTwitter: @santihollmann</string>
     <string name="about_enjoy">Boa voos!</string>
     <string name="version">"Versão: "</string>
     <string name="sort">Classificar</string>

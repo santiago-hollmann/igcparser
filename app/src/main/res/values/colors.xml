@@ -8,12 +8,13 @@
     <color name="replay_button_selected">#CCCCCCCC</color>
     <color name="replay_button_border">#CCCCCC</color>
     <color name="map_icon">@color/gray</color>
-    <color name="white">#ffffff</color>
     <color name="start_finish_color">#ad62f9</color>
     <color name="task_fill_color">#22ff00ff</color>
     <color name="task_line">#aaff00ff</color>
+    <color name="white">#ffffff</color>
 
     <!--Altitude-->
+    <color name="altitude_white_bg">#40ffffff</color>
     <color name="altitude_0_100">#ff0000</color>
     <color name="altitude_100_300">#ff6600</color>
     <color name="altitude_300_500">#ffee00</color>
