@@ -41,11 +41,11 @@
     <string name="sort_by_pilot">Ordenar por piloto</string>
     <string name="sort_by_glider">Ordenar por planeador</string>
     <string name="sort_by_date">Ordenar por fecha</string>
-    <string name="about">Acerca de la app</string>
+    <string name="about">Contacto</string>
     <string name="about_developer">Desarrollada por Santiago Hollmann</string>
     <string name="about_enjoy">¡Buenos vuelos!</string>
-    <string name="about_contact">Podés mandarme e-mail a santiago.hollmann@gmail.com o twittearme a @santihollmann.</string>
-    <string name="about_why">Creé esta aplicación para que la comunidad de pilotos de planeador puedan ver y disfrutar sus vuelos.\n\nSentite libre contactarme por mejoras, sugerencias, problemas o cualquier tipo de feedback.</string>
+    <string name="about_contact">E-mail: santiago.hollmann@gmail.com\nFacebook: https://www.facebook.com/igcviewer\nInstagram: @igcviewer\nTwitter: @santihollmann</string>
+    <string name="about_why">Ofrezco esta  app a la omunidad de pilotos para que puedan ver y disfrutar sus vuelos.\n\nSentite libre contactarme por mejoras, sugerencias, problemas o cualquier tipo de comentario.</string>
     <string name="version">"Versión: "</string>
     <string name="sort">Ordenar</string>
     <string name="pilot_in_charge">Piloto</string>
