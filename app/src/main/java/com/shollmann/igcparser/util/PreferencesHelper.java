@@ -37,6 +37,7 @@ public class PreferencesHelper {
     private final String AREA_WIDTH = "area_width";
     private final String START_LENGTH = "start_length";
     private final String FINISH_LENGTH = "finish_length";
+    private final String MACHINE = "machine";
     private SharedPreferences prefs;
 
     public PreferencesHelper(Context appContext) {
@@ -152,5 +153,13 @@ public class PreferencesHelper {
 
     public void setTrackWidthType(int trackWidthType) {
         set(TRACK_WIDTH_TYPE, trackWidthType);
+    }
+
+    public int getMachine() {
+        return get(MACHINE, Constants.Settings.MACHINE_GLIDER);
+    }
+
+    public void setMachine(int machine) {
+        set(MACHINE, machine);
     }
 }

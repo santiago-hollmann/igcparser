@@ -509,7 +509,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             markerGlider = googleMap.addMarker(new MarkerOptions()
                     .position(listLatLngPoints.get(0))
                     .zIndex(1.0f)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_glider))
+                    .icon(BitmapDescriptorFactory.fromResource(Config.getMachineDrawableResId()))
             );
             setReplayButtons();
             TrackerHelper.trackFlightDisplayed();

@@ -98,5 +98,10 @@
     <string name="extra_big">Extra grande</string>
     <string name="big">Grande</string>
     <string name="radio_default">Por padrão</string>
+    <string name="machine">Eu vôo um</string>
+    <string name="radio_glider">Planador</string>
+    <string name="radio_deltawing">Planador de cair</string>
+    <string name="radio_paragliding">Parapente</string>
+    <string name="radio_small_plane">Avião pequeno</string>
 
 </resources>

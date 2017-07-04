@@ -61,5 +61,9 @@ public class Constants extends com.shollmann.android.igcparser.util.Constants {
         public static final int TRACK_WIDTH_DEFAULT = 0;
         public static final int TRACK_WIDTH_BIG = 1;
         public static final int TRACK_WIDTH_EXTRA_BIG = 2;
+        public static final int MACHINE_GLIDER = 0;
+        public static final int MACHINE_PARAGLIDER = 1;
+        public static final int MACHINE_DELTAWING = 2;
+        public static final int MACHINE_SMALL_PLANE = 3;
     }
 }

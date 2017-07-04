@@ -9,6 +9,8 @@ import com.shollmann.igcparser.util.Constants;
 public class Config extends ParserConfig {
     private static int trackWidthType = Constants.Settings.TRACK_WIDTH_DEFAULT;
     private static int trackWidthInPixels;
+    private static int machine = Constants.Settings.MACHINE_GLIDER;
+    private static int machineDrawableResId = R.drawable.img_glider;
 
     public static int getTrackWidthType() {
         return trackWidthType;
@@ -31,5 +33,27 @@ public class Config extends ParserConfig {
 
     public static int getTrackWidthInPixels() {
         return trackWidthInPixels;
+    }
+
+    public static void setMachine(int machine) {
+        Config.machine = machine;
+        switch (machine) {
+            case Constants.Settings.MACHINE_GLIDER:
+                Config.machineDrawableResId = R.drawable.img_glider;
+                break;
+            case Constants.Settings.MACHINE_PARAGLIDER:
+                Config.machineDrawableResId = R.drawable.img_paraglider;
+                break;
+            case Constants.Settings.MACHINE_SMALL_PLANE:
+                Config.machineDrawableResId = R.drawable.img_small_plane;
+                break;
+            case Constants.Settings.MACHINE_DELTAWING:
+                Config.machineDrawableResId = R.drawable.img_deltawing;
+                break;
+        }
+    }
+
+    public static int getMachineDrawableResId() {
+        return machineDrawableResId;
     }
 }
