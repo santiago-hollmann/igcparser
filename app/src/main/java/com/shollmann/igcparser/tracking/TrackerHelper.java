@@ -60,6 +60,10 @@ public class TrackerHelper {
     private static final String MACHINE_PARAGLIDER = "Machine Paraglider";
     private static final String MACHINE_DELTAWING = "Machine Delta Wing";
     private static final String MACHINE_SMALL_PLANE = "Machine Small Plane";
+    private static final String MAP_SATELLITE = "Map Satellite";
+    private static final String MAP_TERRAIN = "Map Terrain";
+    private static final String MAP_NORMAL = "Map Normal";
+    private static final String LOCATE_PLANE = "Locate Plane";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -198,5 +202,21 @@ public class TrackerHelper {
 
     public static void trackMachineDeltaWing() {
         AnswersHelper.trackEvent(MACHINE_DELTAWING);
+    }
+
+    public static void trackMapNormal() {
+        AnswersHelper.trackEvent(MAP_NORMAL);
+    }
+
+    public static void trackMapSatellite() {
+        AnswersHelper.trackEvent(MAP_SATELLITE);
+    }
+
+    public static void trackMapTerrain() {
+        AnswersHelper.trackEvent(MAP_TERRAIN);
+    }
+
+    public static void trackLocatePlane() {
+        AnswersHelper.trackEvent(LOCATE_PLANE);
     }
 }

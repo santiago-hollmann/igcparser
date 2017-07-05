@@ -46,7 +46,7 @@
     <string name="replay_speed_minimum">Lowest speed reached</string>
     <string name="replay_speed_maximum">Fastest speed reached</string>
     <string name="empty" />
-    <string name="view_more">View More</string>
+    <string name="view_more">View Stats</string>
     <string name="need_storage_access">Access to external storage is required to find the IGC files, accept the permission request after tapping here.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2,500m</string>
