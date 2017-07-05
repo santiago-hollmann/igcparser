@@ -52,6 +52,7 @@ public class IGCViewerApplication extends Application {
         Config.setStartLength(preferencesHelper.getStartLength());
         Config.setFinishLength(preferencesHelper.getFinishLength());
         Config.setTrackWidth(getApplicationContext(), preferencesHelper.getTrackWidthType());
+        Config.setMachine(preferencesHelper.getMachine());
     }
 
     private void setupCrashlytics() {

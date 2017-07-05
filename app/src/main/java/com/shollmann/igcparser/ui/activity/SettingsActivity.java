@@ -29,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.shollmann.igcparser.R;
+import com.shollmann.igcparser.ui.view.SettingsMachine;
 import com.shollmann.igcparser.ui.view.SettingsSeekBarView;
 import com.shollmann.igcparser.ui.view.SettingsTrackThickness;
 
@@ -37,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SettingsSeekBarView seekbarStart;
     private SettingsSeekBarView seekbarFinish;
     private SettingsTrackThickness trackWidth;
+    private SettingsMachine machine;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
         seekbarStart = (SettingsSeekBarView) findViewById(R.id.settings_start_seekbar);
         seekbarFinish = (SettingsSeekBarView) findViewById(R.id.settings_finish_seekbar);
         trackWidth = (SettingsTrackThickness) findViewById(R.id.settings_track_width);
+        machine = (SettingsMachine) findViewById(R.id.settings_machine);
     }
 
     @Override

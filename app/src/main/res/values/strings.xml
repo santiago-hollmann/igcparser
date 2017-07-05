@@ -74,5 +74,10 @@
     <string name="extra_big">Extra big</string>
     <string name="big">Big</string>
     <string name="radio_default">Default</string>
+    <string name="machine">I am flying a</string>
+    <string name="radio_glider">Glider</string>
+    <string name="radio_deltawing">Delta Wing</string>
+    <string name="radio_paragliding">Paraglider</string>
+    <string name="radio_small_plane">Small Plane</string>
 
 </resources>

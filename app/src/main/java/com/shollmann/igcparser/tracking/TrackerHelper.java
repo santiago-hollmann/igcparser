@@ -56,6 +56,10 @@ public class TrackerHelper {
     private static final String TRACK_THICKNESS_DEFAULT = "Track Thickness Default";
     private static final String TRACK_THICKNESS_BIG = "Track Thickness Big";
     private static final String TRACK_THICKNESS_EXTRA_BIG = "Track Thickness Extra Big";
+    private static final String MACHINE_GLIDER = "Machine Glider";
+    private static final String MACHINE_PARAGLIDER = "Machine Paraglider";
+    private static final String MACHINE_DELTAWING = "Machine Delta Wing";
+    private static final String MACHINE_SMALL_PLANE = "Machine Small Plane";
 
     public static void trackFlightDisplayed() {
         AnswersHelper.trackEvent(FLIGHT_DISPLAYED);
@@ -178,5 +182,21 @@ public class TrackerHelper {
 
     public static void trackTrackThicknessExtraBig() {
         AnswersHelper.trackEvent(TRACK_THICKNESS_EXTRA_BIG);
+    }
+
+    public static void trackMachineGlider() {
+        AnswersHelper.trackEvent(MACHINE_GLIDER);
+    }
+
+    public static void trackMachineSmallPlane() {
+        AnswersHelper.trackEvent(MACHINE_SMALL_PLANE);
+    }
+
+    public static void trackMachineParaglider() {
+        AnswersHelper.trackEvent(MACHINE_PARAGLIDER);
+    }
+
+    public static void trackMachineDeltaWing() {
+        AnswersHelper.trackEvent(MACHINE_DELTAWING);
     }
 }
