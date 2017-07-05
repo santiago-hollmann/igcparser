@@ -69,7 +69,7 @@
     <string name="replay_speed_indicator">x%1$d</string>
     <string name="replay_speed_minimum">Velocidad mínima alcanzada</string>
     <string name="replay_speed_maximum">Velocidad máxima alcanzada</string>
-    <string name="view_more">Ver Más</string>
+    <string name="view_more">Ver Estadísticas</string>
     <string name="need_storage_access">Se necesita acceso al almacenamiento externo para encontrar los archivos IGC. Por favor acepta la petición del permiso luego de tocar aquí</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2.500m</string>

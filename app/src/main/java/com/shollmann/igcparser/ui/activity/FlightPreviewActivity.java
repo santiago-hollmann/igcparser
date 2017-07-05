@@ -135,16 +135,19 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
 
         switch (googleMap.getMapType()) {
             case GoogleMap.MAP_TYPE_NORMAL:
+                TrackerHelper.trackMapSatellite();
                 btnMapType.setImageResource(R.drawable.ic_terrain);
                 googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 break;
             case GoogleMap.MAP_TYPE_HYBRID:
-                googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                TrackerHelper.trackMapTerrain();
                 btnMapType.setImageResource(R.drawable.ic_map);
+                googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
                 break;
             case GoogleMap.MAP_TYPE_TERRAIN:
-                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                TrackerHelper.trackMapNormal();
                 btnMapType.setImageResource(R.drawable.ic_satellite);
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 break;
         }
     }
@@ -446,6 +449,7 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
                 switchMapType();
                 break;
             case R.id.main_btn_locate_plane:
+                TrackerHelper.trackLocatePlane();
                 centerPlane();
                 break;
             case R.id.main_information_btn_viewmore:

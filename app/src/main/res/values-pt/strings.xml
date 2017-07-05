@@ -70,7 +70,7 @@
     <string name="replay_speed_minimum">Velocidade mais baixa alcançada</string>
     <string name="replay_speed_maximum">Velocidade máxima alcançada</string>
     <string name="empty" />
-    <string name="view_more">Ver mais</string>
+    <string name="view_more">Ver estatísticas</string>
     <string name="need_storage_access">O acesso ao armazenamento externo é necessário para encontrar os arquivos IGC, aceite a solicitação de permissão depois de tocar aqui.</string>
     <string name="altitude_reference_0m">0m</string>
     <string name="altitude_reference_2500m">>2.500m</string>
