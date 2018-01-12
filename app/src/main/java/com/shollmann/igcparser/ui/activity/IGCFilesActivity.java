@@ -25,14 +25,17 @@
 package com.shollmann.igcparser.ui.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -54,6 +57,7 @@ import com.shollmann.android.igcparser.util.Logger;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
+import com.shollmann.igcparser.events.FileLongClickEvent;
 import com.shollmann.igcparser.events.RateUsClickedEvent;
 import com.shollmann.igcparser.tracking.TrackerHelper;
 import com.shollmann.igcparser.ui.adapter.FilesAdapter;
@@ -78,7 +82,8 @@ import java.util.Queue;
 
 public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
 
-    private static final int EXTERNAL_STORAGE_PERMISSION_REQUEST = 1001;
+    private static final int READ_EXTERNAL_STORAGE_REQUEST = 1001;
+    private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1002;
     private RateUsView viewRateUs;
     private LinearLayout layoutLoading;
     private LinearLayout layoutEmpty;
@@ -172,6 +177,35 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
         Intent intent = new Intent(this, FlightPreviewActivity.class);
         intent.putExtra(Constants.FILE_TO_LOAD_PATH, event.getFile().getAbsoluteFile().toString());
         startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(final FileLongClickEvent event) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Delete file")
+                .setMessage("Are you sure you want to delete " + event.getFile().getName() + "?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (hasWritePermission()) {
+                            event.getFile().delete();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    searchForFiles(listFiles.isEmpty() ? Utilities.getXCSoarDataFolder() : lastSearchedPath);
+                                }
+                            }, 50);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please, give write permissions to delete files", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -288,7 +322,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
             txtLoading.setClickable(false);
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    EXTERNAL_STORAGE_PERMISSION_REQUEST);
+                    READ_EXTERNAL_STORAGE_REQUEST);
 
         } else {
             new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
@@ -299,7 +333,7 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case EXTERNAL_STORAGE_PERMISSION_REQUEST: {
+            case READ_EXTERNAL_STORAGE_REQUEST: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     new FindIGCFilesAsyncTask(this).execute(Utilities.getSdCardFolder());
@@ -317,6 +351,20 @@ public class IGCFilesActivity extends AppCompatActivity implements MenuItem.OnMe
                 }
             }
         }
+    }
+
+
+    private boolean hasWritePermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_EXTERNAL_STORAGE_REQUEST);
+            return false;
+
+        }
+        return true;
     }
 
     private void shareApp() {

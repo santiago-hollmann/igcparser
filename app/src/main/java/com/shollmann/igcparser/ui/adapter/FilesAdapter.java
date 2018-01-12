@@ -53,7 +53,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FileViewHolder> {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.viewholder_file, parent, false);
 
-
         FileViewHolder vh = new FileViewHolder(v);
         return vh;
     }

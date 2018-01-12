@@ -34,6 +34,7 @@ import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Utilities;
 import com.shollmann.igcparser.R;
 import com.shollmann.igcparser.events.FileClickEvent;
+import com.shollmann.igcparser.events.FileLongClickEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -62,6 +63,14 @@ public class FileViewHolder extends RecyclerView.ViewHolder {
                 if (igcFile != null && !TextUtils.isEmpty(igcFile.getFilePath())) {
                     EventBus.getDefault().post(new FileClickEvent(new File(igcFile.getFilePath())));
                 }
+            }
+        });
+
+        container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                EventBus.getDefault().post(new FileLongClickEvent(new File(igcFile.getFilePath())));
+                return true;
             }
         });
 

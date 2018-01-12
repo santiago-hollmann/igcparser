@@ -149,7 +149,7 @@ public class SettingsSeekBarView extends RelativeLayout {
     private void setMaxValue() {
         switch (type) {
             case AREA:
-                seekbar.setMax(120);
+                seekbar.setMax(60);
                 break;
             case START:
                 seekbar.setMax(40);
