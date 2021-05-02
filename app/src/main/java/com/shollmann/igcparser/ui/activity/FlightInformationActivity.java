@@ -101,7 +101,7 @@ public class FlightInformationActivity extends AppCompatActivity {
     }
 
     private void showInformation() {
-        insertField(R.drawable.ic_calendar, R.string.date, igcFile.getDate());
+        insertField(R.drawable.ic_calendar, R.string.date, igcFile.getDate().toString());
         insertField(R.drawable.ic_person, R.string.pilot_in_charge, Utilities.capitalizeText(igcFile.getPilotInCharge()));
         insertField(R.drawable.ic_plane, R.string.glider, igcFile.getGliderTypeAndId());
         insertField(R.drawable.ic_speed, R.string.avg_speed, igcFile.getAverageSpeed() + "km/h");

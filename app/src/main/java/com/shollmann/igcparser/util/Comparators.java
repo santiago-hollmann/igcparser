@@ -28,7 +28,6 @@ import android.text.TextUtils;
 
 import com.shollmann.android.igcparser.model.IGCFile;
 
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
 
 public class Comparators {
@@ -65,16 +64,9 @@ public class Comparators {
     };
 
     public static Comparator<IGCFile> compareByDate = new Comparator<IGCFile>() {
-        private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-
         @Override
         public int compare(IGCFile file0, IGCFile file1) {
-            try {
-                return sdf.parse(file1.getDate()).compareTo(sdf.parse(file0.getDate()));
-            } catch (Throwable t) {
-                return 0;
-            }
-
+            return file0.getDate().compareTo(file1.getDate());
         }
     };
 }

@@ -66,7 +66,7 @@ public class FileViewHolder extends RecyclerView.ViewHolder {
         txtFileName.setText(igcFile.getFileName());
         txtPilot.setText(Utilities.capitalizeText(igcFile.getPilotInCharge()));
         txtPilot.setVisibility(TextUtils.isEmpty(igcFile.getPilotInCharge()) ? View.GONE : View.VISIBLE);
-        txtDate.setText(igcFile.getDate());
+        txtDate.setText(igcFile.getDate().toString());
         txtGlider.setText(igcFile.getGliderTypeAndId());
         txtGlider.setVisibility(TextUtils.isEmpty(igcFile.getGliderTypeAndId()) ? View.GONE : View.VISIBLE);
     }
