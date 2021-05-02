@@ -48,7 +48,7 @@ public class IGCFile implements Serializable {
     private String pilotInCharge;
     private String gliderId;
     private String gliderType;
-    private String date;
+    private IGCDate date;
     private String fileName;
     private String filePath;
     private boolean isTaskCompleted;
@@ -152,11 +152,11 @@ public class IGCFile implements Serializable {
         this.pilotInCharge = pilotInCharge;
     }
 
-    public String getDate() {
+    public IGCDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(IGCDate date) {
         this.date = date;
     }
 
