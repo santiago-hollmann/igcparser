@@ -24,12 +24,8 @@
 
 package com.shollmann.igcparser.tracking;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 public class AnswersHelper {
 
     public static void trackEvent(String eventName){
-        Answers.getInstance().logCustom(new CustomEvent(eventName));
     }
 }

@@ -38,7 +38,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -81,7 +80,6 @@ public class FlightInformationActivity extends AppCompatActivity {
         if (igcFile != null) {
             showInformation();
         } else {
-            Crashlytics.log("FlightInformationActivity :: IGC File is null");
             Toast.makeText(getApplication().getBaseContext(), R.string.sorry_error_happen, Toast.LENGTH_SHORT).show();
             finish();
         }

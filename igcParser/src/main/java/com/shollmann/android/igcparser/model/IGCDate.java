@@ -2,7 +2,6 @@ package com.shollmann.android.igcparser.model;
 
 import android.support.annotation.NonNull;
 
-import com.crashlytics.android.Crashlytics;
 import com.shollmann.android.igcparser.util.Logger;
 
 import java.text.DateFormat;
@@ -45,8 +44,6 @@ public class IGCDate implements Comparable<IGCDate> {
                 e.printStackTrace();
                 String errorMessage = "IGCDate :: Unable to parse date string. Not a date.";
                 Logger.logError(errorMessage);
-                Crashlytics.log(errorMessage);
-                Crashlytics.logException(e);
             }
             try {
                 // Note: Flight number will be null for old format strings that don't specify it.
@@ -55,13 +52,10 @@ public class IGCDate implements Comparable<IGCDate> {
                 e.printStackTrace();
                 String errorMessage = "IGCDate :: Unable to parse date string. Not a number.";
                 Logger.logError(errorMessage);
-                Crashlytics.log(errorMessage);
-                Crashlytics.logException(e);
             }
         } else {
             String errorMessage = "IGCDate :: Unable to parse date string. Unexpected format.";
             Logger.logError(errorMessage);
-            Crashlytics.log(errorMessage);
         }
     }
 
