@@ -54,7 +54,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -266,8 +265,6 @@ public class FlightPreviewActivity extends AppCompatActivity implements OnMapRea
             try {
                 googleMap.addPolyline(polyline);
             } catch (Throwable t) {
-                Crashlytics.log("FlightPreviewActivity :: Tried to draw polyline when googleMap is null");
-                Crashlytics.logException(t);
             }
         }
 

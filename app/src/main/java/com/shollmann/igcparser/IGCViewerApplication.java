@@ -27,13 +27,9 @@ package com.shollmann.igcparser;
 import android.app.Application;
 import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.model.TaskConfig;
 import com.shollmann.igcparser.util.PreferencesHelper;
-
-import io.fabric.sdk.android.Fabric;
 
 public class IGCViewerApplication extends Application {
     private static IGCFile currentIGCFile;
@@ -54,11 +50,6 @@ public class IGCViewerApplication extends Application {
     }
 
     private void setupCrashlytics() {
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
-
-        Fabric.with(this, crashlyticsKit);
     }
 
     public Context getApplication() {

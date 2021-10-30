@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import com.google.maps.android.SphericalUtil;
 import com.shollmann.android.igcparser.model.BRecord;
 import com.shollmann.android.igcparser.model.CRecordWayPoint;
+import com.shollmann.android.igcparser.model.IGCDate;
 import com.shollmann.android.igcparser.model.IGCFile;
 import com.shollmann.android.igcparser.util.Constants;
 import com.shollmann.android.igcparser.util.CoordinatesUtilities;
@@ -104,7 +105,7 @@ public class Parser {
                         }
 
                         if (isDateRecord(line)) {
-                            igcFile.setDate(parseDate(line));
+                            igcFile.setDate(new IGCDate(line));
                         }
                     }
                 }
@@ -182,7 +183,7 @@ public class Parser {
                     }
 
                     if (isDateRecord(line)) {
-                        igcFile.setDate(parseDate(line));
+                        igcFile.setDate(new IGCDate(line));
                     }
                 }
             }
@@ -207,19 +208,6 @@ public class Parser {
         }
         Logger.log(igcFile.toString());
         return igcFile;
-    }
-
-    private static String parseDate(String line) {
-        StringBuilder sb = new StringBuilder();
-        line = line.toUpperCase().replace(Constants.GeneralRecord.DATE, Constants.EMPTY_STRING);
-        try {
-            sb.append(line.substring(0, 2)).append(Constants.SLASH);
-            sb.append(line.substring(2, 4)).append(Constants.SLASH);
-            sb.append(line.substring(4));
-        } catch (Throwable t) {
-            Logger.logError("Unable to parse date");
-        }
-        return sb.toString();
     }
 
     @NonNull
